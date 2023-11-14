@@ -1,0 +1,14 @@
+[
+  {
+    "title": "全部课程",
+    "link": "/courses"
+  },
+  {
+    "title": "教程",
+    "link": "/tutorial"
+  },
+  {
+    "title": "专栏",
+    "link": "/column"
+  }
+]
