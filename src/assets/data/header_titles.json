@@ -1,14 +1,22 @@
 [
   {
-    "title": "全部课程",
+    "title": "课程",
     "link": "/courses"
   },
   {
-    "title": "教程",
-    "link": "/tutorial"
+    "title": "图文",
+    "link": "/picture"
   },
   {
-    "title": "专栏",
-    "link": "/column"
+    "title": "电子书",
+    "link": "/book"
+  },
+  {
+    "title": "问答",
+    "link": "/question"
+  },
+  {
+    "title": "面经",
+    "link": "/interview"
   }
 ]
