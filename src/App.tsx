@@ -1,13 +1,17 @@
-import React, { memo } from 'react'
-import type { FC, ReactNode } from 'react'
-import './App.scss'
+import { useRoutes } from "react-router-dom";
+import routes from "./routes";
+import "./App.scss";
+import { Suspense } from "react";
+import LoadingPage from "./pages/loading";
 
-interface IProps {
-  children?: ReactNode
+function App() {
+  const Views = () => useRoutes(routes);
+
+  return (
+    <Suspense fallback={<LoadingPage />}>
+      <Views />
+    </Suspense>
+  );
 }
 
-const App: FC<IProps> = () => {
-  return <div>App</div>
-}
-
-export default memo(App)
+export default App;
