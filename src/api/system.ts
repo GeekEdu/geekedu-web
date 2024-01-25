@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function config() {
-  return client.get("/api/v2/other/config", {});
+  return client.get("/system/api/v2/config", {});
 }
 
 export function sendSms(params: any) {
@@ -13,7 +13,7 @@ export function imageCaptcha() {
 }
 
 export function footerLink() {
-  return client.get(`/api/v2/links`, {});
+  return client.get(`/system/api/v2/links`, {});
 }
 
 export function historyRecord(type: string, id: number, title: string) {

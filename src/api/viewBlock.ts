@@ -5,5 +5,5 @@ export function pageBlocks(params: any) {
 }
 
 export function sliders(params: any) {
-  return client.get("/api/v2/sliders", params);
+  return client.get("/system/api/v2/sliders", params);
 }

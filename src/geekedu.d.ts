@@ -1,8 +1,9 @@
-declare global {
+
   interface ResponseInterface {
     data: any;
-    code: number;
+    status: number;
     message?: string;
+    timestamp?: number;
   }
 
   interface AppFeatureInterface {
@@ -28,31 +29,31 @@ declare global {
 
   interface AppConfigInterface {
     aboutus: string;
-    credit1_reward: {
+    credit1Reward: {
       register: number;
       watched_vod_course: number;
       watched_video: number;
       paid_order: string;
     };
-    enabled_addons: string[];
-    h5_url: string;
+    enabledAddons: string[];
+    wxUrl: string;
     icp: string;
     icp2: string;
-    icp2_link: string;
-    icp_link: string;
+    icp2Link: string;
+    icpLink: string;
     logo: {
       logo: string;
       white_logo?: string;
     };
     member: {
-      enabled_mobile_bind_alert: number;
-      enabled_face_verify: boolean;
+      enabledMobileBindAlert: number;
+      enabledFaceVerify: boolean;
     };
-    pc_url: string;
+    pcUrl: string;
     player: {
       cover: string;
-      enabled_bullet_secret: string;
-      bullet_secret: {
+      enabled_benabledBulletSecretullet_secret: string;
+      bulletSecret: {
         color: string;
         opacity: string;
         size: string;
@@ -65,9 +66,9 @@ declare global {
       wechat_oauth: number;
     };
     url: string;
-    user_private_protocol: string;
-    user_protocol: string;
-    webname: string;
+    userPrivateProtocol: string;
+    userProtocol: string;
+    webName: string;
   }
 
   interface UserDetailInterface {
@@ -99,6 +100,4 @@ declare global {
     role_expired_at: null;
     role_id: number;
   }
-}
 
-export {};

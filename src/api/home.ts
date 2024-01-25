@@ -10,5 +10,5 @@ export function announcementDetail(id: number) {
   return client.get(`/api/v2/announcement/${id}`, {});
 }
 export function headerNav() {
-  return client.get(`/api/v2/navs`, {});
+  return client.get(`/system/api/v2/navs`, {});
 }

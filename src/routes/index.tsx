@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy,useState, useEffect } from "react";
 import { RouteObject } from "react-router-dom";
 import { system, user, home } from "../api";
 import {
@@ -106,6 +106,78 @@ const Error404 = lazy(() => import("../pages/error/404"));
 
 let RootPage: any = null;
 
+interface ResponseInterface {
+  data: any;
+  status: number;
+  message?: string;
+  timestamp?: number;
+}
+
+interface AppFeatureInterface {
+  vip: boolean;
+  live: boolean;
+  book: boolean;
+  topic: boolean;
+  paper: boolean;
+  practice: boolean;
+  mockPaper: boolean;
+  wrongBook: boolean;
+  wenda: boolean;
+  share: boolean;
+  codeExchanger: boolean;
+  snapshort: boolean;
+  promoCode: boolean;
+  daySignIn: boolean;
+  credit1Mall: boolean;
+  tuangou: boolean;
+  miaosha: boolean;
+  cert: boolean;
+}
+
+interface AppConfigInterface {
+  aboutus: string;
+  credit1Reward: {
+    register: number;
+    watched_vod_course: number;
+    watched_video: number;
+    paid_order: string;
+  };
+  enabledAddons: string[];
+  wxUrl: string;
+  icp: string;
+  icp2: string;
+  icp2Link: string;
+  icpLink: string;
+  logo: {
+    logo: string;
+    white_logo?: string;
+  };
+  member: {
+    enabledMobileBindAlert: number;
+    enabledFaceVerify: boolean;
+  };
+  pcUrl: string;
+  player: {
+    cover: string;
+    enabled_benabledBulletSecretullet_secret: string;
+    bulletSecret: {
+      color: string;
+      opacity: string;
+      size: string;
+      text: string;
+    };
+  };
+  socialites: {
+    qq: number;
+    wechat_scan: number;
+    wechat_oauth: number;
+  };
+  url: string;
+  userPrivateProtocol: string;
+  userProtocol: string;
+  webName: string;
+}
+
 let configFunc: AppFeatureInterface = {
   vip: true,
   live: false,
@@ -136,27 +208,27 @@ RootPage = lazy(async () => {
       ).data as AppConfigInterface;
 
       // 决定开启哪些功能
-      configFunc.live = configRes.enabled_addons.includes("Zhibo");
-      configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
-      configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
+      configFunc.live = configRes.enabledAddons.includes("Zhibo");
+      configFunc.book = configRes.enabledAddons.includes("GeekeduBooks");
+      configFunc.topic = configRes.enabledAddons.includes("GeekeduTopics");
       // 考试模块
       configFunc.practice =
         configFunc.wrongBook =
         configFunc.mockPaper =
         configFunc.paper =
-          configRes.enabled_addons.includes("Paper");
-      configFunc.wenda = configRes.enabled_addons.includes("Wenda");
-      configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
+          configRes.enabledAddons.includes("Paper");
+      configFunc.wenda = configRes.enabledAddons.includes("Wenda");
+      configFunc.share = configRes.enabledAddons.includes("MultiLevelShare");
       configFunc.codeExchanger =
-        configRes.enabled_addons.includes("CodeExchanger");
-      configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
+        configRes.enabledAddons.includes("CodeExchanger");
+      configFunc.snapshort = configRes.enabledAddons.includes("Snapshot");
       configFunc.promoCode =
-        configRes.enabled_addons.includes("MultiLevelShar");
-      configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
-      configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
-      configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
-      configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
-      configFunc.cert = configRes.enabled_addons.includes("Cert");
+        configRes.enabledAddons.includes("MultiLevelShar");
+      configFunc.daySignIn = configRes.enabledAddons.includes("DaySignIn");
+      configFunc.credit1Mall = configRes.enabledAddons.includes("DaySignIn");
+      configFunc.tuangou = configRes.enabledAddons.includes("TuanGou");
+      configFunc.miaosha = configRes.enabledAddons.includes("MiaoSha");
+      configFunc.cert = configRes.enabledAddons.includes("Cert");
 
       // 获取导航栏
       let navsRes: any = await home.headerNav();
