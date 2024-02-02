@@ -203,9 +203,11 @@ RootPage = lazy(async () => {
   return new Promise<any>(async (resolve) => {
     try {
       // 获取系统配置
-      let configRes: AppConfigInterface = (
-        (await system.config()) as ResponseInterface
-      ).data as AppConfigInterface;
+      let tempData: ResponseInterface = await system.config() as ResponseInterface
+      // let configRes: AppConfigInterface = (
+      //   (await system.config()) as ResponseInterface
+      // ).data as AppConfigInterface;
+      let configRes: AppConfigInterface = tempData.data
 
       // 决定开启哪些功能
       configFunc.live = configRes.enabledAddons.includes("Zhibo");

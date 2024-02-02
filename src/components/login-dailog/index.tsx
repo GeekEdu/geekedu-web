@@ -34,6 +34,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
   const pathname = useLocation().pathname;
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const [loading, setLoading] = useState<boolean>(false);
+  // 0：密码登录 1：短信登录
   const [tabKey, setTabKey] = useState(0);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);

@@ -1,6 +1,7 @@
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 
+// 404 页面 参考链接：-> https://ant-design.antgroup.com/components/result-cn
 const Error404 = () => {
   const navigate = useNavigate();
 

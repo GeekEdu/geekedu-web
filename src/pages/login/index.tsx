@@ -36,7 +36,7 @@ const LoginPage = () => {
     setWeixinBindMobileVisiale(true);
   };
 
-  return (
+  return ( 
     <div className={styles["content"]}>
       <LoginDialog
         open={visiale}
