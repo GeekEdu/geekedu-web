@@ -1,17 +1,17 @@
-import { useRoutes } from "react-router-dom";
-import routes from "./routes";
-import "./App.scss";
-import { Suspense } from "react";
-import LoadingPage from "./pages/loading";
+import { Suspense } from 'react'
+import { useRoutes } from 'react-router-dom'
+import './App.scss'
+import LoadingPage from './pages/loading'
+import routes from './routes'
 
 function App() {
-  const Views = () => useRoutes(routes);
+  const Views = () => useRoutes(routes)
 
   return (
     <Suspense fallback={<LoadingPage />}>
       <Views />
     </Suspense>
-  );
+  )
 }
 
-export default App;
+export default App

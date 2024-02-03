@@ -1,14 +1,15 @@
-import axios, { Axios, AxiosResponse } from "axios";
-import { message } from "antd";
-import { getToken, clearToken } from "../../utils/index";
+import type { Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios from 'axios'
+import { message } from 'antd'
+import { clearToken, getToken } from '../../utils/index'
 
-const GoLogin = () => {
-  clearToken();
-  window.location.href = "/login";
-};
+function GoLogin() {
+  clearToken()
+  window.location.href = '/login'
+}
 
 export class HttpClient {
-  axios: Axios;
+  axios: Axios
 
   constructor(url: string) {
     this.axios = axios.create({
@@ -16,137 +17,118 @@ export class HttpClient {
       timeout: 15000,
       withCredentials: false,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
-    });
+    })
 
-    //拦截器注册
+    // 拦截器注册
     this.axios.interceptors.request.use(
       (config) => {
-        const token = getToken();
-        token && (config.headers.Authorization = "Bearer " + token);
+        const token = getToken()
+        token && (config.headers.Authorization = `Bearer ${token}`)
         // config.headers.common["meedu-platform"] = "PC";
-        return config;
+        return config
       },
       (err) => {
-        return Promise.reject(err);
-      }
-    );
+        return Promise.reject(err)
+      },
+    )
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        let code = response.data.code; //业务返回代码
-        let msg = response.data.message; //错误消息
+        const status = response.data.status // 业务返回代码
+        const msg = response.data.message // 错误消息
 
-        if (code === 0) {
-          //请求成功
-          return Promise.resolve(response);
-        } else if (code === 401) {
-          message.error("请重新登录");
-          GoLogin();
-        } else if (code.status === 5) {
-          console.log("查询中");
-        } else {
-          if (msg !== "请勿重复绑定") {
-            message.error(msg);
-          }
+        if (status == 0) {
+          // 请求成功
+          return Promise.resolve(response)
         }
-        return Promise.reject(response);
+        else if (status === 401) {
+          message.error('请重新登录')
+          GoLogin()
+        }
+        else if (status.status === 5) {
+          console.log('查询中')
+        }
+        else {
+          if (msg !== '请勿重复绑定')
+            message.error(msg)
+        }
+        return Promise.reject(response)
       },
       // 当http的状态码非200
       (error) => {
-        let status = error.response.status;
+        const status = error.response.status
         if (status === 401) {
-          message.error("请重新登录");
-          GoLogin();
-        } else if (status === 404) {
+          message.error('请重新登录')
+          GoLogin()
+        }
+        else if (status === 404) {
           // 跳转到404页面
-        } else if (status === 403) {
+        }
+        else if (status === 403) {
           // 跳转到无权限页面
-        } else if (status === 500) {
+        }
+        else if (status === 500) {
           // 跳转到500异常页面
         }
-        return Promise.reject(error.response);
-      }
-    );
+        return Promise.reject(error.response)
+      },
+    )
   }
 
-  get(url: string, params: object) {
-    return new Promise((resolve, reject) => {
-      this.axios
-        .get(url, {
-          params: params,
-        })
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
-    });
+  get<T>(url: string, params: object) {
+    return this.request<T>({
+      method: 'GET',
+      url,
+      params,
+    })
   }
 
-  destroy(url: string) {
-    return new Promise((resolve, reject) => {
-      this.axios
-        .delete(url)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
-    });
+  destroy<T>(url: string) {
+    return this.request<T>({
+      method: 'DELETE',
+      url,
+    })
   }
 
-  post(url: string, params: object) {
-    return new Promise((resolve, reject) => {
-      this.axios
-        .post(url, params)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
-    });
+  post<T, K>(url: string, params: K) {
+    return this.request<T>({
+      method: 'POST',
+      url,
+      data: params,
+    })
   }
 
-  put(url: string, params: object) {
-    return new Promise((resolve, reject) => {
-      this.axios
-        .put(url, params)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
-    });
+  put<T, K>(url: string, params: K) {
+    return this.request<T>({
+      method: 'PUT',
+      url,
+      data: params,
+    })
   }
 
-  request(config: object) {
-    return new Promise((resolve, reject) => {
+  request<T>(config: AxiosRequestConfig<any>) {
+    return new Promise<T>((resolve, reject) => {
       this.axios
         .request(config)
-        .then((res) => {
-          resolve(res.data);
+        .then((res: AxiosResponse<T>) => {
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err.data);
-        });
-    });
+          reject(err.data)
+        })
+    })
   }
 }
 
-let appUrl = import.meta.env.VITE_APP_URL || "";
+let appUrl = import.meta.env.VITE_APP_URL || ''
 if (
-  typeof (window as any).meedu_api_url !== "undefined" &&
-  (window as any).meedu_api_url
-) {
-  appUrl = (window as any).meedu_api_url;
-}
+  typeof (window as any).meedu_api_url !== 'undefined'
+  && (window as any).meedu_api_url
+)
+  appUrl = (window as any).meedu_api_url
 
-const client = new HttpClient(appUrl);
+const client = new HttpClient(appUrl)
 
-export default client;
+export default client
