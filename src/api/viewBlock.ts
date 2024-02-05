@@ -1,9 +1,9 @@
-import client from "./internal/httpClient";
+import client from './internal/httpClient'
 
 export function pageBlocks(params: any) {
-  return client.get("/api/v2/viewBlock/page/blocks", params);
+  return client.get('/api/v2/viewBlock/page/blocks', params)
 }
 
 export function sliders(params: any) {
-  return client.get("/system/api/v2/sliders", params);
+  return client.get('/system/api/v2/sliders', params)
 }
