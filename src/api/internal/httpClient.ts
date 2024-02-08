@@ -36,10 +36,10 @@ export class HttpClient {
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        const status = response.data.status // 业务返回代码
-        const msg = response.data.message // 错误消息
+        const status = response.data.code // 业务返回代码
+        const msg = response.data.msg // 错误消息
 
-        if (status == 0) {
+        if (status === 0) {
           // 请求成功
           return Promise.resolve(response)
         }
