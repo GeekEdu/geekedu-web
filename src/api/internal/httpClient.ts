@@ -36,8 +36,8 @@ export class HttpClient {
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        const status = response.data.code // 业务返回代码
-        const msg = response.data.msg // 错误消息
+        const status = response.data.status // 业务返回代码
+        const msg = response.data.message // 错误消息
 
         if (status === 0) {
           // 请求成功
@@ -46,6 +46,8 @@ export class HttpClient {
         else if (status === 401) {
           message.error('请重新登录')
           GoLogin()
+        } else if (status === 500) {
+          message.error(msg)
         }
         else if (status.status === 5) {
           console.log('查询中')

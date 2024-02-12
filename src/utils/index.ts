@@ -2,39 +2,39 @@ import moment from "moment";
 declare const window: any;
 
 export function getToken(): string {
-  return window.localStorage.getItem("meedu-user-token") || "";
+  return window.localStorage.getItem("geekedu-user-token") || "";
 }
 
 export function setToken(token: string) {
-  window.localStorage.setItem("meedu-user-token", token);
+  window.localStorage.setItem("geekedu-user-token", token);
 }
 
 export function clearToken() {
-  window.localStorage.removeItem("meedu-user-token");
+  window.localStorage.removeItem("geekedu-user-token");
 }
 
 export function getPlayId(): string {
-  return window.localStorage.getItem("meedu-play-id") || "";
+  return window.localStorage.getItem("geekedu-play-id") || "";
 }
 
 export function savePlayId(id: string) {
-  window.localStorage.setItem("meedu-play-id", id);
+  window.localStorage.setItem("geekedu-play-id", id);
 }
 
 export function clearPlayId() {
-  window.localStorage.removeItem("meedu-play-id");
+  window.localStorage.removeItem("geekedu-play-id");
 }
 
 export function getMsv(): string {
-  return window.localStorage.getItem("meedu-msv") || "";
+  return window.localStorage.getItem("geekedu-msv") || "";
 }
 
 export function saveMsv(msv: string) {
-  window.localStorage.setItem("meedu-msv", msv);
+  window.localStorage.setItem("geekedu-msv", msv);
 }
 
 export function clearMsv() {
-  window.localStorage.removeItem("meedu-msv");
+  window.localStorage.removeItem("geekedu-msv");
 }
 
 export function saveLoginCode(code: string) {
@@ -253,25 +253,25 @@ export function latexRender(el: any) {
 }
 
 export function getBindMobileKey(): string {
-  return window.localStorage.getItem("meedu-bind-mobile") || "";
+  return window.localStorage.getItem("geekedu-bind-mobile") || "";
 }
 
 export function setBindMobileKey() {
-  window.localStorage.setItem("meedu-bind-mobile", "ok");
+  window.localStorage.setItem("geekedu-bind-mobile", "ok");
 }
 
 export function clearBindMobileKey() {
-  window.localStorage.removeItem("meedu-bind-mobile");
+  window.localStorage.removeItem("geekedu-bind-mobile");
 }
 
 export function getFaceCheckKey(): string {
-  return window.localStorage.getItem("meedu-face-check") || "";
+  return window.localStorage.getItem("geekedu-face-check") || "";
 }
 
 export function setFaceCheckKey() {
-  window.localStorage.setItem("meedu-face-check", "ok");
+  window.localStorage.setItem("geekedu-face-check", "ok");
 }
 
 export function clearFaceCheckKey() {
-  window.localStorage.removeItem("meedu-face-check");
+  window.localStorage.removeItem("geekedu-face-check");
 }
