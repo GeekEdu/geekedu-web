@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
-import { Header } from "../../../components";
-import { Suspense } from "react";
-import LoadingPage from "../../loading";
+import { Outlet } from 'react-router-dom'
+import { Suspense } from 'react'
+import { Header } from '../../../components'
+import LoadingPage from '../../loading'
 
-const WithHeaderWithoutFooter = () => {
+function WithHeaderWithoutFooter() {
   return (
     <>
       <Header></Header>
@@ -11,7 +11,7 @@ const WithHeaderWithoutFooter = () => {
         <Outlet />
       </Suspense>
     </>
-  );
-};
+  )
+}
 
-export default WithHeaderWithoutFooter;
+export default WithHeaderWithoutFooter

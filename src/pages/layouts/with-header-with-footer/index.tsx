@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
-import { Footer, Header } from "../../../components";
-import { Suspense } from "react";
-import LoadingPage from "../../loading";
+import { Outlet } from 'react-router-dom'
+import { Suspense } from 'react'
+import { Footer, Header } from '../../../components'
+import LoadingPage from '../../loading'
 
-const WithHeaderWithFooter = () => {
+function WithHeaderWithFooter() {
   return (
     <>
       <Header></Header>
@@ -12,7 +12,7 @@ const WithHeaderWithFooter = () => {
       </Suspense>
       <Footer status={true}></Footer>
     </>
-  );
-};
+  )
+}
 
-export default WithHeaderWithFooter;
+export default WithHeaderWithFooter

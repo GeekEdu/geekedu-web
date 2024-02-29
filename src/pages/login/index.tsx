@@ -1,99 +1,99 @@
-import { useState, useEffect } from "react";
-import styles from "./index.module.scss";
-import { Button, Image } from "antd";
+import { useEffect, useState } from 'react'
+import { Button, Image } from 'antd'
+import { useLocation } from 'react-router-dom'
 import {
-  RegisterDialog,
+  ForgetPasswordDialog,
   LoginDialog,
+  RegisterDialog,
   WeixinLoginDialog,
   WexinBindMobileDialog,
-  ForgetPasswordDialog,
-} from "../../components";
-import { useLocation } from "react-router-dom";
-import banner from "../../assets/img/commen/login-banner.png";
+} from '../../components'
+import banner from '../../assets/img/commen/login-banner.png'
+import styles from './index.module.scss'
 
-const LoginPage = () => {
-  const [visiale, setVisiale] = useState<boolean>(false);
-  const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
-  const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
-  const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
-    useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
+function LoginPage() {
+  const [visiale, setVisiale] = useState<boolean>(false)
+  const [registerVisiale, setRegisterVisiale] = useState<boolean>(false)
+  const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false)
+  const [weixinBindMobileVisiale, setWeixinBindMobileVisiale]
+    = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [forgetVisiale, setForgetVisiale] = useState<boolean>(false)
 
   const goRegister = () => {
-    setRegisterVisiale(true);
-  };
+    setRegisterVisiale(true)
+  }
 
   const goForget = () => {
-    setForgetVisiale(true);
-  };
+    setForgetVisiale(true)
+  }
 
   const goWeixinLogin = () => {
-    setWeixinVisiale(true);
-  };
+    setWeixinVisiale(true)
+  }
 
   const bindMobile = () => {
-    setWeixinBindMobileVisiale(true);
-  };
+    setWeixinBindMobileVisiale(true)
+  }
 
-  return ( 
-    <div className={styles["content"]}>
+  return (
+    <div className={styles.content}>
       <LoginDialog
         open={visiale}
         onCancel={() => {
-          setVisiale(false);
+          setVisiale(false)
         }}
         changeRegister={() => {
-          setVisiale(false);
-          goRegister();
+          setVisiale(false)
+          goRegister()
         }}
         changeForget={() => {
-          setVisiale(false);
-          goForget();
+          setVisiale(false)
+          goForget()
         }}
         changeWeixin={() => {
-          setVisiale(false);
-          goWeixinLogin();
+          setVisiale(false)
+          goWeixinLogin()
         }}
       />
       <RegisterDialog
         open={registerVisiale}
         onCancel={() => {
-          setRegisterVisiale(false);
+          setRegisterVisiale(false)
         }}
         changeLogin={() => {
-          setRegisterVisiale(false);
-          setVisiale(true);
+          setRegisterVisiale(false)
+          setVisiale(true)
         }}
       />
       <WeixinLoginDialog
         open={weixinVisiale}
         onCancel={() => {
-          setWeixinVisiale(false);
+          setWeixinVisiale(false)
         }}
         changeLogin={() => {
-          setWeixinVisiale(false);
-          setVisiale(true);
+          setWeixinVisiale(false)
+          setVisiale(true)
         }}
         bindMobile={() => {
-          setWeixinVisiale(false);
-          bindMobile();
+          setWeixinVisiale(false)
+          bindMobile()
         }}
       />
       <WexinBindMobileDialog
         open={weixinBindMobileVisiale}
         onCancel={() => {
-          setWeixinBindMobileVisiale(false);
+          setWeixinBindMobileVisiale(false)
         }}
       />
       <ForgetPasswordDialog
         open={forgetVisiale}
         changeLogin={() => {
-          setForgetVisiale(false);
-          setVisiale(true);
+          setForgetVisiale(false)
+          setVisiale(true)
         }}
         onCancel={() => {
-          setForgetVisiale(false);
+          setForgetVisiale(false)
         }}
       />
       <Image src={banner} width={300} height={300} preview={false} />
@@ -105,7 +105,7 @@ const LoginPage = () => {
         登录后查看
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
