@@ -1,89 +1,89 @@
-import React, { useState, useEffect } from "react";
-import styles from "./index.module.scss";
-import { Row, Col, Skeleton, Pagination } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
-import { course } from "../../api/index";
+import React, { useEffect, useState } from 'react'
+import { Col, Pagination, Row, Skeleton } from 'antd'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { course } from '../../api/index'
 import {
   Empty,
-  VodCourseItem,
-  FilterScenes,
   FilterCategories,
-} from "../../components";
+  FilterScenes,
+  VodCourseItem,
+} from '../../components'
+import styles from './index.module.scss'
 
-const VodPage = () => {
-  document.title = "录播课";
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [list, setList] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(16);
-  const [total, setTotal] = useState(0);
-  const result = new URLSearchParams(useLocation().search);
-  const [scene, setScene] = useState(result.get("scene") || "");
-  const [cid, setCid] = useState(Number(result.get("cid")) || 0);
-  const [child, setChild] = useState(Number(result.get("child")) || 0);
+function VodPage() {
+  document.title = '录播课'
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [list, setList] = useState<any>([])
+  const [categories, setCategories] = useState<any>([])
+  const [refresh, setRefresh] = useState(false)
+  const [page, setPage] = useState(1)
+  const [size, setSize] = useState(16)
+  const [total, setTotal] = useState(0)
+  const result = new URLSearchParams(useLocation().search)
+  const [scene, setScene] = useState(result.get('scene') || '')
+  const [cid, setCid] = useState(Number(result.get('cid')) || 0)
+  const [child, setChild] = useState(Number(result.get('child')) || 0)
 
   useEffect(() => {
-    getCategories();
-  }, []);
+    getCategories()
+  }, [])
 
   useEffect(() => {
-    getList();
-  }, [refresh, page, size]);
+    getList()
+  }, [refresh, page, size])
 
   const resetList = () => {
-    setPage(1);
-    setList([]);
-    setRefresh(!refresh);
-  };
+    setPage(1)
+    setList([])
+    setRefresh(!refresh)
+  }
 
   const scenes = [
     {
-      id: "",
-      name: "全部",
+      id: '',
+      name: '全部',
     },
     {
-      id: "free",
-      name: "免费",
+      id: 'free',
+      name: '免费',
     },
     {
-      id: "sub",
-      name: "热门",
+      id: 'sub',
+      name: '热门',
     },
-  ];
+  ]
 
   const getCategories = () => {
     course.categories().then((res: any) => {
-      setCategories(res.data);
-    });
-  };
+      setCategories(res.data)
+    })
+  }
 
   const getList = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    let category_id = 0;
-    if (child === 0 || cid == 0) {
-      category_id = cid;
-    } else {
-      category_id = child;
-    }
+    if (loading)
+      return
+
+    setLoading(true)
+    let category_id = 0
+    if (child === 0 || cid == 0)
+      category_id = cid
+    else
+      category_id = child
+
     course
       .list({
-        page: page,
-        page_size: size,
-        scene: scene,
-        category_id: category_id,
+        pageNum: page,
+        pageSize: size,
+        scene,
+        categoryId: category_id,
       })
       .then((res: any) => {
-        setList(res.data.data);
-        setTotal(res.data.total);
-        setLoading(false);
-      });
-  };
+        setList(res.data.data)
+        setTotal(res.data.total)
+        setLoading(false)
+      })
+  }
   return (
     <>
       <FilterCategories
@@ -92,34 +92,37 @@ const VodPage = () => {
         defaultKey={cid}
         defaultChild={child}
         onSelected={(id: number, child: number) => {
-          setCid(id);
-          setChild(child);
+          setCid(id)
+          setChild(child)
           if (id === 0) {
-            navigate("/courses?scene=" + scene);
-          } else if (child === 0) {
-            navigate("/courses?cid=" + id + "&scene=" + scene);
-          } else {
-            navigate(
-              "/courses?cid=" + id + "&child=" + child + "&scene=" + scene
-            );
+            navigate(`/courses?scene=${scene}`)
           }
-          resetList();
+          else if (child === 0) {
+            navigate(`/courses?cid=${id}&scene=${scene}`)
+          }
+          else {
+            navigate(
+              `/courses?cid=${id}&child=${child}&scene=${scene}`,
+            )
+          }
+          resetList()
         }}
       />
       <div className="container">
         <FilterScenes
           scenes={scenes}
-          defaultKey={""}
+          defaultKey=""
           onSelected={(id: string) => {
-            setScene(id);
+            setScene(id)
             if (cid === 0) {
-              navigate("/courses?scene=" + id);
-            } else {
-              navigate(
-                "/courses?cid=" + cid + "&child=" + child + "&scene=" + id
-              );
+              navigate(`/courses?scene=${id}`)
             }
-            resetList();
+            else {
+              navigate(
+                `/courses?cid=${cid}&child=${child}&scene=${id}`,
+              )
+            }
+            resetList()
           }}
         />
         {loading && (
@@ -127,9 +130,9 @@ const VodPage = () => {
             <div
               style={{
                 width: 1200,
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
               }}
             >
               {Array.from({ length: 12 }).map((_, i) => (
@@ -137,8 +140,8 @@ const VodPage = () => {
                   key={i}
                   style={{
                     width: 264,
-                    display: "flex",
-                    flexDirection: "column",
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
                   <Skeleton.Button
@@ -146,9 +149,10 @@ const VodPage = () => {
                     style={{
                       width: 264,
                       height: 198,
-                      borderRadius: "8px 8px 0 0",
+                      borderRadius: '8px 8px 0 0',
                     }}
-                  ></Skeleton.Button>
+                  >
+                  </Skeleton.Button>
                   <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
                 </div>
               ))}
@@ -161,31 +165,32 @@ const VodPage = () => {
           </Col>
         )}
         {!loading && list.length > 0 && (
-          <div className={styles["list-box"]}>
+          <div className={styles['list-box']}>
             {list.map((item: any) => (
               <VodCourseItem
                 key={item.id}
                 cid={item.id}
                 videosCount={item.videos_count}
-                thumb={item.thumb}
+                thumb={item.coverLink}
                 category={item.category}
                 title={item.title}
-                charge={item.charge}
-                isFree={item.is_free}
-                userCount={item.user_count}
-              ></VodCourseItem>
+                charge={item.price}
+                isFree={item.isFree}
+                userCount={item.userCount}
+              >
+              </VodCourseItem>
             ))}
           </div>
         )}
         {!loading && list.length > 0 && size < total && (
           <Col
             span={24}
-            style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
+            style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
           >
             <Pagination
               onChange={(currentPage) => {
-                setPage(currentPage);
-                window.scrollTo(0, 0);
+                setPage(currentPage)
+                window.scrollTo(0, 0)
               }}
               pageSize={size}
               defaultCurrent={page}
@@ -195,7 +200,7 @@ const VodPage = () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default VodPage;
+export default VodPage
