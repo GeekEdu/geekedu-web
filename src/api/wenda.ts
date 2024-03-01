@@ -21,7 +21,7 @@ export function config() {
 }
 
 export function store(params: any) {
-  return client.post('/addons/Wenda/api/v1/question/create', params)
+  return client.post('/ask/api/question/v2/add', params)
 }
 
 export function edit(id: number) {

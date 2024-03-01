@@ -127,11 +127,11 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
     wenda
       .store({
         title,
-        category_id: categoryId,
-        original_content: content,
-        render_content: content,
+        categoryId,
+        // original_content: content,
+        content,
         images: thumbs,
-        credit1,
+        rewardScore: credit1,
       })
       .then((res: any) => {
         message.success('发布成功')
@@ -249,7 +249,7 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
                       </Input>
                       <div className={styles.help}>
                         积分余额：
-                        {user.credit1}
+                        {user.points}
                         积分
                       </div>
                     </>
