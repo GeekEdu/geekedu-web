@@ -136,7 +136,7 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       .then((res: any) => {
         message.success('发布成功')
         setLoading(false)
-        onSuccess(res.data.id, credit1 || 0)
+        onSuccess(res.data, credit1 || 0)
       })
       .catch((e) => {
         setLoading(false)
