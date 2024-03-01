@@ -20,6 +20,7 @@ export function config() {
   return client.get('/system/api/v2/ask/config', {})
 }
 
+// 新建问题
 export function store(params: any) {
   return client.post('/ask/api/question/v2/add', params)
 }
@@ -39,24 +40,27 @@ export function choiceAnswer(id: number, params: any) {
   )
 }
 
+// 回答某个问题
 export function submitAnswer(id: number, params: any) {
-  return client.post(`/addons/Wenda/api/v1/question/${id}/answer`, params)
+  return client.post(`/ask/api/question/v2/${id}/answer`, params)
 }
 
 export function vote(params: any) {
   return client.post('/addons/Wenda/api/v1/vote', params)
 }
 
+// 某个回答的评论列表
 export function answerComments(id: number, params: any) {
   return client.get(
-    `/addons/Wenda/api/v1/question/answer/${id}/comments`,
+    `/ask/api/answer/v2/${id}/comments`,
     params,
   )
 }
 
+// 评论某个回答
 export function submitComment(id: number, params: any) {
   return client.post(
-    `/addons/Wenda/api/v1/question/answer/${id}/comment`,
+    `/ask/api/answer/v2/${id}/comment`,
     params,
   )
 }

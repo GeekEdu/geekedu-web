@@ -74,8 +74,8 @@ function WendaDetailPage() {
     setCommentLoading(true)
     wenda
       .submitAnswer(id, {
-        original_content: content,
-        render_content: content,
+        // original_content: content,
+        content,
         images,
       })
       .then((res: any) => {
@@ -148,12 +148,12 @@ function WendaDetailPage() {
     setCommentId(id)
     wenda
       .answerComments(id, {
-        page,
-        page_size: size,
+        pageNum: page,
+        pageSize: size,
       })
       .then((res: any) => {
         const arr1 = [...replyAnswers]
-        arr1[index] = res.data.data.data
+        arr1[index] = res.data.data
         setReplyAnswers(arr1)
       })
   }
@@ -172,9 +172,9 @@ function WendaDetailPage() {
     setCommentLoading(true)
     wenda
       .submitComment(id, {
-        original_content: replyContent,
-        render_content: replyContent,
-        reply_user_id: userId,
+        // original_content: replyContent,
+        content: replyContent,
+        userId,
       })
       .then((res: any) => {
         setConfigInput([])
@@ -557,7 +557,7 @@ function WendaDetailPage() {
                       {item.is_vote !== 1 && <img src={noLikeIcon} />}
                       {item.vote_count}
                     </div>
-                    {item.reply_count !== 0 && (
+                    {item.commentCount !== 0 && (
                       <div
                         className={
                             configkey[index] === true
@@ -570,7 +570,7 @@ function WendaDetailPage() {
                         回复
                       </div>
                     )}
-                    {item.reply_count === 0 && item.user && (
+                    {item.commentCount === 0 && item.user && (
                       <div
                         className={
                             configInput[index] === true
@@ -639,24 +639,24 @@ function WendaDetailPage() {
                               {replyItem.user && (
                                 <div className={styles['reply-nickname']}>
                                   <>
-                                    {replyItem.user.nick_name}
-                                    {replyItem.reply_user_id > 0 && (
+                                    {replyItem.user.name}
+                                    {replyItem?.reply_user_id > 0 && (
                                       <>
                                         回复：
-                                        {replyItem.reply_user.nick_name}
+                                        {replyItem?.reply_user.nick_name}
                                       </>
                                     )}
                                   </>
                                 </div>
                               )}
                               <div className={styles['reply-diff']}>
-                                {getCommentTime(replyItem.created_at)}
+                                {getCommentTime(replyItem.createdTime)}
                               </div>
                             </div>
                             <div
                               className={styles['reply-text']}
                               dangerouslySetInnerHTML={{
-                                __html: replyItem.render_content,
+                                __html: replyItem.content,
                               }}
                             >
                             </div>
@@ -665,7 +665,7 @@ function WendaDetailPage() {
                       ))}
                     </div>
                   )}
-                  {question.status === 0
+                  {!question.questionStatus
                   && isAdmin
                   && item.user_id !== question.user_id && (
                     <div
