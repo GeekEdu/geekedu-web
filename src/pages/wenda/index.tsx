@@ -1,148 +1,148 @@
-import React, { useState, useEffect } from "react";
-import styles from "./index.module.scss";
-import { Row, Col, Skeleton, Button, Pagination } from "antd";
-import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import { wenda } from "../../api/index";
+import React, { useEffect, useState } from 'react'
+import { Button, Col, Pagination, Row, Skeleton } from 'antd'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { wenda } from '../../api/index'
 import {
-  Empty,
-  QaItem,
-  FilterScenes,
-  FilterCategories,
   CreateQuestionDialog,
-} from "../../components";
-import { changeUserCredit } from "../../store/user/loginUserSlice";
+  Empty,
+  FilterCategories,
+  FilterScenes,
+  QaItem,
+} from '../../components'
+import { changeUserCredit } from '../../store/user/loginUserSlice'
+import styles from './index.module.scss'
 
-const WendaPage = () => {
-  document.title = "在线问答";
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [init, setInit] = useState(true);
-  const [list, setList] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(16);
-  const [total, setTotal] = useState(0);
-  const [pcDiyContent, setPcDiyContent] = useState<any>("");
-  const [visiable, setVisiable] = useState(false);
-  const [status, setStatus] = useState(false);
-  const [enableCredit1, setEnableCredit1] = useState(false);
-  const result = new URLSearchParams(useLocation().search);
-  const [scene, setScene] = useState(result.get("scene") || "default");
-  const [cid, setCid] = useState(Number(result.get("cid")) || 0);
-  const [child, setChild] = useState(Number(result.get("child")) || 0);
-  const user = useSelector((state: any) => state.loginUser.value.user);
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+function WendaPage() {
+  document.title = '在线问答'
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [init, setInit] = useState(true)
+  const [list, setList] = useState<any>([])
+  const [categories, setCategories] = useState<any>([])
+  const [refresh, setRefresh] = useState(false)
+  const [page, setPage] = useState(1)
+  const [size, setSize] = useState(16)
+  const [total, setTotal] = useState(0)
+  const [pcDiyContent, setPcDiyContent] = useState<any>('')
+  const [visiable, setVisiable] = useState(false)
+  const [status, setStatus] = useState(false)
+  const [enableCredit1, setEnableCredit1] = useState(false)
+  const result = new URLSearchParams(useLocation().search)
+  const [scene, setScene] = useState(result.get('scene') || 'default')
+  const [cid, setCid] = useState(Number(result.get('cid')) || 0)
+  const [child, setChild] = useState(Number(result.get('child')) || 0)
+  const user = useSelector((state: any) => state.loginUser.value.user)
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin)
   const scenes = [
     {
-      id: "default",
-      name: "综合",
+      id: 'default',
+      name: '综合',
     },
     {
-      id: "solved",
-      name: "已解决",
+      id: 'solved',
+      name: '已解决',
     },
     {
-      id: "unsolved",
-      name: "未解决",
+      id: 'unsolved',
+      name: '未解决',
     },
     {
-      id: "last_answer",
-      name: "最新回答",
+      id: 'last_answer',
+      name: '最新回答',
     },
-  ];
+  ]
 
   useEffect(() => {
-    getConfig();
-  }, []);
+    getConfig()
+  }, [])
 
   useEffect(() => {
-    getList();
-  }, [refresh, page, size]);
+    getList()
+  }, [refresh, page, size])
 
   const getList = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    let category_id = 0;
-    if (child === 0 || cid == 0) {
-      category_id = cid;
-    } else {
-      category_id = child;
-    }
+    if (loading)
+      return
+
+    setLoading(true)
+    let category_id = 0
+    if (child === 0 || cid == 0)
+      category_id = cid
+    else
+      category_id = child
+
     wenda
       .list({
-        page: page,
-        size: size,
-        scene: scene,
-        cid: category_id,
+        pageNum: page,
+        pageSize: size,
+        scene,
+        categoryId: category_id,
       })
       .then((res: any) => {
-        setCategories(res.data.categories);
-        setList(res.data.data.data);
-        setTotal(res.data.data.total);
-        setLoading(false);
-        setStatus(true);
-      });
-  };
+        setCategories(res.data.categories)
+        setList(res.data.data.data)
+        setTotal(res.data.data.total)
+        setLoading(false)
+        setStatus(true)
+      })
+  }
 
   const resetList = () => {
-    setPage(1);
-    setList([]);
-    setRefresh(!refresh);
-  };
+    setPage(1)
+    setList([])
+    setRefresh(!refresh)
+  }
 
   const resetNewList = (scene: any) => {
-    setList([]);
-    let category_id = 0;
-    if (child === 0 || cid == 0) {
-      category_id = cid;
-    } else {
-      category_id = child;
-    }
+    setList([])
+    let category_id = 0
+    if (child === 0 || cid == 0)
+      category_id = cid
+    else
+      category_id = child
+
     wenda
       .list({
-        page: 1,
-        size: size,
-        scene: scene,
-        cid: category_id,
+        pageNum: 1,
+        pageSize: size,
+        scene,
+        categoryId: category_id,
       })
       .then((res: any) => {
-        setCategories(res.data.categories);
-        setList(res.data.data.data);
-        setTotal(res.data.data.total);
-      });
-  };
+        setCategories(res.data.categories)
+        setList(res.data.data.data)
+        setTotal(res.data.data.total)
+      })
+  }
 
   const getConfig = () => {
     wenda.config().then((res: any) => {
-      setPcDiyContent(res.data.pc_diy_content);
-      if (res.data.enable_credit1 === 1) {
-        setEnableCredit1(true);
-      } else {
-        setEnableCredit1(false);
-      }
-      setInit(false);
-    });
-  };
+      setPcDiyContent(res.data.diyContent)
+      if (res.data.enableRewardScore)
+        setEnableCredit1(true)
+      else
+        setEnableCredit1(false)
+
+      setInit(false)
+    })
+  }
 
   const goLogin = () => {
-    let url = encodeURIComponent(
-      window.location.pathname + window.location.search
-    );
-    navigate("/login?redirect=" + url);
-  };
+    const url = encodeURIComponent(
+      window.location.pathname + window.location.search,
+    )
+    navigate(`/login?redirect=${url}`)
+  }
 
   const createSuccess = (id: number, credit1: number) => {
-    setVisiable(false);
-    let credit = Number(user.credit1) - Number(credit1);
-    changeUserCredit(credit);
+    setVisiable(false)
+    const credit = Number(user.credit1) - Number(credit1)
+    changeUserCredit(credit)
     setTimeout(() => {
-      navigate("/wenda/detail/" + id);
-    }, 600);
-  };
+      navigate(`/wenda/detail/${id}`)
+    }, 600)
+  }
 
   return (
     <>
@@ -152,31 +152,33 @@ const WendaPage = () => {
         defaultKey={cid}
         defaultChild={child}
         onSelected={(id: number, child: number) => {
-          setCid(id);
-          setChild(child);
+          setCid(id)
+          setChild(child)
           if (id === 0) {
-            navigate("/wenda?scene=" + scene);
-          } else if (child === 0) {
-            navigate("/wenda?cid=" + cid + "&scene=" + scene);
-          } else {
-            navigate(
-              "/wenda?cid=" + cid + "&child=" + child + "&scene=" + scene
-            );
+            navigate(`/wenda?scene=${scene}`)
           }
-          resetList();
+          else if (child === 0) {
+            navigate(`/wenda?cid=${cid}&scene=${scene}`)
+          }
+          else {
+            navigate(
+              `/wenda?cid=${cid}&child=${child}&scene=${scene}`,
+            )
+          }
+          resetList()
         }}
       />
       <FilterScenes
         scenes={scenes}
-        defaultKey={"default"}
+        defaultKey="default"
         onSelected={(id: string) => {
-          setScene(id);
-          if (cid === 0) {
-            navigate("/wenda?scene=" + id);
-          } else {
-            navigate("/wenda?cid=" + cid + "&child=" + child + "&scene=" + id);
-          }
-          resetNewList(id);
+          setScene(id)
+          if (cid === 0)
+            navigate(`/wenda?scene=${id}`)
+          else
+            navigate(`/wenda?cid=${cid}&child=${child}&scene=${id}`)
+
+          resetNewList(id)
         }}
       />
       <CreateQuestionDialog
@@ -184,16 +186,17 @@ const WendaPage = () => {
         enable={enableCredit1}
         onCancel={() => setVisiable(false)}
         onSuccess={(id: number, credit1: number) => createSuccess(id, credit1)}
-      ></CreateQuestionDialog>
-      <div className={styles["contanier"]}>
-        <div className={styles["qa-box"]}>
+      >
+      </CreateQuestionDialog>
+      <div className={styles.contanier}>
+        <div className={styles['qa-box']}>
           {loading && (
             <Row>
               <div
                 style={{
                   width: 769,
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
                 {Array.from({ length: 10 }).map((_, i) => (
@@ -202,10 +205,10 @@ const WendaPage = () => {
                     style={{
                       width: 769,
                       height: 134,
-                      display: "flex",
-                      flexDirection: "row",
-                      padding: "4px 20px 20px 20px",
-                      boxSizing: "border-box",
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: '4px 20px 20px 20px',
+                      boxSizing: 'border-box',
                       marginBottom: 10,
                     }}
                   >
@@ -221,19 +224,20 @@ const WendaPage = () => {
             </Col>
           )}
           {!loading && list.length > 0 && (
-            <div className={styles["list-box"]}>
+            <div className={styles['list-box']}>
               {list.map((item: any) => (
                 <QaItem
                   key={item.id}
                   cid={item.id}
-                  credit1={item.credit1}
-                  statusText={item.status_text}
-                  status={item.status}
+                  credit1={item.rewardScore}
+                  statusText={item.statusText}
+                  status={item.questionStatus}
                   title={item.title}
-                  viewTimes={item.view_times}
-                  answerCount={item.answer_count}
-                  voteCount={item.vote_count}
-                ></QaItem>
+                  viewTimes={item.viewCount}
+                  answerCount={item.answerCount}
+                  voteCount={item.thumbCount}
+                >
+                </QaItem>
               ))}
             </div>
           )}
@@ -241,15 +245,15 @@ const WendaPage = () => {
             <Col
               span={24}
               style={{
-                display: "flex",
-                justifyContent: "center",
+                display: 'flex',
+                justifyContent: 'center',
                 marginTop: 50,
               }}
             >
               <Pagination
                 onChange={(currentPage) => {
-                  setPage(currentPage);
-                  window.scrollTo(0, 0);
+                  setPage(currentPage)
+                  window.scrollTo(0, 0)
                 }}
                 pageSize={size}
                 defaultCurrent={page}
@@ -258,18 +262,18 @@ const WendaPage = () => {
             </Col>
           )}
         </div>
-        <div className={styles["right-contanier"]}>
-          <div className={styles["cont"]}>
+        <div className={styles['right-contanier']}>
+          <div className={styles.cont}>
             {!init && status && (
               <Button
                 type="primary"
-                className={styles["create-button"]}
+                className={styles['create-button']}
                 onClick={() => {
                   if (!isLogin) {
-                    goLogin();
-                    return;
+                    goLogin()
+                    return
                   }
-                  setVisiable(true);
+                  setVisiable(true)
                 }}
               >
                 我要提问
@@ -280,15 +284,17 @@ const WendaPage = () => {
                 style={{ marginTop: 30 }}
                 active
                 paragraph={{ rows: 2 }}
-              ></Skeleton>
+              >
+              </Skeleton>
             )}
             {!init && (
               <>
-                {pcDiyContent && pcDiyContent !== "" && (
+                {pcDiyContent && pcDiyContent !== '' && (
                   <div
-                    className={styles["wenda-tips"]}
+                    className={styles['wenda-tips']}
                     dangerouslySetInnerHTML={{ __html: pcDiyContent }}
-                  ></div>
+                  >
+                  </div>
                 )}
               </>
             )}
@@ -296,7 +302,7 @@ const WendaPage = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default WendaPage;
+export default WendaPage
