@@ -1,325 +1,327 @@
-import { useState, useEffect } from "react";
-import styles from "./detail.module.scss";
-import { Skeleton, message } from "antd";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { book as bookApi, miaosha, tuangou } from "../../api/index";
+import { useEffect, useState } from 'react'
+import { Skeleton, message } from 'antd'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { book as bookApi, miaosha, tuangou } from '../../api/index'
 import {
+  BookCourseComments,
   HistoryRecord,
   MiaoshaDialog,
-  ThumbBar,
   MiaoshaList,
+  ThumbBar,
   TuangouList,
-  BookCourseComments,
-} from "../../components";
-import { latexRender, codeRender } from "../../utils/index";
-import collectIcon from "../../assets/img/commen/icon-collect-h.png";
-import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
-import appConfig from "../../js/config";
+} from '../../components'
+import { codeRender, latexRender } from '../../utils/index'
+import collectIcon from '../../assets/img/commen/icon-collect-h.png'
+import noCollectIcon from '../../assets/img/commen/icon-collect-n.png'
+import appConfig from '../../js/config'
+import styles from './detail.module.scss'
 
-const BookDetailPage = () => {
-  const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [bid, setBid] = useState(Number(params.courseId));
-  const [book, setBook] = useState<any>({});
-  const [isLike, setIsLike] = useState<boolean>(false);
-  const [isBuy, setIsBuy] = useState<boolean>(false);
-  const [chapters, setChapters] = useState<any>([]);
-  const [articles, setArticles] = useState<any>({});
-  const [msData, setMsData] = useState<any>({});
-  const [msVisible, setMsVisible] = useState<boolean>(false);
-  const [tgData, setTgData] = useState<any>({});
-  const [hideButton, setHideButton] = useState<boolean>(false);
-  const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>({});
-  const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
-  const [isfixTab, setIsfixTab] = useState<boolean>(false);
+function BookDetailPage() {
+  const navigate = useNavigate()
+  const result = new URLSearchParams(useLocation().search)
+  const params = useParams()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [commentLoading, setCommentLoading] = useState<boolean>(false)
+  const [bid, setBid] = useState(Number(params.courseId))
+  const [book, setBook] = useState<any>({})
+  const [isLike, setIsLike] = useState<boolean>(false)
+  const [isBuy, setIsBuy] = useState<boolean>(false)
+  const [chapters, setChapters] = useState<any>([])
+  const [articles, setArticles] = useState<any>({})
+  const [articleList, setArticleList] = useState<any>([])
+  const [msData, setMsData] = useState<any>({})
+  const [msVisible, setMsVisible] = useState<boolean>(false)
+  const [tgData, setTgData] = useState<any>({})
+  const [hideButton, setHideButton] = useState<boolean>(false)
+  const [comments, setComments] = useState<any>([])
+  const [commentUsers, setCommentUsers] = useState<any>({})
+  const [currentTab, setCurrentTab] = useState(Number(result.get('tab')) || 2)
+  const [isfixTab, setIsfixTab] = useState<boolean>(false)
   const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
-  );
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+    (state: any) => state.systemConfig.value.configFunc,
+  )
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin)
   const tabs = [
     {
-      name: "详情",
+      name: '详情',
       id: 2,
     },
     {
-      name: "目录",
+      name: '目录',
       id: 3,
     },
     {
-      name: "评论",
+      name: '评论',
       id: 4,
     },
-  ];
+  ]
 
   useEffect(() => {
-    getDetail();
-    getComments();
-    getLikeStatus();
-    window.addEventListener("scroll", handleTabFix, true);
+    getDetail()
+    getComments()
+    getLikeStatus()
+    window.addEventListener('scroll', handleTabFix, true)
     return () => {
-      window.removeEventListener("scroll", handleTabFix, true);
-    };
-  }, [bid]);
+      window.removeEventListener('scroll', handleTabFix, true)
+    }
+  }, [bid])
 
   useEffect(() => {
-    latexRender(document.getElementById("desc"));
-    codeRender(document.getElementById("desc"));
-  }, [document.getElementById("desc")]);
+    latexRender(document.getElementById('desc'))
+    codeRender(document.getElementById('desc'))
+  }, [document.getElementById('desc')])
 
   const getDetail = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
+    if (loading)
+      return
+
+    setLoading(true)
     bookApi.detail(bid).then((res: any) => {
-      document.title = res.data.book.name;
-      setBook(res.data.book);
-      let chaps = res.data.chapters;
-      let arts = res.data.articles;
+      document.title = res.data.book.name
+      setBook(res.data.book)
+      const chaps = res.data.chapters
+      const arts = res.data.articleMap
+      const aList = res.data.articles
       if (chaps.length > 0 && arts[0] && arts[0].length > 0) {
         chaps.push({
           id: 0,
-          name: "无章节内容",
+          name: '无章节内容',
           sort: 10000,
-        });
+        })
       }
-      setChapters(chaps);
-      setArticles(arts);
-      setIsBuy(res.data.is_buy);
-      //获取秒杀信息
-      if (!res.data.is_buy && configFunc["miaosha"]) {
-        getMsDetail();
-      }
+      setChapters(chaps)
+      setArticles(arts)
+      setArticleList(aList)
+      setIsBuy(res.data.isBuy)
+      // 获取秒杀信息
+      if (!res.data.is_buy && configFunc.miaosha)
+        getMsDetail()
 
-      //获取团购信息
-      else if (!res.data.is_buy && configFunc["tuangou"]) {
-        getTgDetail();
-      }
+      // 获取团购信息
+      else if (!res.data.is_buy && configFunc.tuangou)
+        getTgDetail()
 
-      setLoading(false);
-    });
-  };
+      setLoading(false)
+    })
+  }
 
   const getLikeStatus = () => {
     bookApi
       .likeStatus({
         id: bid,
-        type: "book",
+        type: 'book',
       })
       .then((res: any) => {
-        setIsLike(res.data.like);
-      });
-  };
+        // setIsLike(res.data.like)
+        setIsLike(false)
+      })
+  }
 
   const getComments = () => {
-    if (commentLoading) {
-      return;
-    }
-    setCommentLoading(true);
+    if (commentLoading)
+      return
+
+    setCommentLoading(true)
     bookApi
       .bookComments(bid, {
-        page: 1,
-        size: 10000,
+        pageNum: 1,
+        pageSize: 10000,
       })
       .then((res: any) => {
-        setComments(res.data.data.data);
-        setCommentUsers(res.data.users);
-        setCommentLoading(false);
-      });
-  };
+        setComments(res.data.data.data)
+        setCommentUsers(res.data.users)
+        setCommentLoading(false)
+      })
+  }
 
   const resetComments = () => {
-    setCommentLoading(false);
-    setComments([]);
-    setCommentUsers({});
-  };
+    setCommentLoading(false)
+    setComments([])
+    setCommentUsers({})
+  }
 
   const getMsDetail = () => {
-    if (book.charge === 0) {
-      return;
-    }
+    if (book.price === 0)
+      return
+
     miaosha
       .detail(0, {
         course_id: bid,
-        course_type: "book",
+        course_type: 'book',
       })
       .then((res: any) => {
-        setMsData(res.data);
-        if (!res.data.data && !isBuy && configFunc["tuangou"]) {
-          getTgDetail();
-        }
-      });
-  };
+        setMsData(res.data)
+        if (!res.data.data && !isBuy && configFunc.tuangou)
+          getTgDetail()
+      })
+  }
   const getTgDetail = () => {
-    if (book.charge === 0) {
-      return;
-    }
+    if (book.price === 0)
+      return
+
     tuangou
       .detail(0, {
         course_id: bid,
-        course_type: "book",
+        course_type: 'book',
       })
       .then((res: any) => {
-        setTgData(res.data);
-        setHideButton(res.data.join_item && res.data.join_item.length !== 0);
-      });
-  };
+        setTgData(res.data)
+        setHideButton(res.data.join_item && res.data.join_item.length !== 0)
+      })
+  }
 
   const tabChange = (id: number) => {
-    setCurrentTab(id);
-    navigate("/book/detail/" + bid + "?tab=" + id);
-  };
+    setCurrentTab(id)
+    navigate(`/book/detail/${bid}?tab=${id}`)
+  }
 
   const goLogin = () => {
-    let url = encodeURIComponent(
-      window.location.pathname + window.location.search
-    );
-    navigate("/login?redirect=" + url);
-  };
+    const url = encodeURIComponent(
+      window.location.pathname + window.location.search,
+    )
+    navigate(`/login?redirect=${url}`)
+  }
 
   const handleTabFix = () => {
-    let scrollTop =
-      window.pageYOffset ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop;
-    let navbar = document.querySelector("#NavBar") as HTMLElement;
+    const scrollTop
+      = window.pageYOffset
+      || document.documentElement.scrollTop
+      || document.body.scrollTop
+    const navbar = document.querySelector('#NavBar') as HTMLElement
     if (navbar) {
-      let offsetTop = navbar.offsetTop;
-      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
+      const offsetTop = navbar.offsetTop
+      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false)
     }
-  };
+  }
 
   const goMsOrder = (id: number) => {
     navigate(
-      "/order?course_id=" +
-        msData.data.goods_id +
-        "&course_type=" +
-        msData.data.goods_type +
-        "&goods_type=ms&goods_charge=" +
-        msData.data.charge +
-        "&goods_label=秒杀&goods_name=" +
-        msData.data.goods_title +
-        "&goods_id=" +
-        id +
-        "&goods_thumb=" +
-        msData.data.goods_thumb
-    );
-  };
+      `/order?course_id=${
+      msData.data.goods_id
+         }&course_type=${
+         msData.data.goods_type
+         }&goods_type=ms&goods_charge=${
+         msData.data.charge
+         }&goods_label=秒杀&goods_name=${
+         msData.data.goods_title
+         }&goods_id=${
+         id
+         }&goods_thumb=${
+         msData.data.goods_thumb}`,
+    )
+  }
 
   const openMsDialog = () => {
     if (!isLogin) {
-      goLogin();
-      return;
+      goLogin()
+      return
     }
-    setMsVisible(true);
-  };
+    setMsVisible(true)
+  }
 
   const goRole = () => {
-    navigate("/vip");
-  };
+    navigate('/vip')
+  }
 
   const likeHit = () => {
     if (isLogin) {
       bookApi
         .likeHit({
           id: bid,
-          type: "book",
+          type: 'book',
         })
         .then((res) => {
-          setIsLike(!isLike);
-          if (isLike) {
-            message.success("取消收藏");
-          } else {
-            message.success("已收藏");
-          }
-        });
-    } else {
-      goLogin();
+          setIsLike(!isLike)
+          if (isLike)
+            message.success('取消收藏')
+          else
+            message.success('已收藏')
+        })
     }
-  };
+    else {
+      goLogin()
+    }
+  }
 
   const goRead = (item: any) => {
     if (!isLogin) {
-      goLogin();
-      return;
+      goLogin()
+      return
     }
-    if (book.charge > 0 && item.charge > 0 && isBuy === false) {
-      buyBook();
-      return;
+    if (book.price > 0 && item.charge > 0 && isBuy === false) {
+      buyBook()
+      return
     }
-    navigate("/book/read/" + item.id);
-  };
+    navigate(`/book/read/${item.id}`)
+  }
 
   const startLearn = () => {
     if (articles.length === 0) {
-      message.error("当前电子书下暂无文章");
-      return;
+      message.error('当前电子书下暂无文章')
+      return
     }
-    let article = null;
+    let article = null
     if (chapters.length === 0) {
       // 无章节电子书
-      article = articles[0][0];
-    } else {
+      // article = articles[0][0]
+      article = articleList
+    }
+    else {
       for (let i = 0; i < chapters.length; i++) {
-        article = articles[chapters[i].id][0];
-        if (article) {
-          break;
-        }
+        article = articles[chapters[i].id][0]
+        if (article)
+          break
       }
     }
 
     if (!article) {
-      message.error("当前电子书下暂无文章");
-      return;
+      message.error('当前电子书下暂无文章')
+      return
     }
 
-    goRead(article);
-  };
+    goRead(article)
+  }
 
   const buyBook = () => {
     if (!isLogin) {
-      goLogin();
-      return;
+      goLogin()
+      return
     }
     navigate(
-      "/order?goods_id=" +
-        bid +
-        "&goods_type=book&goods_charge=" +
-        book.charge +
-        "&goods_label=电子书&goods_name=" +
-        book.name +
-        "&goods_thumb=" +
-        book.thumb
-    );
-  };
+      `/order?goods_id=${
+      bid
+         }&goods_type=book&goods_charge=${
+         book.charge
+         }&goods_label=电子书&goods_name=${
+         book.name
+         }&goods_thumb=${
+         book.thumb}`,
+    )
+  }
 
   const goPay = (gid = 0) => {
     if (!isLogin) {
-      goLogin();
-      return;
+      goLogin()
+      return
     }
     navigate(
-      "/order?course_id=" +
-        tgData.goods.other_id +
-        "&course_type=" +
-        tgData.goods.goods_type +
-        "&goods_type=tg&goods_charge=" +
-        tgData.goods.charge +
-        "&goods_label=团购&goods_name=" +
-        tgData.goods.goods_title +
-        "&goods_id=" +
-        tgData.goods.id +
-        "&goods_thumb=" +
-        tgData.goods.goods_thumb +
-        "&tg_gid=" +
-        gid
-    );
-  };
+      `/order?course_id=${
+      tgData.goods.other_id
+         }&course_type=${
+         tgData.goods.goods_type
+         }&goods_type=tg&goods_charge=${
+         tgData.goods.charge
+         }&goods_label=团购&goods_name=${
+         tgData.goods.goods_title
+         }&goods_id=${
+         tgData.goods.id
+         }&goods_thumb=${
+         tgData.goods.goods_thumb
+         }&tg_gid=${
+         gid}`,
+    )
+  }
 
   return (
     <>
@@ -330,7 +332,7 @@ const BookDetailPage = () => {
               <div
                 key={item.id}
                 className={
-                  currentTab === item.id ? "active item-tab" : "item-tab"
+                  currentTab === item.id ? 'active item-tab' : 'item-tab'
                 }
                 onClick={() => tabChange(item.id)}
               >
@@ -351,26 +353,30 @@ const BookDetailPage = () => {
                 height: 14,
                 marginLeft: 0,
               }}
-            ></Skeleton.Button>
+            >
+            </Skeleton.Button>
           )}
           {!loading && (
             <>
               <a
                 onClick={() => {
-                  navigate("/");
+                  navigate('/')
                 }}
               >
                 首页
-              </a>{" "}
+              </a>
+              {' '}
               /
               <a
                 onClick={() => {
-                  navigate("/book");
+                  navigate('/book')
                 }}
               >
                 电子书
-              </a>{" "}
-              /<span>{book.name}</span>
+              </a>
+              {' '}
+              /
+              <span>{book.name}</span>
             </>
           )}
         </div>
@@ -382,9 +388,9 @@ const BookDetailPage = () => {
             onCancel={() => setMsVisible(false)}
           />
         )}
-        <div className={styles["book-info"]}>
-          <div className={styles["book-info-box"]}>
-            <div className={styles["book-thumb"]}>
+        <div className={styles['book-info']}>
+          <div className={styles['book-info-box']}>
+            <div className={styles['book-thumb']}>
               {loading && (
                 <Skeleton.Button
                   active
@@ -393,22 +399,23 @@ const BookDetailPage = () => {
                     height: 320,
                     borderRadius: 8,
                   }}
-                ></Skeleton.Button>
+                >
+                </Skeleton.Button>
               )}
               <ThumbBar
-                value={book.thumb}
+                value={book.coverLink}
                 width={240}
                 height={320}
                 border={null}
               />
             </div>
-            <div className={styles["info"]}>
+            <div className={styles.info}>
               {loading && (
                 <div
                   style={{
                     width: 710,
-                    display: "flex",
-                    flexDirection: "column",
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
                   <Skeleton.Button
@@ -418,7 +425,8 @@ const BookDetailPage = () => {
                       height: 30,
                       marginTop: 20,
                     }}
-                  ></Skeleton.Button>
+                  >
+                  </Skeleton.Button>
                   <Skeleton.Button
                     active
                     style={{
@@ -426,95 +434,99 @@ const BookDetailPage = () => {
                       height: 16,
                       marginTop: 21,
                     }}
-                  ></Skeleton.Button>
+                  >
+                  </Skeleton.Button>
                 </div>
               )}
-              <div className={styles["book-info-title"]}>{book.name}</div>
+              <div className={styles['book-info-title']}>{book.name}</div>
               {isLike && (
                 <img
                   onClick={() => {
-                    likeHit();
+                    likeHit()
                   }}
-                  className={styles["collect-button"]}
+                  className={styles['collect-button']}
                   src={collectIcon}
                 />
               )}
               {!isLike && (
                 <img
                   onClick={() => {
-                    likeHit();
+                    likeHit()
                   }}
-                  className={styles["collect-button"]}
+                  className={styles['collect-button']}
                   src={noCollectIcon}
                 />
               )}
-              <p className={styles["desc"]}>{book.short_desc}</p>
-              <div className={styles["btn-box"]}>
+              <p className={styles.desc}>{book.shortDesc}</p>
+              <div className={styles['btn-box']}>
                 {isBuy && (
                   <div
-                    className={styles["see-button"]}
+                    className={styles['see-button']}
                     onClick={() => startLearn()}
                   >
                     开始阅读
                   </div>
                 )}
-                {!isBuy && book.charge !== 0 && (
+                {!isBuy && book.price !== 0 && (
                   <>
                     {msData && msData.data && (
                       <>
                         {msData.order && msData.order.status === 0 && (
                           <div
-                            className={styles["buy-button"]}
+                            className={styles['buy-button']}
                             onClick={() => goMsOrder(msData.order.id)}
                           >
                             已获得秒杀资格，请尽快支付
                           </div>
                         )}
-                        {(!msData.order || msData.order.status !== 0) &&
-                          !msData.data.is_over && (
-                            <div
-                              className={styles["buy-button"]}
-                              onClick={() => openMsDialog()}
-                            >
-                              立即秒杀￥{msData.data.charge}
-                            </div>
-                          )}
+                        {(!msData.order || msData.order.status !== 0)
+                        && !msData.data.is_over && (
+                          <div
+                            className={styles['buy-button']}
+                            onClick={() => openMsDialog()}
+                          >
+                            立即秒杀￥
+                            {msData.data.charge}
+                          </div>
+                        )}
                       </>
                     )}
                     {(!msData || !msData.data) && (
                       <>
                         {hideButton && (
-                          <div className={styles["has-button"]}>正在拼团中</div>
+                          <div className={styles['has-button']}>正在拼团中</div>
                         )}
-                        {!hideButton && book.charge > 0 && (
+                        {!hideButton && book.price > 0 && (
                           <div
-                            className={styles["buy-button"]}
+                            className={styles['buy-button']}
                             onClick={() => buyBook()}
                           >
-                            订阅电子书￥{book.charge}
+                            订阅电子书￥
+                            {book.price}
                           </div>
                         )}
-                        {book.charge > 0 &&
-                          book.is_vip_free === 1 &&
-                          !appConfig.disable_vip && (
-                            <div
-                              className={styles["role-button"]}
-                              onClick={() => goRole()}
-                            >
-                              会员免费看
-                            </div>
-                          )}
-                        {tgData &&
-                          tgData.goods &&
-                          (!tgData.join_item ||
-                            tgData.join_item.length === 0) && (
-                            <div
-                              className={styles["role-button"]}
-                              onClick={() => goPay(0)}
-                            >
-                              单独开团￥{tgData.goods.charge}
-                            </div>
-                          )}
+                        {book.price > 0
+                        && book.isVipFree === 1
+                        && !appConfig.disable_vip && (
+                          <div
+                            className={styles['role-button']}
+                            onClick={() => goRole()}
+                          >
+                            会员免费看
+                          </div>
+                        )}
+                        {tgData
+                        && tgData.goods
+                        && (!tgData.join_item
+                        || tgData.join_item.length === 0) && (
+                          <div
+                            className={styles['role-button']}
+                            onClick={() => goPay(0)}
+                          >
+                            单独开团￥
+                            {tgData.goods.charge}
+                          </div>
+                        )}
                       </>
                     )}
                   </>
@@ -529,7 +541,7 @@ const BookDetailPage = () => {
               <div
                 key={item.id}
                 className={
-                  currentTab === item.id ? "active item-tab" : "item-tab"
+                  currentTab === item.id ? 'active item-tab' : 'item-tab'
                 }
                 onClick={() => tabChange(item.id)}
               >
@@ -540,62 +552,63 @@ const BookDetailPage = () => {
           </div>
         </div>
         {currentTab === 2 && (
-          <div className={styles["book-desc"]}>
+          <div className={styles['book-desc']}>
             <div
               className="u-content md-content"
               id="desc"
-              dangerouslySetInnerHTML={{ __html: book.render_desc }}
-            ></div>
+              dangerouslySetInnerHTML={{ __html: book.fullDesc }}
+            >
+            </div>
           </div>
         )}
         {currentTab === 3 && (
-          <div className={styles["book-chapter-box"]}>
-            {chapters.length > 0 &&
-              chapters.map((chapter: any) => (
-                <div key={chapter.id} className={styles["chapter-item"]}>
-                  <div className={styles["chapter-name"]}>{chapter.name}</div>
-                  {articles[chapter.id] && articles[chapter.id].length > 0 && (
-                    <div className={styles["chapter-videos-box"]}>
-                      {articles[chapter.id].map((articleItem: any) => (
-                        <div
-                          key={articleItem.id}
-                          className={styles["book-item"]}
-                          onClick={() => goRead(articleItem)}
-                        >
-                          <div className={styles["video-title"]}>
-                            <div className={styles["text"]}>
-                              {articleItem.title}
-                            </div>
-                            {!isBuy &&
-                              book.charge > 0 &&
-                              articleItem.charge === 0 && (
-                                <div className={styles["free"]}>试读</div>
-                              )}
+          <div className={styles['book-chapter-box']}>
+            {chapters.length > 0
+            && chapters.map((chapter: any) => (
+              <div key={chapter.id} className={styles['chapter-item']}>
+                <div className={styles['chapter-name']}>{chapter.name}</div>
+                {articles[chapter.id] && articles[chapter.id].length > 0 && (
+                  <div className={styles['chapter-videos-box']}>
+                    {articles[chapter.id].map((articleItem: any) => (
+                      <div
+                        key={articleItem.id}
+                        className={styles['book-item']}
+                        onClick={() => goRead(articleItem)}
+                      >
+                        <div className={styles['video-title']}>
+                          <div className={styles.text}>
+                            {articleItem.title}
                           </div>
+                          {!isBuy
+                          && book.price > 0
+                          && articleItem.charge === 0 && (
+                            <div className={styles.free}>试读</div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
             {chapters.length === 0 && articles[0] && articles[0].length > 0 && (
-              <div className={styles["chapter-item"]}>
-                <div className={styles["chapter-videos-box"]}>
+              <div className={styles['chapter-item']}>
+                <div className={styles['chapter-videos-box']}>
                   {articles[0].map((articleItem: any) => (
                     <div
                       key={articleItem.id}
-                      className={styles["book-itemsp"]}
+                      className={styles['book-itemsp']}
                       onClick={() => goRead(articleItem)}
                     >
-                      <div className={styles["video-title"]}>
-                        <div className={styles["text"]}>
+                      <div className={styles['video-title']}>
+                        <div className={styles.text}>
                           {articleItem.title}
                         </div>
-                        {!isBuy &&
-                          book.charge > 0 &&
-                          articleItem.charge === 0 && (
-                            <div className={styles["free"]}>试读</div>
-                          )}
+                        {!isBuy
+                        && book.price > 0
+                        && articleItem.charge === 0 && (
+                          <div className={styles.free}>试读</div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -611,14 +624,14 @@ const BookDetailPage = () => {
             comments={comments}
             commentUsers={commentUsers}
             success={() => {
-              resetComments();
-              getComments();
+              resetComments()
+              getComments()
             }}
           />
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default BookDetailPage;
+export default BookDetailPage
