@@ -78,9 +78,9 @@ function TopicDetailPage() {
     setCommentLoading(true)
     topicApi
       .comments(id, {
-        page,
-        page_size: size,
-        comment_id: commentId,
+        pageNum: page,
+        pageSize: size,
+        commentId,
       })
       .then((res: any) => {
         const users: any = [...commentUsers]
@@ -88,8 +88,8 @@ function TopicDetailPage() {
           users[key] = res.data.users[key]
 
         setCommentUsers(users)
-        setCommentList(res.data.data.data)
-        setTotal(res.data.data.total)
+        setCommentList(res.data.data)
+        setTotal(res.data.total)
         setCommentLoading(false)
       })
       .catch((e) => {
@@ -187,18 +187,18 @@ function TopicDetailPage() {
       .then((res: any) => {
         message.success('评论成功')
         const item = {
-          id: res.data.comment_id,
-          parent_id: 0,
+          id: res.data,
+          parentId: 0,
           content,
-          children_count: 0,
-          reply_comment_id: 0,
-          reply_comment: null,
+          childrenCount: 0,
+          replyId: 0,
+          reply: null,
           reply_user: [],
           reply_user_id: 0,
-          created_at: '刚刚',
+          createdTime: '刚刚',
           user: {
             avatar: user.avatar,
-            nick_name: user.nick_name,
+            name: user.name,
           },
         }
         const list = [...commentList]
@@ -239,13 +239,13 @@ function TopicDetailPage() {
     setCommentId(id)
     topicApi
       .allComments(topic.id, {
-        page,
-        page_size: size,
-        comment_id: id,
+        pageNum: page,
+        pageSize: size,
+        commentId: id,
       })
       .then((res: any) => {
         const arr1 = [...replyAnswers]
-        arr1[index] = res.data.data.data
+        arr1[index] = res.data.data
         setReplyAnswers(arr1)
       })
   }
@@ -253,13 +253,13 @@ function TopicDetailPage() {
   const reply = (
     parentId: number,
     id: any,
-    nick_name: string,
+    name: string,
     index: number,
   ) => {
     if (commentLoading)
       return
 
-    if (!nick_name) {
+    if (!name) {
       message.error('回复的用户不存在')
       return
     }
@@ -270,9 +270,9 @@ function TopicDetailPage() {
     setCommentLoading(true)
     topicApi
       .releaseComments(topic.id, {
-        parent_id: parentId,
+        parentId,
         content: replyContent,
-        reply_comment_id: id,
+        replyId: id,
       })
       .then((res: any) => {
         setConfigInput([])
@@ -281,17 +281,17 @@ function TopicDetailPage() {
         let item
         if (id) {
           item = {
-            id: res.data.comment_id,
-            parent_id: parentId,
+            id: res.data,
+            parentId,
             content: replyContent,
-            children_count: 0,
-            reply_comment: {
-              user: { nick_name },
+            childrenCount: 0,
+            reply: {
+              user: { name },
             },
-            created_at: '刚刚',
+            createdTime: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.nick_name,
+              name: user.name,
             },
           }
           let old
@@ -320,7 +320,7 @@ function TopicDetailPage() {
             created_at: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.nick_name,
+              name: user.name,
             },
           }
           let old
@@ -344,13 +344,13 @@ function TopicDetailPage() {
           setCommentId(parentId)
           topicApi
             .allComments(topic.id, {
-              page,
-              page_size: size,
-              comment_id: parentId,
+              pageNum: page,
+              pageSize: size,
+              commentId: parentId,
             })
             .then((res: any) => {
               const arr1 = [...replyAnswers]
-              arr1[index] = res.data.data.data
+              arr1[index] = res.data.data
               setReplyAnswers(arr1)
             })
         }
@@ -575,11 +575,11 @@ function TopicDetailPage() {
                         )}
                         {item.user.length !== 0 && (
                           <div className={styles.nickname}>
-                            {item.user.nick_name}
+                            {item.user.name}
                           </div>
                         )}
                         <div className={styles.diff}>
-                          {getCommentTime(item.created_at)}
+                          {getCommentTime(item.createdTime)}
                         </div>
                       </div>
                       <div className={styles.text}>{item.content}</div>
@@ -596,7 +596,7 @@ function TopicDetailPage() {
                             回复
                           </div>
                         )}
-                        {item.children_count !== 0 && (
+                        {item.childrenCount !== 0 && (
                           <div
                             className={
                                 configkey[index] === true
@@ -605,7 +605,7 @@ function TopicDetailPage() {
                               }
                             onClick={() => getAnswer(index, item.id)}
                           >
-                            {item.children_count}
+                            {item.childrenCount}
                             回复
                           </div>
                         )}
@@ -618,7 +618,7 @@ function TopicDetailPage() {
                             onChange={(e) => {
                               setReplyContent(e.target.value)
                             }}
-                            placeholder={`回复${item.user.nick_name}`}
+                            placeholder={`回复${item.user.name}`}
                           >
                           </Input>
                           {replyContent === '' && (
@@ -638,7 +638,7 @@ function TopicDetailPage() {
                                 reply(
                                   item.id,
                                   null,
-                                  item.user.nick_name,
+                                  item.user.name,
                                   index,
                               )}
                             >
@@ -680,22 +680,21 @@ function TopicDetailPage() {
                                       className={styles['reply-nickname']}
                                     >
                                       <>
-                                        {replyItem.user.nick_name}
-                                        {replyItem.reply_comment
+                                        {replyItem.user.name}
+                                        {replyItem.reply
                                         != null && (
                                           <>
                                             回复：
                                             {
-                                                  replyItem.reply_comment.user
-                                                    .nick_name
-                                                }
+                                              replyItem.reply.user.name
+                                            }
                                           </>
                                         )}
                                       </>
                                     </div>
                                   )}
                                   <div className={styles['reply-diff']}>
-                                    {getCommentTime(replyItem.created_at)}
+                                    {getCommentTime(replyItem.createdTime)}
                                   </div>
                                 </div>
                                 <div className={styles['reply-text']}>
@@ -724,7 +723,7 @@ function TopicDetailPage() {
                                         setReplyContent(e.target.value)
                                       }}
                                       placeholder={
-                                              `回复${replyItem.user.nick_name}`
+                                              `回复${replyItem.user.name}`
                                             }
                                     >
                                     </Input>
@@ -749,7 +748,7 @@ function TopicDetailPage() {
                                           reply(
                                             item.id,
                                             replyItem.id,
-                                            replyItem.user.nick_name,
+                                            replyItem.user.name,
                                             index,
                                         )}
                                       >
