@@ -62,7 +62,8 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
     name: 'file',
     multiple: false,
     method: 'POST',
-    action: `${config.app_url}/api/v2/upload/image`,
+    action: `${config.app_url}/res/api/file/upload`,
+    data: { from: 0 }, // 上传来源是 0-全部图片
     headers: {
       Accept: 'application/json',
       authorization: `Bearer ${getToken()}`,
@@ -83,17 +84,17 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       return (isPNG && isLt2M) || Upload.LIST_IGNORE
     },
     onChange(info: any) {
-      const { status, response } = info.file
+      const { name, status, response } = info.file
       if (status === 'done') {
-        if (response.code === 0) {
-          message.success('上传成功')
-          const url = response.data.url
+        if (response.status === 0) {
+          message.success(`${name}上传成功`)
+          const url = response.data.link
           const arr = [...thumbs]
           arr.push(url)
           setThumbs(arr)
         }
         else {
-          message.error(response.msg)
+          message.error('服务端错误！')
         }
       }
       else if (status === 'error') {
