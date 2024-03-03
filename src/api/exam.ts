@@ -1,5 +1,5 @@
-import client from "./internal/httpClient";
+import client from './internal/httpClient'
 
 export function list() {
-  return client.get("/addons/Paper/api/v2/stats/index", {});
+  return client.get('/exam/api/v2/count/list', {})
 }
