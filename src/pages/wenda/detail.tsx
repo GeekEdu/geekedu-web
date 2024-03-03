@@ -192,7 +192,7 @@ function WendaDetailPage() {
             created_at: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.nick_name,
+              nick_name: user.name,
             },
           }
         }
@@ -592,7 +592,7 @@ function WendaDetailPage() {
                         onChange={(e) => {
                           setReplyContent(e.target.value)
                         }}
-                        placeholder={`回复${item.user.nick_name}`}
+                        placeholder={`回复${item.user.name}`}
                       >
                       </Input>
                       {replyContent === '' && (
@@ -605,7 +605,7 @@ function WendaDetailPage() {
                           type="primary"
                           className={styles['confirm-button']}
                           onClick={() =>
-                            reply(item.id, 0, item.user.nick_name, index)}
+                            reply(item.id, item.user.userId, item.user.name, index)}
                         >
                           发表回复
                         </Button>
