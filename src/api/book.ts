@@ -32,6 +32,7 @@ export function bookComments(id: number, params: any) {
   )
 }
 
+// 新增电子书评论
 export function submitBookComment(id: number, params: any) {
   return client.post(
     `/book/api/eBook/v2/book/${id}/comment`,
@@ -39,27 +40,31 @@ export function submitBookComment(id: number, params: any) {
   )
 }
 
+// 文章 一级评论
 export function comments(id: number, params: any) {
   return client.get(
-    `/addons/MeeduBooks/api/v2/book/article/${id}/comments`,
+    `/book/api/eBook/v2/article/${id}/comments`,
     params,
   )
 }
 
+// 文章 新增评论
 export function submitComment(id: number, params: any) {
   return client.post(
-    `/addons/MeeduBooks/api/v1/book/article/${id}/comment`,
+    `/book/api/eBook/v2/article/${id}/comment`,
     params,
   )
 }
 
+// 文章 二级评论
 export function answerComments(id: number, params: any) {
   return client.get(
-    `/addons/MeeduBooks/api/v2/book/article/${id}/comments`,
+    `/book/api/eBook/v2/article/${id}/comments`,
     params,
   )
 }
 
+// 阅读电子书文章
 export function articleRead(id: number) {
-  return client.get(`/addons/MeeduBooks/api/v1/book/${id}/read`, {})
+  return client.get(`/book/api/eBook/v2/article/${id}/read`, {})
 }
