@@ -98,7 +98,7 @@ function ExamPage() {
               <div className={styles.info}>
                 {list.practiceCount}
                 套练习
-                {list.practiceChaptersCount}
+                {list.practiceChapterCount}
                 个章节
               </div>
               <img className={styles.icon} src={practiceIcon} />
