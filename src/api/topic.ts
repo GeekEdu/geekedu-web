@@ -25,6 +25,7 @@ export function allComments(id: number, params: any) {
   return client.get(`/book/api/imageText/v2/${id}/comments`, params)
 }
 
+// 回复评论
 export function releaseComments(id: number, params: any) {
   return client.post(`/book/api/imageText/v2/${id}/comment`, params)
 }

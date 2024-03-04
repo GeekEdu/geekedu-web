@@ -315,9 +315,9 @@ function TopicDetailPage() {
             id: res.data.comment_id,
             parent_id: parentId,
             content: replyContent,
-            children_count: 0,
+            childrenCount: 0,
             reply_comment: null,
-            created_at: '刚刚',
+            createdTime: '刚刚',
             user: {
               avatar: user.avatar,
               name: user.name,

@@ -192,17 +192,17 @@ function BookReadPage() {
       .then((res: any) => {
         message.success('评论成功')
         const item = {
-          id: res.data.comment_id,
+          id: res.data,
           is_check: 0,
-          parent_id: 0,
+          parentId: 0,
           content,
-          children_count: 0,
-          reply_id: 0,
+          childrenCount: 0,
+          replyId: 0,
           reply: null,
-          created_at: '刚刚',
+          createdTime: '刚刚',
           user: {
             avatar: user.avatar,
-            nick_name: user.nick_name,
+            name: user.name,
           },
         }
         const list = [...comments]
@@ -256,7 +256,7 @@ function BookReadPage() {
       })
       .then((res: any) => {
         const arr1 = [...replyAnswers]
-        arr1[index] = res.data.data.data
+        arr1[index] = res.data.data
         setReplyAnswers(arr1)
       })
   }
@@ -281,9 +281,9 @@ function BookReadPage() {
     setCommentLoading(true)
     bookApi
       .submitComment(list.id, {
-        parent_id: parentId,
+        parentId,
         content: replyContent,
-        reply_id: id,
+        replyId: id,
       })
       .then((res: any) => {
         const articleId = list.id
@@ -293,15 +293,17 @@ function BookReadPage() {
         let item
         if (id) {
           item = {
-            id: res.data.comment_id,
-            parent_id: parentId,
+            id: res.data,
+            parentId,
             content: replyContent,
-            children_count: 0,
-            reply_id: res.data.reply_id,
-            created_at: '刚刚',
+            childrenCount: 0,
+            reply: {
+              user: { name: nick_name },
+            },
+            createdTime: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.nick_name,
+              name: user.name,
             },
           }
           let old
@@ -361,7 +363,7 @@ function BookReadPage() {
             })
             .then((res: any) => {
               const arr1 = [...replyAnswers]
-              arr1[index] = res.data.data.data
+              arr1[index] = res.data.data
               setReplyAnswers(arr1)
             })
         }
@@ -702,18 +704,18 @@ function BookReadPage() {
                                 {replyItem.user.length !== 0 && (
                                   <div className={styles['reply-nickname']}>
                                     <>
-                                      {replyItem.user.nick_name}
+                                      {replyItem.user.name}
                                       {replyItem.reply != null && (
                                         <>
                                           回复：
-                                          {replyItem.reply.user.nick_name}
+                                          {replyItem.reply.user.name}
                                         </>
                                       )}
                                     </>
                                   </div>
                                 )}
                                 <div className={styles['reply-diff']}>
-                                  {getCommentTime(replyItem.created_at)}
+                                  {getCommentTime(replyItem.createdTime)}
                                 </div>
                               </div>
                               <div className={styles['reply-text']}>
@@ -738,7 +740,7 @@ function BookReadPage() {
                                       setReplyContent(e.target.value)
                                     }}
                                     placeholder={
-                                          `回复${replyItem.user.nick_name}`
+                                          `回复${replyItem.user.name}`
                                         }
                                   >
                                   </Input>
@@ -758,7 +760,7 @@ function BookReadPage() {
                                         reply(
                                           item.id,
                                           replyItem.id,
-                                          replyItem.user.nick_name,
+                                          replyItem.user.name,
                                           index,
                                         )}
                                       loading={commentLoading}
