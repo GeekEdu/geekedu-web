@@ -95,11 +95,11 @@ function BookDetailPage() {
       setArticleList(aList)
       setIsBuy(res.data.isBuy)
       // 获取秒杀信息
-      if (!res.data.is_buy && configFunc.miaosha)
+      if (!res.data.isBuy && configFunc.miaosha)
         getMsDetail()
 
       // 获取团购信息
-      else if (!res.data.is_buy && configFunc.tuangou)
+      else if (!res.data.isBuy && configFunc.tuangou)
         getTgDetail()
 
       setLoading(false)

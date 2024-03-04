@@ -24,7 +24,7 @@ export function likeHit(params: any) {
   return client.get(`/addons/templateOne/api/v1/like/hit`, params)
 }
 
-// 获取文章评论
+// 获取电子书评论
 export function bookComments(id: number, params: any) {
   return client.get(
     `/book/api/eBook/v2/book/${id}/comments`,
@@ -34,7 +34,7 @@ export function bookComments(id: number, params: any) {
 
 export function submitBookComment(id: number, params: any) {
   return client.post(
-    `/addons/MeeduBooks/api/v1/book/${id}/comment`,
+    `/book/api/eBook/v2/book/${id}/comment`,
     params,
   )
 }
