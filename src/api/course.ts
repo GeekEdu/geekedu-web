@@ -7,19 +7,21 @@ export function list(params: any) {
 
 // 录播课详情
 export function detail(id: number) {
-  return client.get(`/api/v2/course/${id}`, {})
+  return client.get(`/course/api/v2/detail/${id}`, {})
 }
 
+// 课程评论列表
 export function comments(id: number) {
-  return client.get(`/api/v2/course/${id}/comments`, {})
+  return client.get(`/course/api/v2/${id}/comments`, {})
 }
 
 export function collect(id: number) {
   return client.get(`/api/v2/course/${id}/like`, {})
 }
 
+// 提交课程评论
 export function submitComment(id: number, params: any) {
-  return client.post(`/api/v2/course/${id}/comment`, params)
+  return client.post(`/course/api/v2/${id}/comment`, params)
 }
 
 export function video(id: number) {
