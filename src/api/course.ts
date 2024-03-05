@@ -24,16 +24,19 @@ export function submitComment(id: number, params: any) {
   return client.post(`/course/api/v2/${id}/comment`, params)
 }
 
+// 课时明细
 export function video(id: number) {
-  return client.get(`/api/v2/video/${id}`, {})
+  return client.get(`/course/api/v2/section/detail/${id}`, {})
 }
 
+// 课时评论
 export function videoComments(id: number) {
-  return client.get(`/api/v2/video/${id}/comments`, {})
+  return client.get(`/course/api/v2/section/${id}/comments`, {})
 }
 
+// 提交课时评论
 export function submitVideoComment(id: number, params: any) {
-  return client.post(`/api/v2/video/${id}/comment`, params)
+  return client.post(`/course/api/v2/section/${id}/comment`, params)
 }
 
 // 获取播放地址
