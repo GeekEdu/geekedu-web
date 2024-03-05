@@ -175,12 +175,13 @@ function VodPlayPage() {
       }
 
       // 当前用户已购买 || 可以试看
-      if (res.data.is_watch || res.data.video.free_seconds > 0) {
+      if (res.data.isWatch || res.data.video.freeSeconds > 0) {
         getPlayInfo(
-          res.data.is_watch,
-          res.data.video.free_seconds,
-          res.data.video.ban_drag,
-          last_see_value,
+          res.data.isWatch,
+          res.data.video.freeSeconds,
+          res.data.video.banDrag,
+          // last_see_value,
+          10,
         )
       }
 
@@ -201,14 +202,17 @@ function VodPlayPage() {
     if (active === false && free_seconds > 0)
       isTrySee = 1
 
-    vod.playInfo(vid, { is_try: isTrySee }).then((res: any) => {
-      if (res.data.urls.length === 0) {
+    vod.playInfo(vid, { isTry: isTrySee }).then((res: any) => {
+      // if (res.data.urls.length === 0) {
+      if (res.data.url.length === 0) {
         message.error('无播放地址')
         return
       }
 
-      const playUrls = res.data.urls
-      const firstPlayUrl = playUrls[0].url
+      // const playUrls = res.data.urls
+      // const firstPlayUrl = playUrls[0].url
+      const playUrls = res.data.url
+      const firstPlayUrl = playUrls[0]
 
       if (firstPlayUrl.substr(1, 6) === 'iframe') {
         setIsIframe(true)
@@ -239,9 +243,9 @@ function VodPlayPage() {
       })
     })
     // 初始化播放器
-    const bulletSecretFontSize = !config.player.bullet_secret.size
+    const bulletSecretFontSize = !config.player.bulletSecret.size
       ? 14
-      : config.player.bullet_secret.size
+      : config.player.bulletSecret.size
     window.player = new window.DPlayer({
       container: document.getElementById('meedu-player-container'),
       autoplay: false,
@@ -252,16 +256,16 @@ function VodPlayPage() {
       },
       try: isTrySee === 1,
       bulletSecret: {
-        enabled: Number.parseInt(config.player.enabled_bullet_secret) === 1,
-        text: config.player.bullet_secret.text
+        enabled: Number.parseInt(config.player.enabledBulletSecret) === 1,
+        text: config.player.bulletSecret.text
           .replace('${user.mobile}', user.mobile)
           .replace('${mobile}', user.mobile)
           .replace('${user.id}', user.id),
         size: `${bulletSecretFontSize}px`,
-        color: !config.player.bullet_secret.color
+        color: !config.player.bulletSecret.color
           ? 'red'
-          : config.player.bullet_secret.color,
-        opacity: config.player.bullet_secret.opacity,
+          : config.player.bulletSecret.color,
+        opacity: config.player.bulletSecret.opacity,
       },
       ban_drag: ban_drag === 1,
       playbackSpeed: ban_drag === 1 ? [1] : [0.5, 0.75, 1, 1.25, 1.5, 2],
