@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Skeleton, message } from 'antd'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import TCPlayer from 'tcplayer.js'
 import { course as vod } from '../../api/index'
 import {
   CourseVideoComments,
@@ -13,6 +14,7 @@ import { getPlayId, getToken, savePlayId } from '../../utils/index'
 import { VideoListComp } from './components/video/video-list'
 import { VideoChapterListComp } from './components/video/video-chapter-list'
 import styles from './video.module.scss'
+import 'tcplayer.js/dist/tcplayer.min.css'
 
 declare const window: any
 let timer: any = null
@@ -163,15 +165,21 @@ function VodPlayPage() {
       // 播放记录跳转
       let last_see_value = null
       if (
-        res.data.video_watched_progress
-        && res.data.video_watched_progress[vid]
-        && res.data.video_watched_progress[vid].watch_seconds > 0
+        res.data.videoWatchedProgress
+        && res.data.videoWatchedProgress[vid]
+        && res.data.videoWatchedProgress[vid].watchSeconds > 0
       ) {
         last_see_value = {
           time: 5,
           pos: res.data.video_watched_progress[vid].watch_seconds,
         }
         setLastSeeValue(last_see_value)
+      }
+      else {
+        last_see_value = {
+          time: 5,
+          pos: 10,
+        }
       }
 
       // 当前用户已购买 || 可以试看
@@ -180,8 +188,7 @@ function VodPlayPage() {
           res.data.isWatch,
           res.data.video.freeSeconds,
           res.data.video.banDrag,
-          // last_see_value,
-          10,
+          last_see_value,
         )
       }
 
@@ -209,10 +216,8 @@ function VodPlayPage() {
         return
       }
 
-      // const playUrls = res.data.urls
-      // const firstPlayUrl = playUrls[0].url
       const playUrls = res.data.url
-      const firstPlayUrl = playUrls[0]
+      const firstPlayUrl = playUrls[0].url
 
       if (firstPlayUrl.substr(1, 6) === 'iframe') {
         setIsIframe(true)
@@ -224,7 +229,7 @@ function VodPlayPage() {
         return
       }
       setIsIframe(false)
-      initDPlayer(playUrls, isTrySee, ban_drag, last_see_value)
+      initDPlayer(playUrls, isTrySee, 0, last_see_value)
     })
   }
 
@@ -531,6 +536,7 @@ function VodPlayPage() {
                       className="meedu-player-container"
                       id="meedu-player-container"
                     >
+                      <video id="player-container-id" preload="auto" playsinline webkit-playsinline></video>
                     </div>
                   )}
                 </>
