@@ -17,8 +17,9 @@ export function list(params: any) {
   return client.get('/exam/api/v2/practice/list', params)
 }
 
+// 练习 明细
 export function detail(id: number) {
-  return client.get(`/addons/Paper/api/v1/practice/${id}`, {})
+  return client.get(`/exam/api/v2/practice/detail/${id}`, {})
 }
 
 export function createPracticeOrder(id: number, params: any) {
