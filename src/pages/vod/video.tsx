@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Skeleton, message } from 'antd'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import TCPlayer from 'tcplayer.js'
 import { course as vod } from '../../api/index'
 import {
   CourseVideoComments,
@@ -14,7 +13,6 @@ import { getPlayId, getToken, savePlayId } from '../../utils/index'
 import { VideoListComp } from './components/video/video-list'
 import { VideoChapterListComp } from './components/video/video-chapter-list'
 import styles from './video.module.scss'
-import 'tcplayer.js/dist/tcplayer.min.css'
 
 declare const window: any
 let timer: any = null
@@ -251,6 +249,18 @@ function VodPlayPage() {
     const bulletSecretFontSize = !config.player.bulletSecret.size
       ? 14
       : config.player.bulletSecret.size
+    // window.player = new window.Player({
+    //   id: 'meedu-player-container',
+    //   url: playUrls[0].url,
+    //   autoplay: false, // 自动播放
+    //   height: '507px', // 播放器高度
+    //   width: '900px', // 播放器宽度
+    //   volume: 0.6, //
+    //   videoInit: true, // 初始化播放器显示视频首帧
+    //   playbackRate: [0.5, 0.75, 1, 1.5, 2], // 播放速度
+    //   lastPlayTime: 10, // 视频起播时间（单位：秒）
+    //   lastPlayTimeHideDelay: 5, // 提示文字展示时长（单位：秒）
+    // })
     window.player = new window.DPlayer({
       container: document.getElementById('meedu-player-container'),
       autoplay: false,
@@ -277,6 +287,7 @@ function VodPlayPage() {
       last_see_pos: lastSeeParams,
     })
 
+    // window.player.once('ready', () => { console.log('ready') })
     // 监听播放进度更新evt
     window.player.on('timeupdate', () => {
       playTimeUpdate(Number.parseInt(window.player.video.currentTime), false)
@@ -536,7 +547,7 @@ function VodPlayPage() {
                       className="meedu-player-container"
                       id="meedu-player-container"
                     >
-                      <video id="player-container-id" preload="auto" playsinline webkit-playsinline></video>
+                      {/* <video id="player-container-id" preload="auto" playsinline webkit-playsinline></video> */}
                     </div>
                   )}
                 </>
