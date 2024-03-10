@@ -45,8 +45,9 @@ export function submitAnswer(id: number, params: any) {
   return client.post(`/ask/api/question/v2/${id}/answer`, params)
 }
 
+// 给 答案点赞
 export function vote(params: any) {
-  return client.post('/addons/Wenda/api/v1/vote', params)
+  return client.post('/ask/api/answer/v2/thumb', params)
 }
 
 // 某个回答的评论列表

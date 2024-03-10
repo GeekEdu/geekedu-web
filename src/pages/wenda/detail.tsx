@@ -101,23 +101,23 @@ function WendaDetailPage() {
 
     wenda
       .vote({
-        id: answerItem.id,
-        type: 1,
+        relationId: answerItem.id,
+        type: 'QA_COMMENT',
       })
       .then((res: any) => {
-        const value = res.data.ok === 1
+        const value = res.data
         setIsVote(value)
-        if (answerItem.is_vote === 1) {
+        if (answerItem.isThumb) {
           const data = [...answers]
-          data[index].vote_count--
-          data[index].is_vote = 0
+          data[index].thumbCount--
+          data[index].isThumb = false
           setAnswers(data)
           message.success('取消点赞')
         }
         else {
           const data = [...answers]
-          data[index].vote_count++
-          data[index].is_vote = 1
+          data[index].thumbCount++
+          data[index].isThumb = true
           setAnswers(data)
           message.success('已点赞')
         }
