@@ -121,12 +121,14 @@ export function userPractice(params: any) {
   return client.get('/addons/Paper/api/v2/member/joinPractices', params)
 }
 
+// 我的问题
 export function userQuestions(params: any) {
-  return client.get('/addons/Wenda/api/v1/member/questions', params)
+  return client.get('/ask/api/question/v2/users/list', params)
 }
 
+// 我的回答
 export function userAnswers(params: any) {
-  return client.get('/addons/Wenda/api/v1/member/answers', params)
+  return client.get('/ask/api/answer/v2/users/list', params)
 }
 
 export function codeExchangerRecords(params: any) {

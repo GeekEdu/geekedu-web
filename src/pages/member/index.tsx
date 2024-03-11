@@ -1,381 +1,389 @@
-import { useState, useEffect } from "react";
-import styles from "./index.module.scss";
-import { Input, Modal, message, Upload } from "antd";
-import type { UploadProps } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { sign, system, login, user as member } from "../../api/index";
-import { NavMember, SignComp } from "../../components";
-import config from "../../js/config";
+import { useEffect, useState } from 'react'
+import { Input, Modal, Upload, message } from 'antd'
+import type { UploadProps } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
+import { login, user as member, sign, system } from '../../api/index'
+import { NavMember, SignComp } from '../../components'
+import config from '../../js/config'
 import {
-  getToken,
-  saveSessionLoginCode,
   getSessionLoginCode,
   getShareHost,
-} from "../../utils/index";
-import { loginAction } from "../../store/user/loginUserSlice";
-import { saveConfigAction } from "../../store/system/systemConfigSlice";
-import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
-import { BindMobileDialog } from "./components/bind-mobile";
-import { BindNewMobileDialog } from "./components/bind-new-mobile";
-import { ChangePasswordDialog } from "./components/change-password";
-import { DestroyUserDialog } from "./components/destroy-user";
-import { BindWeixinDialog } from "./components/bind-weixin";
-import { ProfileComp } from "./components/profile";
-import qqIcon from "../../assets/img/commen/icon-qq.png";
-import wxIcon from "../../assets/img/commen/icon-wechat.png";
+  getToken,
+  saveSessionLoginCode,
+} from '../../utils/index'
+import { loginAction } from '../../store/user/loginUserSlice'
+import { saveConfigAction } from '../../store/system/systemConfigSlice'
+import qqIcon from '../../assets/img/commen/icon-qq.png'
+import wxIcon from '../../assets/img/commen/icon-wechat.png'
+import { MobileVerifyDialog } from './components/mobile-verify-dialog'
+import { BindMobileDialog } from './components/bind-mobile'
+import { BindNewMobileDialog } from './components/bind-new-mobile'
+import { ChangePasswordDialog } from './components/change-password'
+import { DestroyUserDialog } from './components/destroy-user'
+import { BindWeixinDialog } from './components/bind-weixin'
+import { ProfileComp } from './components/profile'
+import styles from './index.module.scss'
 
-const { confirm } = Modal;
+const { confirm } = Modal
 
-const MemberPage = () => {
-  document.title = "学员中心";
-  const dispatch = useDispatch();
+function MemberPage() {
+  document.title = '学员中心'
+  const dispatch = useDispatch()
 
   // --------- store变量 ---------
   // 当前登录学员
-  const user = useSelector((state: any) => state.loginUser.value.user);
+  const user = useSelector((state: any) => state.loginUser.value.user)
   // 系统配置
   const systemConfig = useSelector(
-    (state: any) => state.systemConfig.value.config
-  );
+    (state: any) => state.systemConfig.value.config,
+  )
   // 系统启用的功能
   const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
-  );
+    (state: any) => state.systemConfig.value.configFunc,
+  )
 
   // --------- URL变量 ---------
-  const [searchParams] = useSearchParams();
-  const loginCode = searchParams.get("login_code");
-  const urlLoginAction = searchParams.get("action");
-  const loginErrMsg = searchParams.get("login_err_msg");
+  const [searchParams] = useSearchParams()
+  const loginCode = searchParams.get('login_code')
+  const urlLoginAction = searchParams.get('action')
+  const loginErrMsg = searchParams.get('login_err_msg')
 
   // --------- 页面变量 ---------
-  const [loading, setLoading] = useState(false);
-  const [editNickStatus, setEditNickStatus] = useState(false);
-  const [mobileValidateVisible, setMobileValidateVisible] = useState(false);
-  const [bindMobileSign, setBindMobileSign] = useState("");
-  const [bindMobileVisible, setBindMobileVisible] = useState(false);
-  const [bindNewMobileVisible, setBindNewMobileVisible] = useState(false);
-  const [changePasswordVisible, setChangePasswordVisible] = useState(false);
-  const [destroyUserVisible, setDestroyUserVisible] = useState(false);
-  const [bindWeixinVisible, setBindWeixinVisible] = useState(false);
-  const [signStatus, setSignStatus] = useState(false);
-  const [app, setApp] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [editNickStatus, setEditNickStatus] = useState(false)
+  const [mobileValidateVisible, setMobileValidateVisible] = useState(false)
+  const [bindMobileSign, setBindMobileSign] = useState('')
+  const [bindMobileVisible, setBindMobileVisible] = useState(false)
+  const [bindNewMobileVisible, setBindNewMobileVisible] = useState(false)
+  const [changePasswordVisible, setChangePasswordVisible] = useState(false)
+  const [destroyUserVisible, setDestroyUserVisible] = useState(false)
+  const [bindWeixinVisible, setBindWeixinVisible] = useState(false)
+  const [signStatus, setSignStatus] = useState(false)
+  const [app, setApp] = useState('')
 
-  const [currentTab, setCurrentTab] = useState(1);
-  const [nickName, setNickName] = useState<string>(user && user.nick_name);
+  const [currentTab, setCurrentTab] = useState(1)
+  const [nickName, setNickName] = useState<string>(user && user.nick_name)
   const tabs = [
     {
-      name: "基本信息",
+      name: '基本信息',
       id: 1,
     },
     {
-      name: "实名认证",
+      name: '实名认证',
       id: 2,
     },
-  ];
+  ]
 
   useEffect(() => {
-    getSignStatus();
-    resetData();
-  }, []);
+    getSignStatus()
+    resetData()
+  }, [])
 
   useEffect(() => {
-    if (loginCode && urlLoginAction === "bind") {
-      codeBind(loginCode);
-    }
-  }, [loginCode, urlLoginAction]);
+    if (loginCode && urlLoginAction === 'bind')
+      codeBind(loginCode)
+  }, [loginCode, urlLoginAction])
 
   useEffect(() => {
-    loginErrMsg && message.error(loginErrMsg);
-  }, [loginErrMsg]);
+    loginErrMsg && message.error(loginErrMsg)
+  }, [loginErrMsg])
 
   const getSignStatus = () => {
-    if (!configFunc.daySignIn) {
-      return;
-    }
+    if (!configFunc.daySignIn)
+      return
+
     sign.user().then((res: any) => {
-      setSignStatus(res.data.is_submit === 0);
-    });
-  };
+      setSignStatus(res.data === false)
+    })
+  }
 
   const codeBind = (code: string) => {
-    if (getSessionLoginCode(code)) {
-      return;
-    }
-    saveSessionLoginCode(code);
-    login.codeBind({ code: code }).then((res: any) => {
-      message.success("绑定成功");
-      resetData();
-      getConfig();
-    });
-  };
+    if (getSessionLoginCode(code))
+      return
+
+    saveSessionLoginCode(code)
+    login.codeBind({ code }).then((res: any) => {
+      message.success('绑定成功')
+      resetData()
+      getConfig()
+    })
+  }
 
   const destroyUser = () => {
-    setDestroyUserVisible(true);
-  };
+    setDestroyUserVisible(true)
+  }
 
   const tabChange = (id: number) => {
-    setCurrentTab(id);
-  };
+    setCurrentTab(id)
+  }
 
   const resetData = () => {
-    setEditNickStatus(false);
+    setEditNickStatus(false)
     member.detail().then((res: any) => {
-      let loginData = res.data;
-      setNickName(loginData.nick_name);
-      dispatch(loginAction(loginData));
-    });
-  };
+      const loginData = res.data
+      setNickName(loginData.nick_name)
+      dispatch(loginAction(loginData))
+    })
+  }
 
   const getConfig = () => {
     system.config().then((res: any) => {
-      let config = res.data;
-      dispatch(saveConfigAction(config));
-    });
-  };
+      const config = res.data
+      dispatch(saveConfigAction(config))
+    })
+  }
 
   const saveEditNick = () => {
     if (!nickName) {
-      message.error("请输入昵称");
-      return;
+      message.error('请输入昵称')
+      return
     }
-    if (loading) {
-      return;
-    }
-    setLoading(true);
+    if (loading)
+      return
+
+    setLoading(true)
     member
       .nicknameChange({ nick_name: nickName })
       .then(() => {
-        setLoading(false);
-        message.success("修改成功");
-        resetData();
+        setLoading(false)
+        message.success('修改成功')
+        resetData()
       })
       .catch((e) => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   const avatarUploadProps: UploadProps = {
-    name: "file",
+    name: 'file',
     multiple: false,
-    method: "POST",
-    action: config.app_url + "/api/v2/member/detail/avatar",
+    method: 'POST',
+    action: `${config.app_url}/api/v2/member/detail/avatar`,
     headers: {
-      Accept: "application/json",
-      authorization: "Bearer " + getToken(),
+      Accept: 'application/json',
+      authorization: `Bearer ${getToken()}`,
     },
     beforeUpload: (file) => {
-      const isPNG =
-        file.type === "image/png" ||
-        file.type === "image/jpg" ||
-        file.type === "image/jpeg";
+      const isPNG
+        = file.type === 'image/png'
+        || file.type === 'image/jpg'
+        || file.type === 'image/jpeg'
       if (!isPNG) {
-        message.error(`${file.name}不是图片文件`);
-        return Upload.LIST_IGNORE;
+        message.error(`${file.name}不是图片文件`)
+        return Upload.LIST_IGNORE
       }
 
       if (file.size > 2 * 1024 * 1024) {
-        message.error("图片大小不超过2M");
-        return Upload.LIST_IGNORE;
+        message.error('图片大小不超过2M')
+        return Upload.LIST_IGNORE
       }
 
-      return true;
+      return true
     },
     onChange(info: any) {
-      const { status, response } = info.file;
-      if (status === "done") {
+      const { status, response } = info.file
+      if (status === 'done') {
         if (response.code === 0) {
-          message.success("上传头像成功");
-          resetData();
-          return;
-        } else {
-          message.error(response.msg);
+          message.success('上传头像成功')
+          resetData()
         }
-      } else if (status === "error") {
-        message.error(`${info.file.name} 上传失败`);
+        else {
+          message.error(response.msg)
+        }
+      }
+      else if (status === 'error') {
+        message.error(`${info.file.name} 上传失败`)
       }
     },
-  };
+  }
 
   const goChangeMobile = () => {
-    setMobileValidateVisible(true);
-  };
+    setMobileValidateVisible(true)
+  }
 
   const successMobileValidate = (sign: string) => {
-    setBindMobileSign(sign);
-    setMobileValidateVisible(false);
-    setBindMobileVisible(true);
-  };
+    setBindMobileSign(sign)
+    setMobileValidateVisible(false)
+    setBindMobileVisible(true)
+  }
 
   const goBindMobile = () => {
-    setBindNewMobileVisible(true);
-  };
+    setBindNewMobileVisible(true)
+  }
 
   const goChangePassword = () => {
     if (user.is_bind_mobile !== 1) {
-      message.error("请绑定手机号");
-      return;
+      message.error('请绑定手机号')
+      return
     }
-    setChangePasswordVisible(true);
-  };
+    setChangePasswordVisible(true)
+  }
 
   const goBindQQ = () => {
-    let host = getShareHost() + "member";
-    let token = getToken();
-    let redirect = encodeURIComponent(host);
-    window.location.href =
-      systemConfig.url +
-      "/api/v3/auth/login/socialite/qq?s_url=" +
-      redirect +
-      "&f_url=" +
-      redirect +
-      "&action=bind";
-  };
+    const host = `${getShareHost()}member`
+    const token = getToken()
+    const redirect = encodeURIComponent(host)
+    window.location.href
+      = `${systemConfig.url
+       }/api/v3/auth/login/socialite/qq?s_url=${
+       redirect
+       }&f_url=${
+       redirect
+       }&action=bind`
+  }
 
   const cancelBindQQ = () => {
-    setApp("qq");
+    setApp('qq')
     confirm({
-      title: "解绑账号",
+      title: '解绑账号',
       content:
-        "解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？",
+        '解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？',
       centered: true,
-      okText: "确认",
-      cancelText: "取消",
+      okText: '确认',
+      cancelText: '取消',
       onOk() {
-        member.cancelBind("qq").then((res: any) => {
-          message.success("解绑成功");
-          resetData();
-          getConfig();
-        });
+        member.cancelBind('qq').then((res: any) => {
+          message.success('解绑成功')
+          resetData()
+          getConfig()
+        })
       },
       onCancel() {
-        console.log("Cancel");
+        console.log('Cancel')
       },
-    });
-  };
+    })
+  }
 
   const goBindWeixin = () => {
-    setBindWeixinVisible(true);
-  };
+    setBindWeixinVisible(true)
+  }
 
   const cancelBindWeixin = () => {
-    setApp("wechat");
+    setApp('wechat')
     confirm({
-      title: "解绑账号",
+      title: '解绑账号',
       content:
-        "解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？",
+        '解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？',
       centered: true,
-      okText: "确认",
-      cancelText: "取消",
+      okText: '确认',
+      cancelText: '取消',
       onOk() {
-        member.cancelBind("wechat").then((res: any) => {
-          message.success("解绑成功");
-          resetData();
-          getConfig();
-        });
+        member.cancelBind('wechat').then((res: any) => {
+          message.success('解绑成功')
+          resetData()
+          getConfig()
+        })
       },
       onCancel() {
-        console.log("Cancel");
+        console.log('Cancel')
       },
-    });
-  };
+    })
+  }
 
   return (
     <div className="container">
       <SignComp
         open={signStatus}
         success={() => setSignStatus(false)}
-      ></SignComp>
+      >
+      </SignComp>
       <DestroyUserDialog
         open={destroyUserVisible}
         onCancel={() => setDestroyUserVisible(false)}
-      ></DestroyUserDialog>
+      >
+      </DestroyUserDialog>
       <ChangePasswordDialog
         scene="password_reset"
         open={changePasswordVisible}
         mobile={user.mobile}
         onCancel={() => setChangePasswordVisible(false)}
         success={() => {
-          setChangePasswordVisible(false);
-          resetData();
+          setChangePasswordVisible(false)
+          resetData()
         }}
-      ></ChangePasswordDialog>
+      >
+      </ChangePasswordDialog>
       <MobileVerifyDialog
         scene="mobile_bind"
         open={mobileValidateVisible}
         mobile={user.mobile}
         onCancel={() => setMobileValidateVisible(false)}
         success={(sign: string) => successMobileValidate(sign)}
-      ></MobileVerifyDialog>
+      >
+      </MobileVerifyDialog>
       <BindMobileDialog
         scene="mobile_bind"
         open={bindMobileVisible}
         sign={bindMobileSign}
         onCancel={() => setBindMobileVisible(false)}
         success={() => {
-          setBindMobileVisible(false);
-          resetData();
+          setBindMobileVisible(false)
+          resetData()
         }}
-      ></BindMobileDialog>
+      >
+      </BindMobileDialog>
       <BindNewMobileDialog
         scene="mobile_bind"
         open={bindNewMobileVisible}
         active={false}
         onCancel={() => setBindNewMobileVisible(false)}
         success={() => {
-          setBindNewMobileVisible(false);
-          resetData();
+          setBindNewMobileVisible(false)
+          resetData()
         }}
-      ></BindNewMobileDialog>
+      >
+      </BindNewMobileDialog>
       <BindWeixinDialog
         open={bindWeixinVisible}
         onCancel={() => setBindWeixinVisible(false)}
         success={() => {
-          setBindWeixinVisible(false);
-          resetData();
-          getConfig();
+          setBindWeixinVisible(false)
+          resetData()
+          getConfig()
         }}
-      ></BindWeixinDialog>
-      <div className={styles["box"]}>
+      >
+      </BindWeixinDialog>
+      <div className={styles.box}>
         <NavMember cid={0} refresh={true}></NavMember>
-        <div className={styles["project-box"]}>
-          <div className={styles["user-box"]}>
-            <div className={styles["avatar"]}>
+        <div className={styles['project-box']}>
+          <div className={styles['user-box']}>
+            <div className={styles.avatar}>
               <img src={user.avatar} />
             </div>
-            <div className={styles["user-info"]}>
-              <div className={styles["user-top"]}>
-                <div className={styles["nickname"]}>{user.nick_name}</div>
+            <div className={styles['user-info']}>
+              <div className={styles['user-top']}>
+                <div className={styles.nickname}>{user.nick_name}</div>
                 {user.role_id !== 0 && user.role && (
-                  <div className={styles["role"]}>VIP</div>
+                  <div className={styles.role}>VIP</div>
                 )}
               </div>
               {user.role_id !== 0 && user.role_expired_at && (
-                <div className={styles["expiration-time"]}>
-                  会员有效期至{user.role_expired_at}
+                <div className={styles['expiration-time']}>
+                  会员有效期至
+                  {user.role_expired_at}
                 </div>
               )}
             </div>
-            <div className={styles["value-box"]}>
-              <div className={styles["item"]}>
-                <div className={styles["value"]}>{user.credit1}</div>
-                <div className={styles["name"]}>我的积分</div>
+            <div className={styles['value-box']}>
+              <div className={styles.item}>
+                <div className={styles.value}>{user.credit1}</div>
+                <div className={styles.name}>我的积分</div>
               </div>
-              <div className={styles["item"]}>
-                <div className={styles["value"]}>
+              <div className={styles.item}>
+                <div className={styles.value}>
                   {user.invite_people_count}
                 </div>
-                <div className={styles["name"]}>成功邀请(人)</div>
+                <div className={styles.name}>成功邀请(人)</div>
               </div>
-              <div className={styles["item"]}>
-                <div className={styles["value"]}>{user.invite_balance}</div>
-                <div className={styles["name"]}>邀请余额(元)</div>
+              <div className={styles.item}>
+                <div className={styles.value}>{user.invite_balance}</div>
+                <div className={styles.name}>邀请余额(元)</div>
               </div>
             </div>
           </div>
-          <div className={styles["user-profile"]}>
-            <div className={styles["del-user"]} onClick={() => destroyUser()}>
+          <div className={styles['user-profile']}>
+            <div className={styles['del-user']} onClick={() => destroyUser()}>
               注销账号
             </div>
             <div className="member-tabs">
@@ -383,7 +391,7 @@ const MemberPage = () => {
                 <div
                   key={item.id}
                   className={
-                    currentTab === item.id ? "active item-tab" : "item-tab"
+                    currentTab === item.id ? 'active item-tab' : 'item-tab'
                   }
                   onClick={() => tabChange(item.id)}
                 >
@@ -393,49 +401,50 @@ const MemberPage = () => {
               ))}
             </div>
             {currentTab === 1 && (
-              <div className={styles["project-content"]}>
-                <div className={styles["item-line"]}>
-                  <div className={styles["item-left"]}>
-                    <div className={styles["item-name"]}>我的头像</div>
-                    <div className={styles["item-avatar"]}>
+              <div className={styles['project-content']}>
+                <div className={styles['item-line']}>
+                  <div className={styles['item-left']}>
+                    <div className={styles['item-name']}>我的头像</div>
+                    <div className={styles['item-avatar']}>
                       <Upload
-                        className={styles["avatar"]}
+                        className={styles.avatar}
                         {...avatarUploadProps}
                         showUploadList={false}
                       >
-                        <img className={styles["avatar"]} src={user.avatar} />
+                        <img className={styles.avatar} src={user.avatar} />
                       </Upload>
                     </div>
                   </div>
-                  <div className={styles["item-right"]}>
-                    <div className={styles["tip"]}>点击图片修改</div>
+                  <div className={styles['item-right']}>
+                    <div className={styles.tip}>点击图片修改</div>
                   </div>
                 </div>
-                <div className={styles["item-line"]}>
-                  <div className={styles["item-left"]}>
-                    <div className={styles["item-name"]}>我的昵称</div>
+                <div className={styles['item-line']}>
+                  <div className={styles['item-left']}>
+                    <div className={styles['item-name']}>我的昵称</div>
                     {editNickStatus && (
-                      <div className={styles["item-value"]}>
+                      <div className={styles['item-value']}>
                         <Input
-                          className={styles["input"]}
+                          className={styles.input}
                           placeholder="昵称"
                           value={nickName}
                           onChange={(e) => {
-                            setNickName(e.target.value);
+                            setNickName(e.target.value)
                           }}
-                        ></Input>
+                        >
+                        </Input>
                       </div>
                     )}
                     {!editNickStatus && (
-                      <div className={styles["item-value"]}>
+                      <div className={styles['item-value']}>
                         {user.nick_name}
                       </div>
                     )}
                   </div>
-                  <div className={styles["item-right"]}>
+                  <div className={styles['item-right']}>
                     {user.is_set_nickname === 0 && editNickStatus && (
                       <div
-                        className={styles["act-btn"]}
+                        className={styles['act-btn']}
                         onClick={() => saveEditNick()}
                       >
                         保存
@@ -443,35 +452,35 @@ const MemberPage = () => {
                     )}
                     {user.is_set_nickname === 0 && !editNickStatus && (
                       <div
-                        className={styles["btn"]}
+                        className={styles.btn}
                         onClick={() => setEditNickStatus(true)}
                       >
                         修改
                       </div>
                     )}
                     {user.is_set_nickname === 1 && (
-                      <div className={styles["btn"]}>已修改</div>
+                      <div className={styles.btn}>已修改</div>
                     )}
                     {user.is_set_nickname === 0 && (
-                      <div className={styles["tip"]}>（只可修改一次）</div>
+                      <div className={styles.tip}>（只可修改一次）</div>
                     )}
                   </div>
                 </div>
-                <div className={styles["item-line"]}>
-                  <div className={styles["item-left"]}>
-                    <div className={styles["item-name"]}>手机号码</div>
+                <div className={styles['item-line']}>
+                  <div className={styles['item-left']}>
+                    <div className={styles['item-name']}>手机号码</div>
                     {user.is_bind_mobile === 1 && (
-                      <div className={styles["item-value"]}>
-                        {user.mobile.substr(0, 3) +
-                          "****" +
-                          user.mobile.substr(7)}
+                      <div className={styles['item-value']}>
+                        {`${user.mobile.substr(0, 3)
+                          }****${
+                          user.mobile.substr(7)}`}
                       </div>
                     )}
                   </div>
-                  <div className={styles["item-right"]}>
+                  <div className={styles['item-right']}>
                     {user.is_bind_mobile === 1 && (
                       <div
-                        className={styles["btn"]}
+                        className={styles.btn}
                         onClick={() => goChangeMobile()}
                       >
                         换绑手机号
@@ -479,7 +488,7 @@ const MemberPage = () => {
                     )}
                     {user.is_bind_mobile !== 1 && (
                       <div
-                        className={styles["btn"]}
+                        className={styles.btn}
                         onClick={() => goBindMobile()}
                       >
                         绑定手机号
@@ -487,13 +496,13 @@ const MemberPage = () => {
                     )}
                   </div>
                 </div>
-                <div className={styles["item-line"]}>
-                  <div className={styles["item-left"]}>
-                    <div className={styles["item-name"]}>设置(修改)密码</div>
+                <div className={styles['item-line']}>
+                  <div className={styles['item-left']}>
+                    <div className={styles['item-name']}>设置(修改)密码</div>
                   </div>
-                  <div className={styles["item-right"]}>
+                  <div className={styles['item-right']}>
                     <div
-                      className={styles["btn"]}
+                      className={styles.btn}
                       onClick={() => goChangePassword()}
                     >
                       点击设置（修改）密码
@@ -502,28 +511,28 @@ const MemberPage = () => {
                 </div>
 
                 {systemConfig.socialites.qq === 1 && (
-                  <div className={styles["item-line"]}>
-                    <div className={styles["item-left"]}>
-                      <div className={styles["item-name"]}>
+                  <div className={styles['item-line']}>
+                    <div className={styles['item-left']}>
+                      <div className={styles['item-name']}>
                         <img src={qqIcon} />
                         绑定QQ
                       </div>
                       {user.is_bind_qq === 1 && (
-                        <div className={styles["item-value"]}>已绑定</div>
+                        <div className={styles['item-value']}>已绑定</div>
                       )}
                       {user.is_bind_qq === 0 && (
                         <div
-                          className={styles["sp-btn"]}
+                          className={styles['sp-btn']}
                           onClick={() => goBindQQ()}
                         >
                           点击绑定
                         </div>
                       )}
                     </div>
-                    <div className={styles["item-right"]}>
+                    <div className={styles['item-right']}>
                       {user.is_bind_qq === 1 && (
                         <div
-                          className={styles["btn"]}
+                          className={styles.btn}
                           onClick={() => cancelBindQQ()}
                         >
                           解绑账号
@@ -534,28 +543,28 @@ const MemberPage = () => {
                 )}
 
                 {systemConfig.socialites.wechat_scan === 1 && (
-                  <div className={styles["item-line"]}>
-                    <div className={styles["item-left"]}>
-                      <div className={styles["item-name"]}>
+                  <div className={styles['item-line']}>
+                    <div className={styles['item-left']}>
+                      <div className={styles['item-name']}>
                         <img src={wxIcon} />
                         绑定微信
                       </div>
                       {user.is_bind_wechat === 1 && (
-                        <div className={styles["item-value"]}>已绑定</div>
+                        <div className={styles['item-value']}>已绑定</div>
                       )}
                       {user.is_bind_wechat === 0 && (
                         <div
-                          className={styles["sp-btn"]}
+                          className={styles['sp-btn']}
                           onClick={() => goBindWeixin()}
                         >
                           点击绑定
                         </div>
                       )}
                     </div>
-                    <div className={styles["item-right"]}>
+                    <div className={styles['item-right']}>
                       {user.is_bind_wechat === 1 && (
                         <div
-                          className={styles["btn"]}
+                          className={styles.btn}
                           onClick={() => cancelBindWeixin()}
                         >
                           解绑账号
@@ -568,7 +577,7 @@ const MemberPage = () => {
             )}
 
             {currentTab === 2 && (
-              <div className={styles["project-content"]}>
+              <div className={styles['project-content']}>
                 <ProfileComp refresh={() => resetData()}></ProfileComp>
               </div>
             )}
@@ -576,7 +585,7 @@ const MemberPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MemberPage;
+export default MemberPage
