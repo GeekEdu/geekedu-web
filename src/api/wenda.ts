@@ -33,10 +33,11 @@ export function update(id: number, params: any) {
   return client.put(`/addons/Wenda/api/v1/question/${id}/edit`, params)
 }
 
-export function choiceAnswer(id: number, params: any) {
+// 将某个问题设置为正确答案
+export function choiceAnswer(id: number, answerId: number) {
   return client.post(
-    `/addons/Wenda/api/v1/question/${id}/correct`,
-    params,
+    `/ask/api/question//${id}/answer/select/${answerId}`,
+    {},
   )
 }
 
