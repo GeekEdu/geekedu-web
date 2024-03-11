@@ -35,7 +35,7 @@ export function wechatCodeBindMobile(params: any) {
 }
 // 未读消息
 export function unReadNum() {
-  return client.get('/api/v2/member/unreadNotificationCount', {})
+  return client.get('/user/api/message/v2/unReadMessage', {})
 }
 // 腾讯实人认证
 export function tecentFaceVerify(params: any) {
@@ -70,16 +70,19 @@ export function wechatBind() {
   return client.get('/api/v3/member/wechatScanBind', {})
 }
 
+// 全部消息已读
 export function readMessageAll() {
-  return client.get('/api/v2/member/notificationMarkAllAsRead', {})
+  return client.get('/user/api/message/v2/read/all', {})
 }
 
+// 分页消息列表
 export function messages(params: any) {
-  return client.get('/api/v2/member/messages', params)
+  return client.get('/user/api/message/v2/list', params)
 }
 
+// 已读某个消息
 export function readMessage(id: number) {
-  return client.get(`/api/v2/member/notificationMarkAsRead/${id}`, {})
+  return client.get(`/user/api/message/v2/read/${id}`, {})
 }
 
 export function orders(params: any) {
