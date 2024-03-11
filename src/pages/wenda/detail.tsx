@@ -182,31 +182,31 @@ function WendaDetailPage() {
         let item
         if (userId) {
           item = {
-            id: res.data.comment_id,
-            parent_id: id,
-            render_content: replyContent,
-            children_count: 0,
-            reply_comment: {
-              user: { nick_name },
+            id: res.data,
+            parentId: id,
+            content: replyContent,
+            childrenCount: 0,
+            replyComment: {
+              user: { name: nick_name },
             },
-            created_at: '刚刚',
+            createdTime: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.name,
+              name: user.name,
             },
           }
         }
         else {
           item = {
-            id: res.data.comment_id,
-            parent_id: id,
-            render_content: replyContent,
-            children_count: 0,
-            reply_comment: null,
-            created_at: '刚刚',
+            id: res.data,
+            parentId: id,
+            content: replyContent,
+            childrenCount: 0,
+            replyComment: null,
+            createdTime: '刚刚',
             user: {
               avatar: user.avatar,
-              nick_name: user.nick_name,
+              name: user.name,
             },
           }
         }
@@ -222,7 +222,7 @@ function WendaDetailPage() {
         arr1[index] = old
         setReplyAnswers(arr1)
         const ant = [...answers]
-        answers[index].reply_count = answers[index].reply_count + 1
+        answers[index].commentCount = Number(answers[index].commentCount) + 1
         setAnswers(ant)
         setReplyContent('')
         setCommentLoading(false)
@@ -547,15 +547,15 @@ function WendaDetailPage() {
                   <div className={styles['reply-answer-box']}>
                     <div
                       className={
-                          item.is_vote === 1
+                          item.isThumb
                             ? styles['act-vote-button']
                             : styles['vote-button']
                         }
                       onClick={() => questionVote(item, index)}
                     >
-                      {item.is_vote === 1 && <img src={likeIcon} />}
-                      {item.is_vote !== 1 && <img src={noLikeIcon} />}
-                      {item.vote_count}
+                      {item.isThumb && <img src={likeIcon} />}
+                      {!item.isThumb && <img src={noLikeIcon} />}
+                      {item.thumbCount}
                     </div>
                     {item.commentCount !== 0 && (
                       <div
@@ -643,7 +643,7 @@ function WendaDetailPage() {
                                     {replyItem?.reply_user_id > 0 && (
                                       <>
                                         回复：
-                                        {replyItem?.reply_user.nick_name}
+                                        {replyItem?.reply_user.name}
                                       </>
                                     )}
                                   </>
@@ -667,7 +667,7 @@ function WendaDetailPage() {
                   )}
                   {!question.questionStatus
                   && isAdmin
-                  && item.user_id !== question.user_id && (
+                  && item.userId !== question.userId && (
                     <div
                       className={styles['set-correct']}
                       onClick={() => setCorrect(item)}
