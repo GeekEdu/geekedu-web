@@ -41,8 +41,8 @@ function IndexPage() {
       return
 
     sign.user().then((res: any) => {
-      const is_submit = res.data.is_submit
-      if (is_submit === 0)
+      const is_submit = res.data
+      if (!is_submit)
         setSignStatus(true)
       else
         setSignStatus(false)
