@@ -353,31 +353,36 @@ function MemberPage() {
             </div>
             <div className={styles['user-info']}>
               <div className={styles['user-top']}>
-                <div className={styles.nickname}>{user.nick_name}</div>
-                {user.role_id !== 0 && user.role && (
+                <div className={styles.nickname}>{user.name}</div>
+                {user.vipId !== 0 && user.vip && (
                   <div className={styles.role}>VIP</div>
                 )}
               </div>
-              {user.role_id !== 0 && user.role_expired_at && (
+              {user.vipId !== 0 && user?.vipExpireTime && (
                 <div className={styles['expiration-time']}>
                   会员有效期至
-                  {user.role_expired_at}
+                  {user?.vipExpireTime}
+                </div>
+              )}
+              {user.vipId !== 0 && user.vip.day === -1 && (
+                <div className={styles['expiration-time']}>
+                  您的会员永久有效~
                 </div>
               )}
             </div>
             <div className={styles['value-box']}>
               <div className={styles.item}>
-                <div className={styles.value}>{user.credit1}</div>
+                <div className={styles.value}>{user.points}</div>
                 <div className={styles.name}>我的积分</div>
               </div>
               <div className={styles.item}>
                 <div className={styles.value}>
-                  {user.invite_people_count}
+                  {user.inviteCount}
                 </div>
                 <div className={styles.name}>成功邀请(人)</div>
               </div>
               <div className={styles.item}>
-                <div className={styles.value}>{user.invite_balance}</div>
+                <div className={styles.value}>{user.inviteAmount}</div>
                 <div className={styles.name}>邀请余额(元)</div>
               </div>
             </div>
@@ -437,7 +442,7 @@ function MemberPage() {
                     )}
                     {!editNickStatus && (
                       <div className={styles['item-value']}>
-                        {user.nick_name}
+                        {user.name}
                       </div>
                     )}
                   </div>

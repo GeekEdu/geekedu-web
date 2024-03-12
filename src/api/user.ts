@@ -147,16 +147,18 @@ export function credit1Records(params: any) {
   return client.get('/api/v2/member/credit1Records', params)
 }
 
+// 返回积分商城列表
 export function creditMallList(params: any) {
-  return client.get('/addons/Credit1Mall/api/v1/goods', params)
+  return client.get('/trade/api/mall/v2/list', params)
 }
 
 export function creditMallOrders(params: any) {
   return client.get('/addons/Credit1Mall/api/v1/user/orders', params)
 }
 
+// 查看积分商品明细
 export function creditMallDetail(id: number) {
-  return client.get(`/addons/Credit1Mall/api/v1/goods/${id}`, {})
+  return client.get(`/trade/api/mall/good/${id}/detail`, {})
 }
 
 export function creditMallAddress() {
