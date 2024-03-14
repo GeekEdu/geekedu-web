@@ -27,6 +27,7 @@ const VodPlayPage = lazy(() => import('../pages/vod/video'))
 const LivePage = lazy(() => import('../pages/live/index'))
 const LiveDetailPage = lazy(() => import('../pages/live/detail'))
 const LiveVideoPage = lazy(() => import('../pages/live/video'))
+const LiveTeacherPage = lazy(() => import('../pages/live-teacher/video'))
 // 其它
 const AnnouncementPage = lazy(() => import('../pages/announcement/index'))
 // 考试相关页面
@@ -407,6 +408,10 @@ const routes: RouteObject[] = [
           {
             path: '/live/video/:courseId',
             element: <PrivateRoute Component={<LiveVideoPage />} />,
+          },
+          {
+            path: '/live/video/zhibo/:courseId',
+            element: <PrivateRoute Component={<LiveTeacherPage />} />,
           },
           {
             path: '/exam/papers/play',
