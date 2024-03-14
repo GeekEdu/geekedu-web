@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-13 16:37:39
+ * @LastEditTime: 2024-03-14 21:35:14
  * @FilePath: /geekedu-web/src/api/live.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,8 +28,29 @@ export function submitComment(id: number, params: any) {
   return client.post(`/course/api/live/course/v2/${id}/comment`, params)
 }
 
+// export function play(id: number) {
+//   return client.get(`/addons/zhibo/api/v1/course/${id}/play`, {})
+// }
 export function play(id: number) {
-  return client.get(`/addons/zhibo/api/v1/course/${id}/play`, {})
+  return client.get(`/course/api/live/v2/${id}/play`, {})
+}
+
+export function liveWatchRecord(
+  courseId: number,
+  videoId: number,
+  params: any,
+) {
+  return client.post(
+    `/course/api/live/course/${courseId}/video/${videoId}/liveWatchRecord`,
+    params,
+  )
+}
+
+export function chatMsgSend(courseId: number, videoId: number, params: any) {
+  return client.post(
+    `/course/api/live/course/${courseId}/video/${videoId}/chat/send`,
+    params,
+  )
 }
 
 export function attachList(course_id: number, video_id: number, params: any) {

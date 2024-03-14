@@ -59,8 +59,8 @@ function LiveVideoPage() {
       )
       setBullectSecretText(
         config.player.bulletSecret.text
-          .replace('${user.mobile}', user.mobile)
-          .replace('${mobile}', user.mobile)
+          .replace('${user.mobile}', user.phone)
+          .replace('${mobile}', user.phone)
           .replace('${user.id}', user.id),
       )
       setBulletSecretColor(config.player.bulletSecret.color)
@@ -406,8 +406,8 @@ function LiveVideoPage() {
   const playRecord = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setTimeValue(duration)
-      goMeedu
-        .vodWatchRecord(video.course_id, id, {
+      live
+        .vodWatchRecord(video.courseId, id, {
           duration,
         })
         .then((res: any) => {})
@@ -417,8 +417,8 @@ function LiveVideoPage() {
   const livePlayRecord = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setCurDuration(duration)
-      goMeedu
-        .liveWatchRecord(video.course_id, id, {
+      live
+        .liveWatchRecord(video.courseId, id, {
           duration,
         })
         .then((res: any) => {})
@@ -433,8 +433,8 @@ function LiveVideoPage() {
   }
 
   const saveChat = (content: string) => {
-    goMeedu
-      .chatMsgSend(video.course_id, id, {
+    live
+      .chatMsgSend(video.courseId, id, {
         content,
         duration: curDuration,
       })
@@ -646,7 +646,7 @@ function LiveVideoPage() {
                   <ChatBox
                     chat={chat}
                     enabledChat={enabledChat}
-                    cid={video.course_id}
+                    cid={video.courseId}
                     vid={id}
                     disabled={userDisabled}
                     enabledMessage={roomDisabled}
