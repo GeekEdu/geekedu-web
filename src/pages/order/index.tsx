@@ -376,7 +376,7 @@ function OrderPage() {
         const indexUrl = encodeURIComponent(`${host}/`)
         window.location.href
           = `${systemConfig.url
-           }/trade/api/aliPay/qrCode/pay?order_id=${
+           }/trade/api/aliPay/pay?order_id=${
            data.orderId
            }&payment_scene=${
            paymentScene
