@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-11 16:28:46
+ * @LastEditTime: 2024-03-15 14:15:27
  * @FilePath: /geekedu-web/src/api/order.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,8 +25,9 @@ export function createVideoOrder(params: any) {
   return client.post('/api/v2/order/video', params)
 }
 
+// 创建会员订单
 export function createRoleOrder(params: any) {
-  return client.post('/api/v2/order/role', params)
+  return client.post('/trade/api/order/create', params)
 }
 
 export function createLiveOrder(id: number, params: any) {
@@ -70,11 +71,11 @@ export function createK12Order(id: number, params: any) {
 }
 
 export function checkOrderStatus(params: any) {
-  return client.get(`/api/v2/order/status`, params)
+  return client.get(`/trade/api/aliPay/pay/status`, params)
 }
 
 export function payWechatScan(params: any) {
-  return client.post('/api/v2/order/pay/wechatScan', params)
+  return client.post('/trade/api/aliPay/qrCode/pay', params)
 }
 
 export function handPay(params: any) {

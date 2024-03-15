@@ -215,8 +215,8 @@ function OrderPage() {
     else if (goodsType === 'role') {
       order
         .createRoleOrder({
-          role_id: goodsId,
-          promo_code: promoCode,
+          roleId: goodsId,
+          promoCode,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data)
@@ -361,7 +361,7 @@ function OrderPage() {
   const orderCreatedHandler = (data: any) => {
     setLoading(false)
     // 判断是否继续走支付平台支付
-    if (data.status_text === '已支付') {
+    if (data.statusText === '已支付') {
       // 优惠全部抵扣
       message.success('支付成功')
 
@@ -376,8 +376,8 @@ function OrderPage() {
         const indexUrl = encodeURIComponent(`${host}/`)
         window.location.href
           = `${systemConfig.url
-           }/api/v2/order/pay/redirect?order_id=${
-           data.order_id
+           }/trade/api/aliPay/qrCode/pay?order_id=${
+           data.orderId
            }&payment_scene=${
            paymentScene
            }&scene=${
@@ -394,7 +394,7 @@ function OrderPage() {
       else if (payment === 'handpay' || payment === 'wechatpay') {
         navigate(
           `/order/pay?orderId=${
-          data.order_id
+          data.orderId
              }&price=${
              totalVal
              }&payment=${
