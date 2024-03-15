@@ -642,7 +642,7 @@ function LiveVideoPage() {
                     </div>
                   ))}
                 </div>
-                {currentTab === 1 && video.course_id && (
+                {currentTab === 1 && video.courseId && (
                   <ChatBox
                     chat={chat}
                     enabledChat={enabledChat}

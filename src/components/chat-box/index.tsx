@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, message as Message } from 'antd'
-import { goMeedu } from '../../api/index'
+import { goMeedu, live } from '../../api/index'
 import { getToken } from '../../utils/index'
 import styles from './index.module.scss'
 
@@ -202,10 +202,10 @@ export const ChatBox: React.FC<PropInterface> = ({
       return
 
     setPageLoading(true)
-    goMeedu
+    live
       .chatMsgPaginate(cid, vid, {
-        page,
-        size,
+        pageNum: page,
+        pageSize: size,
       })
       .then((res: any) => {
         setTotal(res.data.total)
