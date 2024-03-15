@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Input, message } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import TcplayerBarragePlugin from 'tcplayer-barrage-plugin'
 import { ChatBox } from '../../components'
 import { goMeedu, live } from '../../api/index'
 import backIcon from '../../assets/img/commen/icon-back-h.png'
@@ -17,6 +18,14 @@ function LiveVideoPage() {
   const user = useSelector((state: any) => state.loginUser.value.user)
   const config = useSelector((state: any) => state.systemConfig.value.config)
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin)
+
+  // 三个播放器的实例
+  const liveTencentPlayerRef = useRef<any>(null)
+  const liveDPlayerRef = useRef<any>(null)
+  const vodDlayerRef = useRef<any>(null)
+
+  // 弹幕
+  const [danmu, setDanmu] = useState<any>(null)
 
   // 销毁播放器
   const playerDestroy = () => {
@@ -38,11 +47,6 @@ function LiveVideoPage() {
     if (liveTencentPlayerRef.current)
       liveTencentPlayerRef.current.exitFullscreen()
   }
-
-  // 三个播放器的实例
-  const liveTencentPlayerRef = useRef<any>(null)
-  const liveDPlayerRef = useRef<any>(null)
-  const vodDlayerRef = useRef<any>(null)
 
   // 播放器
   const [enabledBulletSecret, setEnabledBulletSecret] = useState(false)
@@ -76,6 +80,7 @@ function LiveVideoPage() {
   const [video, setVideo] = useState<any>({})
   const [record_exists, setRecordExists] = useState(0)
 
+  // 播放器封面初始化
   useEffect(() => {
     let poster = ''
     if (course)
@@ -279,6 +284,13 @@ function LiveVideoPage() {
           : null,
       },
     })
+    // 初始化弹幕
+    // 实例化弹幕管理器，并通过管理器对弹幕进行操作
+    const tcplayerBarrage = new TcplayerBarragePlugin(liveTencentPlayerRef.current)
+    tcplayerBarrage.init()
+    // 开始弹幕
+    tcplayerBarrage.start()
+    setDanmu(tcplayerBarrage)
 
     liveTencentPlayerRef.current.on('timeupdate', () => {
       livePlayRecord(liveTencentPlayerRef.current.currentTime(), false)
@@ -439,6 +451,14 @@ function LiveVideoPage() {
         duration: curDuration,
       })
       .then((res: any) => {
+        // 发送弹幕
+        const barrage = {
+          mode: 1,
+          text: content,
+          size: 30,
+          color: '#ff0000',
+        }
+        danmu.send(barrage)
         setContent('')
       })
   }

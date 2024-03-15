@@ -22,6 +22,7 @@
     "react-router-dom": "^6.9.0",
     "redux": "^4.2.1",
     "sort-by": "^1.2.0",
+    "tcplayer-barrage-plugin": "^0.0.4",
     "tcplayer.js": "^5.1.0",
     "web-vitals": "^3.3.0",
     "xgplayer": "^3.0.14"

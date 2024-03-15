@@ -100,7 +100,8 @@ export const ChatBox: React.FC<PropInterface> = ({
         setEnabledScrollBottom(true)
         const message = JSON.parse(evt.data)
         if (message.t === 'message') {
-          const msgV = JSON.parse(message.v)
+          // const msgV = JSON.parse(message.v)
+          const msgV = message.v
           const arr = chatRecords
           arr.push({
             msg_body: msgV,
