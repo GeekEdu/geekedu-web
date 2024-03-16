@@ -1,3 +1,11 @@
+/*
+ * @Author: Poison02 2069820192@qq.com
+ * @Date: 2024-01-19 22:55:05
+ * @LastEditors: Poison02 2069820192@qq.com
+ * @LastEditTime: 2024-03-16 21:46:31
+ * @FilePath: /geekedu-web/src/pages/topic/detail.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { useEffect, useState } from 'react'
 import { Button, Col, Input, Skeleton, message } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -113,18 +121,21 @@ function TopicDetailPage() {
       goLogin()
       return
     }
-    topicApi.vote(id, {}).then((res: any) => {
-      const value = res.data.ok === 1
+    topicApi.vote({
+      id,
+      type: 'IMAGE_TEXT',
+    }).then((res: any) => {
+      const value = res.data
       setIsVote(value)
       if (value) {
         const data = { ...topic }
-        data.vote_count++
+        data.thumbCount++
         setTopic(data)
         message.success('已点赞')
       }
       else {
         const data = { ...topic }
-        data.vote_count--
+        data.thumbCount--
         setTopic(data)
         message.success('取消点赞')
       }
@@ -136,7 +147,10 @@ function TopicDetailPage() {
       goLogin()
       return
     }
-    topicApi.collect(id, {}).then((res: any) => {
+    topicApi.collect({
+      id,
+      type: 'IMAGE_TEXT',
+    }).then((res: any) => {
       const value = !isLike
       setIsLike(value)
       if (value)
@@ -223,8 +237,8 @@ function TopicDetailPage() {
       goLogin()
       return
     }
-    const arr = []
-    arr[id] = true
+    const arr = [...configInput]
+    arr[id] = !arr[id]
     setConfigInput(arr)
     setReplyContent('')
   }
@@ -774,7 +788,7 @@ function TopicDetailPage() {
               </div>
             </div>
           </div>
-          {/* {topic && (
+          {topic && (
             <div className={styles['share-box']}>
               <ShareComp
                 cid={topic.id}
@@ -832,7 +846,7 @@ function TopicDetailPage() {
                 </div>
               )}
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </>

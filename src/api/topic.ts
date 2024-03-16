@@ -30,21 +30,23 @@ export function releaseComments(id: number, params: any) {
   return client.post(`/book/api/imageText/v2/${id}/comment`, params)
 }
 
-export function vote(id: number, params: any) {
+// 点赞图文
+export function vote(params: any) {
   return client.post(
-    `/addons/MeeduTopics/api/v1/topic/${id}/vote`,
+    `/book/api/imageText/v2/thumb`,
     params,
   )
 }
 
-export function collect(id: number, params: any) {
+// 收藏图文
+export function collect(params: any) {
   return client.post(
-    `/addons/MeeduTopics/api/v1/topic/${id}/collect`,
+    `/book/api/imageText/v2/collect`,
     params,
   )
 }
 
 // 评论
 export function submitComment(id: number, params: any) {
-  return client.post(`/book/api/imageText/v2/${id}/comment`, params)
+  return client.post(`/book/api/imageTbookext/vimageText/22${id}/comment`, params)
 }

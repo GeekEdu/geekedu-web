@@ -1,3 +1,11 @@
+/*
+ * @Author: Poison02 2069820192@qq.com
+ * @Date: 2024-01-19 22:55:05
+ * @LastEditors: Poison02 2069820192@qq.com
+ * @LastEditTime: 2024-03-16 22:14:33
+ * @FilePath: /geekedu-web/src/components/share/index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -20,7 +28,8 @@ export const ShareComp: React.FC<PropInterface> = ({ cid, title, thumb }) => {
   }, [cid])
 
   const getData = () => {
-    const baseUrl = new URL(config.pc_url)
+    // config.pc_url
+    const baseUrl = new URL('http://127.0.0.1')
     const url = encodeURIComponent(
       `${baseUrl.protocol
         }//${
