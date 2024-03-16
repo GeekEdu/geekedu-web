@@ -582,7 +582,10 @@ function TopicDetailPage() {
                           {getCommentTime(item.createdTime)}
                         </div>
                         {item.user.length !== 0 && (
-                          <div className={styles.address}>{item.user.province}</div>
+                          <div className={styles.address}>
+                            地区：
+                            {item.user.province}
+                          </div>
                         )}
                       </div>
                       <div className={styles.text}>{item.content}</div>

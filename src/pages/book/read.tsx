@@ -609,6 +609,12 @@ function BookReadPage() {
                       <div className={styles.diff}>
                         {getCommentTime(item.createdTime)}
                       </div>
+                      {item.user.length !== 0 && (
+                        <div className={styles['user-address']}>
+                          地区：
+                          {item.user.province}
+                        </div>
+                      )}
                     </div>
                     <div className={styles.text}>{item.content}</div>
                     <div className={styles['reply-answer-box']}>

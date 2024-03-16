@@ -110,7 +110,7 @@ function BookDetailPage() {
     bookApi
       .likeStatus({
         id: bid,
-        type: 'book',
+        type: 'E_BOOK',
       })
       .then((res: any) => {
         // setIsLike(res.data.like)
@@ -148,7 +148,7 @@ function BookDetailPage() {
     miaosha
       .detail(0, {
         course_id: bid,
-        course_type: 'book',
+        course_type: 'E_BOOK',
       })
       .then((res: any) => {
         setMsData(res.data)
@@ -229,7 +229,7 @@ function BookDetailPage() {
       bookApi
         .likeHit({
           id: bid,
-          type: 'book',
+          type: 'E_BOOK',
         })
         .then((res) => {
           setIsLike(!isLike)
