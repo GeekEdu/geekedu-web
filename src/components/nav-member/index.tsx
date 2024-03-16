@@ -51,42 +51,42 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
             },
           ],
         },
-        {
-          name: '试题',
-          status: configFunc.paper,
-          childrens: [
-            {
-              name: '我的考试',
-              id: 9,
-              path: '/member/paper',
-              status: configFunc.paper,
-            },
-            {
-              name: '我的模考',
-              id: 11,
-              path: '/member/mockpaper',
-              status: configFunc.mockPaper,
-            },
-            {
-              name: '试题错题',
-              id: 12,
-              path: '/exam/wrongbook',
-              status: configFunc.wrongBook,
-            },
-            {
-              name: '我的练习',
-              id: 10,
-              path: '/member/practice',
-              status: configFunc.practice,
-            },
-            {
-              name: '收藏习题',
-              id: 17,
-              path: '/exam/collection',
-              status: configFunc.practice,
-            },
-          ],
-        },
+        // {
+        //   name: '试题',
+        //   status: configFunc.paper,
+        //   childrens: [
+        //     {
+        //       name: '我的考试',
+        //       id: 9,
+        //       path: '/member/paper',
+        //       status: configFunc.paper,
+        //     },
+        //     {
+        //       name: '我的模考',
+        //       id: 11,
+        //       path: '/member/mockpaper',
+        //       status: configFunc.mockPaper,
+        //     },
+        //     {
+        //       name: '试题错题',
+        //       id: 12,
+        //       path: '/exam/wrongbook',
+        //       status: configFunc.wrongBook,
+        //     },
+        //     {
+        //       name: '我的练习',
+        //       id: 10,
+        //       path: '/member/practice',
+        //       status: configFunc.practice,
+        //     },
+        //     {
+        //       name: '收藏习题',
+        //       id: 17,
+        //       path: '/exam/collection',
+        //       status: configFunc.practice,
+        //     },
+        //   ],
+        // },
         {
           name: '其他',
           status: true,

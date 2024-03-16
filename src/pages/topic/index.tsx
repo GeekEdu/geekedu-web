@@ -148,7 +148,7 @@ function TopicPage() {
               charge={item.price}
               isVipFree={item.isVipFree}
               isNeedLogin={item?.is_need_login}
-              voteCount={item.thumbCount}
+              thumbCount={item.thumbCount}
               commentCount={item?.comment_times}
             >
             </TopicCourseItem>
@@ -264,6 +264,10 @@ function TopicPage() {
                           <span className={styles['read-count']}>
                             {item.readCount}
                             次阅读
+                          </span>
+                          <span className={styles['thumb-count']}>
+                            {item.thumbCount}
+                            次点赞
                           </span>
                         </div>
                       </div>

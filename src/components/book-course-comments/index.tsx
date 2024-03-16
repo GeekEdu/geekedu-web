@@ -103,6 +103,9 @@ export const BookCourseComments: React.FC<PropInterface> = ({
                 <div className={styles['comment-time']}>
                   {getCommentTime(item.createdTime)}
                 </div>
+                <div className={styles['user-address']}>
+                  {commentUsers[item.userId].province}
+                </div>
               </div>
               <div className={styles['comment-text']}>{item.content}</div>
             </div>
