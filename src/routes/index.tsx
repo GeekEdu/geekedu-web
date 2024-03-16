@@ -30,30 +30,30 @@ const LiveVideoPage = lazy(() => import('../pages/live/video'))
 const LiveTeacherPage = lazy(() => import('../pages/live-teacher/video'))
 // 其它
 const AnnouncementPage = lazy(() => import('../pages/announcement/index'))
-// 考试相关页面
-const ExamPage = lazy(() => import('../pages/exam/index'))
-const ExamPaperPage = lazy(() => import('../pages/exam/paper/index'))
-const ExamPaperDetailPage = lazy(() => import('../pages/exam/paper/detail'))
-const ExamPaperPlayPage = lazy(() => import('../pages/exam/paper/play'))
-// 模拟考试
-const ExamMockPaperPage = lazy(() => import('../pages/exam/mock/index'))
-const ExamMockPaperDetailPage = lazy(() => import('../pages/exam/mock/detail'))
-const ExamMockPaperPlayPage = lazy(() => import('../pages/exam/mock/play'))
-// 在线练习
-const ExamPracticePage = lazy(() => import('../pages/exam/practice/index'))
-const ExamPracticeDetailPage = lazy(
-  () => import('../pages/exam/practice/detail'),
-)
-const ExamPracticePlayPage = lazy(() => import('../pages/exam/practice/play'))
-// 考试其它
-const ExamWrongbookPage = lazy(() => import('../pages/exam/wrongbook/index'))
-const ExamWrongbookPlayPage = lazy(
-  () => import('../pages/exam/wrongbook/play'),
-)
-const ExamCollectionPage = lazy(() => import('../pages/exam/collection/index'))
-const ExamCollectionPlayPage = lazy(
-  () => import('../pages/exam/collection/play'),
-)
+// // 考试相关页面
+// const ExamPage = lazy(() => import('../pages/exam/index'))
+// const ExamPaperPage = lazy(() => import('../pages/exam/paper/index'))
+// const ExamPaperDetailPage = lazy(() => import('../pages/exam/paper/detail'))
+// const ExamPaperPlayPage = lazy(() => import('../pages/exam/paper/play'))
+// // 模拟考试
+// const ExamMockPaperPage = lazy(() => import('../pages/exam/mock/index'))
+// const ExamMockPaperDetailPage = lazy(() => import('../pages/exam/mock/detail'))
+// const ExamMockPaperPlayPage = lazy(() => import('../pages/exam/mock/play'))
+// // 在线练习
+// const ExamPracticePage = lazy(() => import('../pages/exam/practice/index'))
+// const ExamPracticeDetailPage = lazy(
+//   () => import('../pages/exam/practice/detail'),
+// )
+// const ExamPracticePlayPage = lazy(() => import('../pages/exam/practice/play'))
+// // 考试其它
+// const ExamWrongbookPage = lazy(() => import('../pages/exam/wrongbook/index'))
+// const ExamWrongbookPlayPage = lazy(
+//   () => import('../pages/exam/wrongbook/play'),
+// )
+// const ExamCollectionPage = lazy(() => import('../pages/exam/collection/index'))
+// const ExamCollectionPlayPage = lazy(
+//   () => import('../pages/exam/collection/play'),
+// )
 // 学员相关
 const MemberPage = lazy(() => import('../pages/member/index'))
 const MemberMessagesPage = lazy(() => import('../pages/member/messages'))
@@ -275,28 +275,28 @@ const routes: RouteObject[] = [
           { path: '/live', element: <LivePage /> },
           { path: '/live/detail/:courseId', element: <LiveDetailPage /> },
           { path: '/announcement', element: <AnnouncementPage /> },
-          { path: '/exam', element: <ExamPage /> },
-          { path: '/exam/papers', element: <ExamPaperPage /> },
-          {
-            path: '/exam/papers/detail/:courseId',
-            element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
-          },
+          // { path: '/exam', element: <ExamPage /> },
+          // { path: '/exam/papers', element: <ExamPaperPage /> },
+          // {
+          //   path: '/exam/papers/detail/:courseId',
+          //   element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
+          // },
 
-          { path: '/exam/mockpaper', element: <ExamMockPaperPage /> },
-          {
-            path: '/exam/mockpaper/detail/:courseId',
-            element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
-          },
+          // { path: '/exam/mockpaper', element: <ExamMockPaperPage /> },
+          // {
+          //   path: '/exam/mockpaper/detail/:courseId',
+          //   element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
+          // },
 
-          { path: '/exam/practice', element: <ExamPracticePage /> },
-          {
-            path: '/exam/practice/detail/:courseId',
-            element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
-          },
+          // { path: '/exam/practice', element: <ExamPracticePage /> },
+          // {
+          //   path: '/exam/practice/detail/:courseId',
+          //   element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
+          // },
 
-          { path: '/exam/wrongbook', element: <ExamWrongbookPage /> },
+          // { path: '/exam/wrongbook', element: <ExamWrongbookPage /> },
 
-          { path: '/exam/collection', element: <ExamCollectionPage /> },
+          // { path: '/exam/collection', element: <ExamCollectionPage /> },
 
           {
             path: '/member',
@@ -413,26 +413,26 @@ const routes: RouteObject[] = [
             path: '/live/video/zhibo/:courseId',
             element: <PrivateRoute Component={<LiveTeacherPage />} />,
           },
-          {
-            path: '/exam/papers/play',
-            element: <PrivateRoute Component={<ExamPaperPlayPage />} />,
-          },
-          {
-            path: '/exam/mockpaper/play',
-            element: <PrivateRoute Component={<ExamMockPaperPlayPage />} />,
-          },
-          {
-            path: '/exam/practice/play',
-            element: <PrivateRoute Component={<ExamPracticePlayPage />} />,
-          },
-          {
-            path: '/exam/wrongbook/play',
-            element: <PrivateRoute Component={<ExamWrongbookPlayPage />} />,
-          },
-          {
-            path: '/exam/collection/play',
-            element: <PrivateRoute Component={<ExamCollectionPlayPage />} />,
-          },
+          // {
+          //   path: '/exam/papers/play',
+          //   element: <PrivateRoute Component={<ExamPaperPlayPage />} />,
+          // },
+          // {
+          //   path: '/exam/mockpaper/play',
+          //   element: <PrivateRoute Component={<ExamMockPaperPlayPage />} />,
+          // },
+          // {
+          //   path: '/exam/practice/play',
+          //   element: <PrivateRoute Component={<ExamPracticePlayPage />} />,
+          // },
+          // {
+          //   path: '/exam/wrongbook/play',
+          //   element: <PrivateRoute Component={<ExamWrongbookPlayPage />} />,
+          // },
+          // {
+          //   path: '/exam/collection/play',
+          //   element: <PrivateRoute Component={<ExamCollectionPlayPage />} />,
+          // },
           { path: '*', element: <Error404 /> },
         ],
       },

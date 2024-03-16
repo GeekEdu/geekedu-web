@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { QRCode, message } from 'antd'
 import { order } from '../../api/index'
-import wepayIcon from '../../assets/img/commen/icon-wexinpay.png'
+import wepayIcon from '../../assets/img/commen/icon-zfb@2x.png'
 import cradIcon from '../../assets/img/commen/icon-card.png'
 import styles from './pay.module.scss'
 
@@ -172,7 +172,7 @@ function OrderPayPage() {
             <div className={styles['pay-top']}>
               <div className={styles.icon}>
                 <img src={wepayIcon} />
-                微信扫码支付
+                扫码支付
               </div>
               <div className={styles.close} onClick={() => goBack()}>
                 取消支付

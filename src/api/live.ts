@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-15 20:07:18
+ * @LastEditTime: 2024-03-16 10:12:07
  * @FilePath: /geekedu-web/src/api/live.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -35,6 +35,7 @@ export function play(id: number) {
   return client.get(`/course/api/live/v2/${id}/play`, {})
 }
 
+// 直播观看记录
 export function liveWatchRecord(
   courseId: number,
   videoId: number,
@@ -46,6 +47,7 @@ export function liveWatchRecord(
   )
 }
 
+// 发送聊天消息
 export function chatMsgSend(courseId: number, videoId: number, params: any) {
   return client.post(
     `/ws/api/chat/course/${courseId}/video/${videoId}/chat/send`,
@@ -53,6 +55,7 @@ export function chatMsgSend(courseId: number, videoId: number, params: any) {
   )
 }
 
+// 聊天记录
 export function chatMsgPaginate(
   courseId: number,
   videoId: number,
