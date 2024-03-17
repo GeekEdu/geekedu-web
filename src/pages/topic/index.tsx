@@ -149,7 +149,8 @@ function TopicPage() {
               isVipFree={item.isVipFree}
               isNeedLogin={item?.is_need_login}
               thumbCount={item.thumbCount}
-              commentCount={item?.comment_times}
+              collectCount={item.collectCount}
+              commentCount={item?.commentCount}
             >
             </TopicCourseItem>
           ))}
@@ -268,6 +269,10 @@ function TopicPage() {
                           <span className={styles['thumb-count']}>
                             {item.thumbCount}
                             次点赞
+                          </span>
+                          <span className={styles['collect-count']}>
+                            {item.collectCount}
+                            次收藏
                           </span>
                         </div>
                       </div>

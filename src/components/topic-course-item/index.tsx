@@ -21,6 +21,7 @@ interface PropInterface {
   isVipFree: boolean
   isNeedLogin: boolean
   thumbCount: number
+  collectCount: number
   commentCount: number
 }
 
@@ -34,6 +35,7 @@ export const TopicCourseItem: React.FC<PropInterface> = ({
   isVipFree,
   isNeedLogin,
   thumbCount,
+  collectCount,
   commentCount,
 }) => {
   const navigate = useNavigate()
@@ -59,6 +61,10 @@ export const TopicCourseItem: React.FC<PropInterface> = ({
           <span className={styles['thumb-count']}>
             {thumbCount}
             次点赞
+          </span>
+          <span className={styles['collect-count']}>
+            {collectCount}
+            次收藏
           </span>
         </div>
       </div>
