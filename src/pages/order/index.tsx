@@ -215,8 +215,10 @@ function OrderPage() {
     else if (goodsType === 'role') {
       order
         .createRoleOrder({
-          roleId: goodsId,
+          goodsId,
+          goodsType: 'VIP',
           promoCode,
+          payment: payment === 'alipay' ? 'ALIPAY' : (payment === 'wechatpay' ? 'WX_PAY' : 'OTHER'),
         })
         .then((res: any) => {
           orderCreatedHandler(res.data)
