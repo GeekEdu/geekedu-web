@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-11 15:52:20
+ * @LastEditTime: 2024-03-17 15:30:58
  * @FilePath: /geekedu-web/src/pages/wenda/detail.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -385,6 +385,12 @@ function WendaDetailPage() {
                 {question.answerCount}
                 回答
               </span>
+              {question.user && (
+                <span className={styles['send-addr']}>
+                  发表于：
+                  {question.user.province}
+                </span>
+              )}
             </div>
           </div>
         )}
@@ -518,6 +524,12 @@ function WendaDetailPage() {
                     <div className={styles.diff}>
                       {getCommentTime(item.createdTime)}
                     </div>
+                    {item.user && (
+                      <div className={styles['user-address']}>
+                        地区：
+                        {item.user.province}
+                      </div>
+                    )}
                     {item.isCorrect && (
                       <div className={styles['correct-answer']}>
                         <img src={idoptIcon} />
