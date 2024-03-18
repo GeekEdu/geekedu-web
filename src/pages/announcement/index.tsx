@@ -37,7 +37,7 @@ function AnnouncementPage() {
 
     setLoading(true)
     home.announcementDetail(id).then((res: any) => {
-      document.title = `公告：${res.data.title}`
+      document.title = `公告：${res.data?.title}`
       setNotice(res.data)
       setLoading(false)
     })
@@ -49,7 +49,7 @@ function AnnouncementPage() {
 
     setLoading2(true)
     home.announcementList().then((res: any) => {
-      setList(res.data.data)
+      setList(res.data)
       setLoading2(false)
     })
   }
@@ -89,10 +89,10 @@ function AnnouncementPage() {
           )}
           {!loading && (
             <div className={styles.notice}>
-              <div className={styles.title}>{notice.title}</div>
+              <div className={styles.title}>{notice?.title}</div>
               <div className={styles.stat}>
                 <span className={styles['div-times']}>
-                  {changeTime(notice.created_at)}
+                  {changeTime(notice?.createdTime)}
                 </span>
                 {/* <span className={styles["div-times"]}>
                   {notice.view_times}次阅读
@@ -158,7 +158,7 @@ function AnnouncementPage() {
               <div className={styles['item-title']}>{item.title}</div>
               <div className={styles['item-info']}>
                 <div className={styles['item-time']}>
-                  {changeTime(item.created_at)}
+                  {changeTime(item.createdTime)}
                 </div>
                 {/* <div className={styles["item-time"]}>
                     {item.view_times}次阅读
