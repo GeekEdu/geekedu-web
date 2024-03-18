@@ -352,7 +352,7 @@ const routes: RouteObject[] = [
             element: <PrivateRoute Component={<OrderPayPage />} />,
           },
           {
-            path: '/order/success',
+            path: '/order/pay/success',
             element: <PrivateRoute Component={<OrderSuccessPage />} />,
           },
           { path: '/search', element: <SearchPage /> },

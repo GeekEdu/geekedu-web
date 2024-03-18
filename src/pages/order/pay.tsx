@@ -5,9 +5,10 @@ import { QRCode, message } from 'antd'
 import { order } from '../../api/index'
 import wepayIcon from '../../assets/img/commen/icon-zfb@2x.png'
 import cradIcon from '../../assets/img/commen/icon-card.png'
+import { getAppUrl } from '../../utils/index'
 import styles from './pay.module.scss'
 
-let timer: any = null
+const timer: any = null
 function OrderPayPage() {
   document.title = '支付中'
   const navigate = useNavigate()
@@ -23,20 +24,25 @@ function OrderPayPage() {
   const [courseType, setCourseType] = useState(result.get('course_type'))
   const [text, setText] = useState<string>('')
   const [qrode, setQrode] = useState<string>('loading')
+  const [orderInfo, setOrderInfo] = useState<any>({})
   const user = useSelector((state: any) => state.loginUser.value.user)
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin)
+  const orderDesc = useSelector((state: any) => state.orderInfo.value)
+  const systemConfig = useSelector((state: any) => state.systemConfig.value.config)
 
   useEffect(() => {
-    if (orderId && payment)
-      initData()
-
+    initData()
     return () => {
       timer && clearInterval(timer)
     }
-  }, [orderId, payment])
+  }, [])
 
   const initData = () => {
-    timer = setInterval(checkOrder, 2000)
+    // 设置订单信息
+    setOrderInfo(orderDesc)
+    console.log(orderDesc)
+    console.log(orderInfo)
+    // timer = setInterval(checkOrder, 2000)
     if (payment === 'wechatpay') {
       order
         .payWechatScan({
@@ -48,11 +54,11 @@ function OrderPayPage() {
         })
         .catch((e) => {
           setLoading(false)
-          timer && clearInterval(timer)
+          // timer && clearInterval(timer)
           navigate('/')
         })
     }
-    else if (payment === 'handPay') {
+    else if (payment === 'handpay') {
       order
         .handPay({
           order_id: orderId,
@@ -63,7 +69,7 @@ function OrderPayPage() {
         })
         .catch((e) => {
           setLoading(false)
-          timer && clearInterval(timer)
+          // timer && clearInterval(timer)
           navigate('/')
         })
     }
@@ -164,8 +170,87 @@ function OrderPayPage() {
     goBack()
   }
 
+  const handleAliPay = () => {
+    const host = getAppUrl()
+    const redirect = encodeURIComponent(`${host}/success`)
+    window.location.href
+          = `${systemConfig.url
+           }/trade/api/pay/aliPay?orderId=${
+           orderInfo.orderId
+           }&scene=pc&payment=ALIPAY
+           &redirect=${redirect}`
+  }
+
   return (
     <div className={styles.content}>
+      {payment === 'alipay' && (
+        <div className={styles['pay-box']}>
+          <div className={styles['pay-info']}>
+            <div className={styles['pay-top']}>
+              <div className={styles.icon}>
+                <img src={wepayIcon} />
+                支付宝支付
+              </div>
+              <div className={styles.close} onClick={() => goBack()}>
+                取消支付
+              </div>
+            </div>
+            <div className={styles.paycode}>
+              <div className={styles.info}>
+                <div className={styles.orderNum}>
+                  订单号：
+                  {orderInfo.orderId}
+                </div>
+                <div className={styles.goodsName}>
+                  商品名：
+                  {orderInfo.goodsName}
+                </div>
+                <div className={styles.goodsType}>
+                  商品类型：
+                  {orderInfo.goodsType}
+                </div>
+                <div className={styles.orderNotes}>
+                  订单备注：
+                  {orderInfo.orderNotes}
+                </div>
+                <div className={styles.createdTime}>
+                  订单创建时间：
+                  {orderInfo.createdTime}
+                </div>
+                <div className={styles.price}>
+                  <span>商品原价：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.goodsPrice}</strong>
+                  </span>
+                </div>
+                <div className={styles.price}>
+                  <span>优惠价：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.goodsDiscount}</strong>
+                  </span>
+                </div>
+                <div className={styles.price}>
+                  <span>需支付：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.amount}</strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.countDown}>
+            请在
+            {orderInfo.cancelTime}
+            内完成支付
+          </div>
+          <div className={styles['btn-confirm']} onClick={() => handleAliPay()}>
+            去支付
+          </div>
+        </div>
+      )}
       {payment === 'wechatpay' && (
         <div className={styles['pay-box']}>
           <div className={styles['pay-info']}>
@@ -179,25 +264,60 @@ function OrderPayPage() {
               </div>
             </div>
             <div className={styles.paycode}>
+              <div className={styles.info}>
+                <div className={styles.orderNum}>
+                  订单号：
+                  {orderInfo.orderId}
+                </div>
+                <div className={styles.goodsName}>
+                  商品名：
+                  {orderInfo.goodsName}
+                </div>
+                <div className={styles.goodsType}>
+                  商品类型：
+                  {orderInfo.goodsType}
+                </div>
+                <div className={styles.orderNotes}>
+                  订单备注：
+                  {orderInfo.orderNotes}
+                </div>
+                <div className={styles.createdTime}>
+                  订单创建时间：
+                  {orderInfo.createdTime}
+                </div>
+                <div className={styles.price}>
+                  <span>商品原价：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.goodsPrice}</strong>
+                  </span>
+                </div>
+                <div className={styles.price}>
+                  <span>优惠价：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.goodsDiscount}</strong>
+                  </span>
+                </div>
+                <div className={styles.price}>
+                  <span>需支付：</span>
+                  <span className={styles.red}>
+                    ￥
+                    <strong>{orderInfo.amount}</strong>
+                  </span>
+                </div>
+              </div>
               <QRCode
                 size={200}
                 value={qrode}
                 status={loading ? 'loading' : 'active'}
               />
-              <div className={styles.info}>
-                <div className={styles.orderNum}>
-                  订单号：
-                  {orderId}
-                </div>
-                <div className={styles.price}>
-                  <span>需支付</span>
-                  <span className={styles.red}>
-                    ￥
-                    <strong>{price}</strong>
-                  </span>
-                </div>
-              </div>
             </div>
+          </div>
+          <div className={styles.countDown}>
+            请在
+            {orderInfo.cancelTime}
+            内完成支付
           </div>
           <div className={styles['btn-confirm']} onClick={() => confirm()}>
             已完成支付
@@ -227,13 +347,43 @@ function OrderPayPage() {
               </div>
               <div className={styles.orderNum}>
                 订单号：
-                {orderId}
+                {orderInfo.orderId}
+              </div>
+              <div className={styles.goodsName}>
+                商品名：
+                {orderInfo.goodsName}
+              </div>
+              <div className={styles.goodsType}>
+                商品类型：
+                {orderInfo.goodsType}
+              </div>
+              <div className={styles.orderNotes}>
+                订单备注：
+                {orderInfo.orderNotes}
+              </div>
+              <div className={styles.createdTime}>
+                订单创建时间：
+                {orderInfo.createdTime}
               </div>
               <div className={styles.price}>
-                <span>需支付</span>
+                <span>商品原价：</span>
                 <span className={styles.red}>
                   ￥
-                  <strong>{price}</strong>
+                  <strong>{orderInfo.goodsPrice}</strong>
+                </span>
+              </div>
+              <div className={styles.price}>
+                <span>优惠价：</span>
+                <span className={styles.red}>
+                  ￥
+                  <strong>{orderInfo.goodsDiscount}</strong>
+                </span>
+              </div>
+              <div className={styles.price}>
+                <span>需支付：</span>
+                <span className={styles.red}>
+                  ￥
+                  <strong>{orderInfo.amount}</strong>
                 </span>
               </div>
             </div>

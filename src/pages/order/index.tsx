@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Input, message } from 'antd'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { order } from '../../api/index'
 import { ThumbBar } from '../../components'
@@ -10,10 +10,12 @@ import zfbIcon from '../../assets/img/commen/icon-zfb.png'
 import wepayIcon from '../../assets/img/commen/icon-wepay.png'
 import cradIcon from '../../assets/img/commen/icon-crad.png'
 import { getAppUrl, getToken } from '../../utils/index'
+import { orderInfoAction } from '../../store/order/orderInfoSlice'
 import styles from './index.module.scss'
 
 function OrderPage() {
   document.title = '收银台'
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const result = new URLSearchParams(useLocation().search)
   const [loading, setLoading] = useState<boolean>(false)
@@ -360,61 +362,82 @@ function OrderPage() {
     }
   }
 
+  // const orderCreatedHandler = (data: any) => {
+  //   setLoading(false)
+  //   // 判断是否继续走支付平台支付
+  //   if (data.statusText === '已支付') {
+  //     // 优惠全部抵扣
+  //     message.success('支付成功')
+
+  //     setTimeout(() => {
+  //       navigate(-1)
+  //     }, 1000)
+  //   }
+  //   else {
+  //     if (payment === 'alipay') {
+  //       const host = getAppUrl()
+  //       const redirect = encodeURIComponent(`${host}/success`)
+  //       const indexUrl = encodeURIComponent(`${host}/`)
+  //       window.location.href
+  //         = `${systemConfig.url
+  //          }/trade/api/aliPay/pay?order_id=${
+  //          data.orderId
+  //          }&payment_scene=${
+  //          paymentScene
+  //          }&scene=${
+  //          paymentScene
+  //          }&payment=${
+  //          payment
+  //          }&token=${
+  //          getToken()
+  //          }&redirect=${
+  //          redirect
+  //          }&cancel_redirect=${
+  //          indexUrl}`
+  //     }
+  //     else if (payment === 'handpay' || payment === 'wechatpay') {
+  //       navigate(
+  //         `/order/pay?orderId=${
+  //         data.orderId
+  //            }&price=${
+  //            totalVal
+  //            }&payment=${
+  //            payment
+  //            }&type=${
+  //            goodsType
+  //            }&id=${
+  //            goodsId
+  //            }&course_id=${
+  //            courseId
+  //            }&course_type=${
+  //            courseType}`,
+  //       )
+  //     }
+  //     else {
+  //       payFailure()
+  //     }
+  //   }
+  // }
   const orderCreatedHandler = (data: any) => {
     setLoading(false)
-    // 判断是否继续走支付平台支付
-    if (data.statusText === '已支付') {
-      // 优惠全部抵扣
-      message.success('支付成功')
-
-      setTimeout(() => {
-        navigate(-1)
-      }, 1000)
-    }
-    else {
-      if (payment === 'alipay') {
-        const host = getAppUrl()
-        const redirect = encodeURIComponent(`${host}/success`)
-        const indexUrl = encodeURIComponent(`${host}/`)
-        window.location.href
-          = `${systemConfig.url
-           }/trade/api/aliPay/pay?order_id=${
-           data.orderId
-           }&payment_scene=${
-           paymentScene
-           }&scene=${
-           paymentScene
-           }&payment=${
-           payment
-           }&token=${
-           getToken()
-           }&redirect=${
-           redirect
-           }&cancel_redirect=${
-           indexUrl}`
-      }
-      else if (payment === 'handpay' || payment === 'wechatpay') {
-        navigate(
-          `/order/pay?orderId=${
-          data.orderId
-             }&price=${
-             totalVal
-             }&payment=${
-             payment
-             }&type=${
-             goodsType
-             }&id=${
-             goodsId
-             }&course_id=${
-             courseId
-             }&course_type=${
-             courseType}`,
-        )
-      }
-      else {
-        payFailure()
-      }
-    }
+    dispatch(orderInfoAction(data))
+    // 跳转页面
+    navigate(
+      `/order/pay?payment=${
+        payment
+      }&type=${
+        goodsType
+      }&id=${
+        goodsId
+      }&course_id=${
+        courseId
+      }&course_type=${
+        courseType}`,
+    )
+    // }
+    // else {
+    //   payFailure()
+    // }
   }
 
   const payFailure = () => {
