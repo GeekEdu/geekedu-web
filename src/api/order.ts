@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-15 14:15:27
+ * @LastEditTime: 2024-03-18 16:23:18
  * @FilePath: /geekedu-web/src/api/order.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -70,14 +70,16 @@ export function createK12Order(id: number, params: any) {
   return client.post(`/addons/ke/api/v1/course/${id}/paid`, params)
 }
 
+// 检查支付状态
 export function checkOrderStatus(params: any) {
-  return client.get(`/trade/api/aliPay/pay/status`, params)
+  return client.get(`/trade/api/pay/queryPayStatus`, params)
 }
 
+// 支付二维码
 export function payWechatScan(params: any) {
-  return client.post('/trade/api/aliPay/qrCode/pay', params)
+  return client.get('/trade/api/pay/qrCode', params)
 }
 
-export function handPay(params: any) {
-  return client.post('/api/v3/order/pay/handPay', params)
-}
+// export function handPay(params: any) {
+//   return client.post('/api/v3/order/pay/handPay', params)
+// }

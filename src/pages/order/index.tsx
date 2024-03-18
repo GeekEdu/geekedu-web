@@ -541,7 +541,7 @@ function OrderPage() {
             >
               {item.sign === 'alipay' && <img src={zfbIcon} />}
               {item.sign === 'wechatpay' && <img src={wepayIcon} />}
-              {item.sign === 'handpay' && <img src={cradIcon} />}
+              {/* {item.sign === 'handpay' && <img src={cradIcon} />} */}
             </div>
           ))}
         </div>
