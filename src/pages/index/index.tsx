@@ -1,3 +1,11 @@
+/*
+ * @Author: Poison02 2069820192@qq.com
+ * @Date: 2024-01-19 22:55:05
+ * @LastEditors: Poison02 2069820192@qq.com
+ * @LastEditTime: 2024-03-18 20:00:36
+ * @FilePath: /geekedu-web/src/pages/index/index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -66,10 +74,7 @@ function IndexPage() {
 
     setBlocksLoading(true)
     viewBlock
-      .pageBlocks({
-        platform: 'pc',
-        page_name: 'pc-page-index',
-      })
+      .pageBlocks()
       .then((res: any) => {
         setBlocks(res.data)
         setBlocksLoading(false)
@@ -312,61 +317,52 @@ function IndexPage() {
         <div className={styles.box} key={item.id}>
           {item.sign === 'pc-vod-v1' && (
             <VodComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </VodComp>
           )}
           {item.sign === 'pc-live-v1' && (
             <LiveComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </LiveComp>
           )}
           {item.sign === 'pc-book-v1' && (
             <BookComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </BookComp>
           )}
           {item.sign === 'pc-topic-v1' && (
             <TopicComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </TopicComp>
           )}
-          {item.sign === 'pc-learnPath-v1' && (
+          {item.sign === 'pc-learnpath-v1' && (
             <LearnPathComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </LearnPathComp>
           )}
           {item.sign === 'pc-ms-v1' && (
             <MiaoShaComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </MiaoShaComp>
           )}
           {item.sign === 'pc-tg-v1' && (
             <TuangouComp
-              name={item.config_render.title}
-              items={item.config_render.items}
+              name={item.items.title}
+              items={item.items.items}
             >
             </TuangouComp>
-          )}
-
-          {item.sign === 'code' && (
-            <div className={styles['code-box']}>
-              <div
-                dangerouslySetInnerHTML={{ __html: item.config_render.html }}
-              >
-              </div>
-            </div>
           )}
         </div>
       ))}
