@@ -159,7 +159,7 @@ function MemberPage() {
     name: 'file',
     multiple: false,
     method: 'POST',
-    action: `${config.app_url}/api/v2/member/detail/avatar`,
+    action: `${config.app_url}/user/api/v2/avatar/update`,
     headers: {
       Accept: 'application/json',
       authorization: `Bearer ${getToken()}`,
@@ -182,9 +182,10 @@ function MemberPage() {
       return true
     },
     onChange(info: any) {
+      console.log(info)
       const { status, response } = info.file
       if (status === 'done') {
-        if (response.code === 0) {
+        if (response.status === 0) {
           message.success('上传头像成功')
           resetData()
         }
