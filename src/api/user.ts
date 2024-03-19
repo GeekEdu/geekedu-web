@@ -85,8 +85,9 @@ export function readMessage(id: number) {
   return client.get(`/user/api/message/v2/read/${id}`, {})
 }
 
+// 我的所有订单
 export function orders(params: any) {
-  return client.get('/api/v2/member/orders', params)
+  return client.get('/user/api/v2/order/list', params)
 }
 
 export function myCourses(params: any) {
