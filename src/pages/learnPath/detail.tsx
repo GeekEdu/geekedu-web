@@ -310,15 +310,15 @@ function LearnPathDetailPage() {
                         {hideButton && (
                           <div className={styles['has-button']}>正在拼团中</div>
                         )}
-                        {!hideButton && learn.charge > 0 && (
+                        {!hideButton && learn.price > 0 && (
                           <div
                             className={styles['buy-button']}
                             onClick={() => buyCourse()}
                           >
                             购买套餐￥
-                            {learn.charge}
+                            {learn.price}
                             （共
-                            {learn.courses_count}
+                            {learn.courseCount}
                             课程）
                           </div>
                         )}
