@@ -190,8 +190,11 @@ function OrderPage() {
       // 点播课程
       order
         .createCourseOrder({
-          course_id: goodsId,
-          promo_code: promoCode,
+          goodsId,
+          goodsType: 'REPLAY_COURSE',
+          goodsName,
+          promoCode,
+          payment: payment === 'alipay' ? 'ALIPAY' : (payment === 'wechatpay' ? 'WX_PAY' : 'OTHER'),
         })
         .then((res: any) => {
           orderCreatedHandler(res.data)
@@ -220,6 +223,7 @@ function OrderPage() {
           goodsId,
           goodsType: 'VIP',
           promoCode,
+          goodsName,
           payment: payment === 'alipay' ? 'ALIPAY' : (payment === 'wechatpay' ? 'WX_PAY' : 'OTHER'),
         })
         .then((res: any) => {

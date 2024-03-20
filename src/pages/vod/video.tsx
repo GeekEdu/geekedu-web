@@ -125,7 +125,6 @@ function VodPlayPage() {
       document.title = res.data.course.title
       setPlayendedStatus(false)
       clock && clearInterval(clock)
-      setCid(res.data.course.id)
       setCourse(res.data.course)
       setVideo(res.data.video)
       setVideos(res.data.videos)
@@ -166,11 +165,11 @@ function VodPlayPage() {
       if (
         res.data.videoWatchedProgress
         && res.data.videoWatchedProgress[vid]
-        && res.data.videoWatchedProgress[vid].watchSeconds > 0
+        && res.data.videoWatchedProgress[vid].duration > 0
       ) {
         last_see_value = {
           time: 5,
-          pos: res.data.video_watched_progress[vid].watch_seconds,
+          pos: res.data.videoWatchedProgress[vid].duration,
         }
         setLastSeeValue(last_see_value)
       }
@@ -274,8 +273,8 @@ function VodPlayPage() {
       bulletSecret: {
         enabled: Number.parseInt(config.player.enabledBulletSecret) === 1,
         text: config.player.bulletSecret.text
-          .replace('${user.mobile}', user.mobile)
-          .replace('${mobile}', user.mobile)
+          .replace('${user.mobile}', user.phone)
+          .replace('${mobile}', user.phone)
           .replace('${user.id}', user.id),
         size: `${bulletSecretFontSize}px`,
         color: !config.player.bulletSecret.color
@@ -324,8 +323,9 @@ function VodPlayPage() {
   const playTimeUpdate = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setPlayDuration(duration)
+      console.log(course.id)
       vod
-        .videoRecord(cid, {
+        .videoRecord(video.courseId, {
           videoId: vid,
           duration,
         })

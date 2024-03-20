@@ -207,11 +207,12 @@ function VodDetailPage() {
       `/order?goods_id=${
       cid
          }&goods_type=vod&goods_charge=${
-         course.charge
-         }&goods_label=点播课程&goods_name=${
+         course.price
+         }&goods_label=录播课程&goods_name=${
          course.title
          }&goods_thumb=${
-         course.thumb}`,
+         course.coverLink
+         }`,
     )
   }
 
