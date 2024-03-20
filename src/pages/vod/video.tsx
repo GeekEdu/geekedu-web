@@ -125,6 +125,7 @@ function VodPlayPage() {
       document.title = res.data.course.title
       setPlayendedStatus(false)
       clock && clearInterval(clock)
+      setCid(res.data.course.id)
       setCourse(res.data.course)
       setVideo(res.data.video)
       setVideos(res.data.videos)
@@ -324,7 +325,8 @@ function VodPlayPage() {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setPlayDuration(duration)
       vod
-        .videoRecord(vid, {
+        .videoRecord(cid, {
+          videoId: vid,
           duration,
         })
         .then((res: any) => {})

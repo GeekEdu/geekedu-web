@@ -1,3 +1,11 @@
+/*
+ * @Author: Poison02 2069820192@qq.com
+ * @Date: 2024-01-19 22:55:05
+ * @LastEditors: Poison02 2069820192@qq.com
+ * @LastEditTime: 2024-03-20 14:06:32
+ * @FilePath: /geekedu-web/src/api/course.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import client from './internal/httpClient'
 
 // 录播课列表 分页
@@ -46,7 +54,7 @@ export function playInfo(id: number, params: any) {
 
 // 记录学员观看时长
 export function videoRecord(id: number, params: any) {
-  return client.post(`/api/v2/video/${id}/record`, params)
+  return client.post(`/course/api/v2/${id}/video/record`, params)
 }
 
 // 获取录播课分类列表
