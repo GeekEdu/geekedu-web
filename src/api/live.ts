@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-16 10:12:07
+ * @LastEditTime: 2024-03-20 16:51:13
  * @FilePath: /geekedu-web/src/api/live.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -103,10 +103,11 @@ export function sendMessage(course_id: number, video_id: number, params: any) {
   )
 }
 
-export function likeStatus(params: any) {
-  return client.get(`/addons/templateOne/api/v1/like/status`, params)
-}
+// export function likeStatus(params: any) {
+//   return client.get(`/addons/templateOne/api/v1/like/status`, params)
+// }
 
-export function likeHit(params: any) {
-  return client.get(`/addons/templateOne/api/v1/like/hit`, params)
+// 收藏课程
+export function likeHit(id: number) {
+  return client.post(`/course/api/live/course/v2/${id}/collect`, {})
 }

@@ -13,6 +13,7 @@ interface PropInterface {
   course: any
   chapters: any[]
   isBuy: boolean
+  isVip: boolean
   switchVideo: (item: any) => void
 }
 
@@ -21,6 +22,7 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
   course,
   videos,
   isBuy,
+  isVip,
   switchVideo,
 }) => {
   return (
@@ -47,15 +49,15 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                   <div className={styles.text}>{item.title}</div>
                 </div>
                 <div className={styles['video-info']}>
-                  {item.status === 0 && (
+                  {item.status === 1 && (
                     <span style={{ color: '#3ca7fa' }}>
                       {dateFormat(item.liveTime)}
                     </span>
                   )}
-                  {item.status === 1 && (
+                  {item.status === 2 && (
                     <span style={{ color: '#04c877' }}>直播中</span>
                   )}
-                  {item.status === 2 && (
+                  {item.status === 3 && (
                     <>
                       <span>已结束 </span>
                       <DurationText seconds={item.duration} />
@@ -77,10 +79,10 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                 className={styles['video-item']}
                 onClick={() => switchVideo(item)}
               >
-                {isBuy && (
+                {(isBuy || isVip) && (
                   <img className={styles['play-icon']} src={unLockIcon} />
                 )}
-                {!isBuy && (
+                {(!isBuy || !isVip) && (
                   <img className={styles['play-icon']} src={lockIcon} />
                 )}
                 <div className={styles['video-title']}>

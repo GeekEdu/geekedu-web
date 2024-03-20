@@ -12,12 +12,14 @@ interface PropInterface {
   comments: any[]
   commentUsers: any
   isBuy: boolean
+  isVip: boolean
   success: () => void
 }
 
 export const LiveCourseComments: React.FC<PropInterface> = ({
   cid,
   isBuy,
+  isVip,
   comments,
   commentUsers,
   success,
@@ -53,7 +55,7 @@ export const LiveCourseComments: React.FC<PropInterface> = ({
     <div className={styles['course-comments-box']}>
       <div className={styles['comment-divider']}>全部评论</div>
       <div className={styles.line}></div>
-      {isLogin && isBuy && (
+      {isLogin && (isBuy || isVip) && (
         <div className={styles.replybox}>
           <div className={styles.reply}>
             <img className={styles['user-avatar']} src={user.avatar} />

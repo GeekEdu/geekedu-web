@@ -31,6 +31,7 @@ function LiveDetailPage() {
   const [videos, setVideos] = useState<any>({})
   const [isBuy, setIsBuy] = useState<boolean>(false)
   const [isLike, setIsLike] = useState<boolean>(false)
+  const [isVip, setIsVip] = useState<boolean>(false)
   const [msData, setMsData] = useState<any>({})
   const [msVisible, setMsVisible] = useState<boolean>(false)
   const [tgData, setTgData] = useState<any>({})
@@ -84,6 +85,8 @@ function LiveDetailPage() {
       setCourse(res.data.course)
       setChapters(res.data.chapters)
       setIsBuy(res.data.isBuy)
+      setIsLike(res.data.isCollect)
+      setIsVip(res.data.isVip)
       setVideos(res.data.videos)
       // 获取秒杀信息
       if (!res.data.isBuy && configFunc.miaosha)
@@ -169,10 +172,7 @@ function LiveDetailPage() {
   const likeHit = () => {
     if (isLogin) {
       live
-        .likeHit({
-          id: cid,
-          type: 'live',
-        })
+        .likeHit(cid)
         .then((res) => {
           setIsLike(!isLike)
           if (isLike)
@@ -280,11 +280,11 @@ function LiveDetailPage() {
       return
     }
 
-    if (isBuy === false) {
+    if (!isBuy && !isVip) {
       message.error('请购买课程后观看')
       return
     }
-    if (item.status === 2 && item.duration === 0) {
+    if (item.status === 3 && item.duration === 0) {
       message.error('直播已结束')
       return
     }
@@ -434,7 +434,7 @@ function LiveDetailPage() {
               )}
               <p className={styles.desc}>{course.intro}</p>
               <div className={styles['btn-box']}>
-                {!isBuy && course.price !== 0 && (
+                {!isBuy && course.price !== 0 && !isVip && (
                   <>
                     {msData && msData.data && (
                       <>
@@ -463,7 +463,7 @@ function LiveDetailPage() {
                         {hideButton && (
                           <div className={styles['has-button']}>正在拼团中</div>
                         )}
-                        {!hideButton && course.charge > 0 && (
+                        {!hideButton && course.price > 0 && (
                           <div
                             className={styles['buy-button']}
                             onClick={() => buyCourse()}
@@ -500,8 +500,11 @@ function LiveDetailPage() {
                 {course.price === 0 && (
                   <div className={styles['has-button']}>本课程免费</div>
                 )}
-                {course.price !== 0 && isBuy && (
+                {course.price !== 0 && isBuy && !isVip && (
                   <div className={styles['has-button']}>课程已购买</div>
+                )}
+                {course.price !== 0 && isVip && (
+                  <div className={styles['has-button']}>会员免费看</div>
                 )}
               </div>
             </div>
@@ -562,6 +565,7 @@ function LiveDetailPage() {
                 course={course}
                 videos={videos}
                 isBuy={isBuy}
+                isVip={isVip}
                 switchVideo={(item: any) => goPlay(item)}
               />
             )}
@@ -570,6 +574,7 @@ function LiveDetailPage() {
                 course={course}
                 videos={videos[0]}
                 isBuy={isBuy}
+                isVip={isVip}
                 switchVideo={(item: any) => goPlay(item)}
               />
             )}
@@ -579,6 +584,7 @@ function LiveDetailPage() {
           <LiveCourseComments
             cid={cid}
             isBuy={isBuy}
+            isVip={isVip}
             comments={comments}
             commentUsers={commentUsers}
             success={() => {
