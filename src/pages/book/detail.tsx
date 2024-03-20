@@ -249,7 +249,7 @@ function BookDetailPage() {
       goLogin()
       return
     }
-    if (book.price > 0 && item.charge > 0 && isBuy === false) {
+    if (book.price > 0 && !item.isFreeRead && isBuy === false) {
       buyBook()
       return
     }
@@ -581,7 +581,7 @@ function BookDetailPage() {
                           </div>
                           {!isBuy
                           && book.price > 0
-                          && articleItem.charge === 0 && (
+                          && !articleItem.isFreeRead && (
                             <div className={styles.free}>试读</div>
                           )}
                         </div>
@@ -606,7 +606,7 @@ function BookDetailPage() {
                         </div>
                         {!isBuy
                         && book.price > 0
-                        && articleItem.charge === 0 && (
+                        && !articleItem.isFreeRead && (
                           <div className={styles.free}>试读</div>
                         )}
                       </div>
