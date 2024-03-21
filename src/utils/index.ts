@@ -86,10 +86,10 @@ export function getCommentTime(dateStr: string) {
     return `${tempTime}天前`
   }
   else if (interval < 60 * 60 * 24 * 365) {
-    return moment(dateStr).utcOffset(0).format('MM-DD')
+    return moment(dateStr).utcOffset(0).format('MM-DD:ss')
   }
   else {
-    return moment(dateStr).utcOffset(0).format('YYYY-MM-DD')
+    return moment(dateStr).utcOffset(0).format('YYYY-MM-DD:ss')
   }
 }
 
@@ -111,15 +111,15 @@ export function changeTime(dateStr: string) {
     return `${tempTime}天前`
   }
   else if (interval < 60 * 60 * 24 * 365) {
-    return moment(dateStr).utcOffset(0).format('MM-DD HH:mm')
+    return moment(dateStr).utcOffset(0).format('MM-DD HH:mm:ss')
   }
   else {
-    return moment(dateStr).utcOffset(0).format('YYYY-MM-DD HH:mm')
+    return moment(dateStr).utcOffset(0).format('YYYY-MM-DD HH:mm:ss')
   }
 }
 
 export function dateFormat(dateStr: string) {
-  return moment(dateStr).format('YYYY-MM-DD HH:mm')
+  return moment(dateStr).format('YYYY-MM-DD HH:mm:ss')
 }
 
 export function generateUUID(): string {

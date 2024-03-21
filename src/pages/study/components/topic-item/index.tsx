@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ThumbBar } from '../../../../components/thumb-bar'
 import { changeTime, dateFormat } from '../../../../utils/index'
+import { TopicCourseItem } from '../../../../components'
 import styles from './index.module.scss'
 
 interface PropInterface {
@@ -29,7 +30,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
             <div className={styles.item}>
               <div className={styles['left-item']}>
                 <ThumbBar
-                  value={item.topic.thumb}
+                  value={item.topic.coverLink}
                   border={4}
                   width={160}
                   height={120}
@@ -42,10 +43,10 @@ export const TopicItemComp: React.FC<PropInterface> = ({
               <div className={styles['right-item']}>
                 <div className={styles['item-title']}>{item.topic.title}</div>
                 <div className={styles['item-info']}>
-                  {item.created_at && (
+                  {item.lastViewTime && (
                     <div className={styles['item-text']}>
                       上次浏览：
-                        {changeTime(item.created_at)}
+                      {changeTime(item.lastViewTime)}
                     </div>
                   )}
                 </div>
@@ -69,7 +70,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
             <div className={styles.item}>
               <div className={styles['left-item']}>
                 <ThumbBar
-                  value={item.topic.thumb}
+                  value={item.topic.coverLink}
                   border={4}
                   width={160}
                   height={120}
@@ -84,7 +85,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
                   {item.created_at && (
                     <div className={styles['item-text']}>
                       订阅时间：
-                        {dateFormat(item.created_at)}
+                      {dateFormat(item.created_at)}
                     </div>
                   )}
                 </div>
@@ -108,7 +109,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
             <div className={styles.item}>
               <div className={styles['left-item']}>
                 <ThumbBar
-                  value={item.topic.thumb}
+                  value={item?.topic?.coverLink}
                   border={4}
                   width={160}
                   height={120}
@@ -116,12 +117,12 @@ export const TopicItemComp: React.FC<PropInterface> = ({
                 </ThumbBar>
               </div>
               <div className={styles['right-item']}>
-                <div className={styles['item-title']}>{item.topic.title}</div>
+                <div className={styles['item-title']}>{item?.topic?.title}</div>
                 <div className={styles['item-info']}>
-                  {item.created_at && (
+                  {item.collectTime && (
                     <div className={styles['item-text']}>
                       收藏时间：
-                        {dateFormat(item.created_at)}
+                      {dateFormat(item.collectTime)}
                     </div>
                   )}
                 </div>

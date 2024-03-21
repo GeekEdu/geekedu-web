@@ -68,9 +68,9 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                          {item.learned_count}
-                          课时
-                        </span>
+                        {item.learned_count}
+                        课时
+                      </span>
                       {' '}
                       / 共
                       {item.course.videos_count}
@@ -134,9 +134,9 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                          {item.learned_count}
-                          课时
-                        </span>
+                        {item.learned_count}
+                        课时
+                      </span>
                       {' '}
                       / 共
                       {item.course.videos_count}
@@ -171,11 +171,11 @@ export const CourseItemComp: React.FC<PropInterface> = ({
             className={styles['item-box']}
             key={`${item.id}course-collect`}
           >
-            {item.course && item.course.id && (
+            {item?.course && item?.course?.id && (
               <div className={styles.item}>
                 <div className={styles['left-item']}>
                   <ThumbBar
-                    value={item.course.thumb}
+                    value={item?.course?.coverLink}
                     border={4}
                     width={160}
                     height={120}
@@ -190,18 +190,18 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                          {item.learned_count}
-                          课时
-                        </span>
+                        {item.learned_count}
+                        课时
+                      </span>
                       {' '}
                       / 共
                       {item.course.videos_count}
                       课时
                     </div>
-                    {item.created_at && (
+                    {item.collectTime && (
                       <div className={styles['item-text']}>
                         收藏时间：
-                          {dateFormat(item.created_at)}
+                        {dateFormat(item.collectTime)}
                       </div>
                     )}
                   </div>
@@ -209,7 +209,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                 <div
                   className={styles['continue-button']}
                   onClick={() => {
-                    goDetail(item.course_id)
+                    goDetail(item.courseId)
                   }}
                 >
                   详情

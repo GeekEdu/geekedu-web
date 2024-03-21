@@ -12,18 +12,27 @@ export function live(params: any) {
   return client.get('/addons/zhibo/api/v1/member/courses/learned', params)
 }
 
-export function topic(params: any) {
-  return client.get('/addons/MeeduTopics/api/v2/member/topics/view', params)
+// 收藏直播课
+export function liveLikeCourses(params: any) {
+  return client.get('/user/api/member/topic/collect/list', params)
 }
 
-export function book(params: any) {
-  return client.get('/addons/MeeduBooks/api/v2/member/book/view', params)
+// 在学图文
+export function topic() {
+  return client.get('/book/api/imageText/v2/study/list', {})
 }
 
-export function likeCourses(params: any) {
-  return client.get('/addons/templateOne/api/v1/like/courses', params)
+// 在学电子书
+export function book() {
+  return client.get('/book/api/eBook/v2/study/list', {})
 }
 
+// 收藏电子书
+export function bookLikeCourses(params: any) {
+  return client.get('/user/api/member/topic/collect/list', params)
+}
+
+// 收藏图文
 export function topicLikeCourses(params: any) {
-  return client.get('/addons/MeeduTopics/api/v1/user/collect', params)
+  return client.get('/user/api/member/topic/collect/list', params)
 }

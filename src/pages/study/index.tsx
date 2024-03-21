@@ -103,13 +103,10 @@ function StudyCenterPage() {
     }
     else if (current === 'topic') {
       study
-        .topic({
-          page,
-          size,
-        })
+        .topic()
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {
@@ -118,13 +115,10 @@ function StudyCenterPage() {
     }
     else if (current === 'book') {
       study
-        .book({
-          page,
-          size,
-        })
+        .book()
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {
@@ -208,12 +202,11 @@ function StudyCenterPage() {
     if (current === 'vod') {
       member
         .collects({
-          page,
-          size,
+          type: 'REPLAY_COURSE',
         })
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {
@@ -222,14 +215,12 @@ function StudyCenterPage() {
     }
     else if (current === 'live') {
       study
-        .likeCourses({
-          page,
-          size,
-          type: 'live',
+        .liveLikeCourses({
+          type: 'LIVE_COURSE',
         })
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {
@@ -239,12 +230,11 @@ function StudyCenterPage() {
     else if (current === 'topic') {
       study
         .topicLikeCourses({
-          page,
-          size,
+          type: 'IMAGE_TEXT',
         })
         .then((res: any) => {
-          setList(res.data.data.data)
-          setTotal(res.data.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {
@@ -253,14 +243,12 @@ function StudyCenterPage() {
     }
     else if (current === 'book') {
       study
-        .likeCourses({
-          page,
-          size,
-          type: 'book',
+        .bookLikeCourses({
+          type: 'E_BOOK',
         })
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data.length)
           setLoading(false)
         })
         .catch((e) => {

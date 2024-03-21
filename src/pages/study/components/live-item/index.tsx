@@ -56,9 +56,9 @@ export const LiveItemComp: React.FC<PropInterface> = ({
                   <div className={styles['item-text']}>
                     已学完：
                     <span>
-                        {item.learned_count}
-                        课时
-                      </span>
+                      {item.learned_count}
+                      课时
+                    </span>
                     {' '}
                     / 共
                     {item.course.videos_count}
@@ -70,12 +70,12 @@ export const LiveItemComp: React.FC<PropInterface> = ({
                   {item.course.next_video
                   && item.course.next_video.length !== 0 && (
                     <div className={styles['item-progress']}>
-                        下节直播：
-                        {item.course.next_video.title}
-                        (
-                        {dateFormat(item.course.next_video.published_at)}
-                        )
-                      </div>
+                      下节直播：
+                      {item.course.next_video.title}
+                      (
+                      {dateFormat(item.course.next_video.published_at)}
+                      )
+                    </div>
                   )}
                 </div>
               </div>
@@ -115,9 +115,9 @@ export const LiveItemComp: React.FC<PropInterface> = ({
                   <div className={styles['item-text']}>
                     已学完：
                     <span>
-                        {item.learned_count}
-                        课时
-                      </span>
+                      {item.learned_count}
+                      课时
+                    </span>
                     {' '}
                     / 共
                     {item.course.videos_count}
@@ -129,12 +129,12 @@ export const LiveItemComp: React.FC<PropInterface> = ({
                   {item.course.next_video
                   && item.course.next_video.length !== 0 && (
                     <div className={styles['item-progress']}>
-                        下节直播：
-                        {item.course.next_video.title}
-                        (
-                        {dateFormat(item.course.next_video.published_at)}
-                        )
-                      </div>
+                      下节直播：
+                      {item.course.next_video.title}
+                      (
+                      {dateFormat(item.course.next_video.published_at)}
+                      )
+                    </div>
                   )}
                 </div>
               </div>
@@ -156,7 +156,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
           <div className={styles.item}>
             <div className={styles['left-item']}>
               <ThumbBar
-                value={item.thumb}
+                value={item?.liveCourse?.cover}
                 border={4}
                 width={160}
                 height={120}
@@ -164,12 +164,12 @@ export const LiveItemComp: React.FC<PropInterface> = ({
               </ThumbBar>
             </div>
             <div className={styles['right-item']}>
-              <div className={styles['item-title']}>{item.title}</div>
+              <div className={styles['item-title']}>{item?.liveCourse?.title}</div>
               <div className={styles['item-info']}>
-                {item.created_at && (
+                {item.collectTime && (
                   <div className={styles['item-text']}>
                     收藏时间：
-                    {dateFormat(item.created_at)}
+                    {dateFormat(item.collectTime)}
                   </div>
                 )}
               </div>
@@ -177,7 +177,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
             <div
               className={styles['continue-button']}
               onClick={() => {
-                goDetail(item.id)
+                goDetail(item.liveCourseId)
               }}
             >
               详情

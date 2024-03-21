@@ -174,6 +174,7 @@ export function certList(params: any) {
   return client.get('/addons/Cert/api/v1/member/cert', params)
 }
 
+// 用户订阅图文
 export function userBuyTopics(params: any) {
   return client.get('/addons/MeeduTopics/api/v1/user/buyTopics', params)
 }
@@ -182,6 +183,7 @@ export function bookCourses(params: any) {
   return client.get('/addons/MeeduBooks/api/v2/member/books', params)
 }
 
+// 用户收藏课程
 export function collects(params: any) {
-  return client.get('/api/v3/member/courses/like', params)
+  return client.get('/user/api/member/topic/collect/list', params)
 }

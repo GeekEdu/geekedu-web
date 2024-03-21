@@ -50,7 +50,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
                   {item.created_at && (
                     <div className={styles['item-text']}>
                       上次浏览：
-                        {changeTime(item.created_at)}
+                      {changeTime(item.created_at)}
                     </div>
                   )}
                 </div>
@@ -91,15 +91,15 @@ export const BookItemComp: React.FC<PropInterface> = ({
                   && item.created_at
                     ? (
                       <div className={styles['item-text']}>
-                          订阅时间：
-                          {dateFormat(item.created_at)}
-                        </div>
+                        订阅时间：
+                        {dateFormat(item.created_at)}
+                      </div>
                       )
                     : (
                       <div className={styles['item-text']}>
-                          上次浏览：
-                          {changeTime(item.created_at)}
-                        </div>
+                        上次浏览：
+                        {changeTime(item.created_at)}
+                      </div>
                       )}
                 </div>
               </div>
@@ -121,7 +121,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
           <div className={styles.item}>
             <div className={styles['left-item']}>
               <ThumbBar
-                value={item.thumb}
+                value={item?.book?.coverLink}
                 border={4}
                 width={90}
                 height={120}
@@ -129,12 +129,12 @@ export const BookItemComp: React.FC<PropInterface> = ({
               </ThumbBar>
             </div>
             <div className={styles['right-item']}>
-              <div className={styles['item-title']}>{item.title}</div>
+              <div className={styles['item-title']}>{item?.book?.name}</div>
               <div className={styles['item-info']}>
-                {item.created_at && (
+                {item.collectTime && (
                   <div className={styles['item-text']}>
                     收藏时间：
-                    {dateFormat(item.created_at)}
+                    {dateFormat(item.collectTime)}
                   </div>
                 )}
               </div>
@@ -142,7 +142,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
             <div
               className={styles['continue-button']}
               onClick={() => {
-                goDetail(item.id)
+                goDetail(item.bookId)
               }}
             >
               详情
