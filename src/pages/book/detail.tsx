@@ -228,7 +228,7 @@ function BookDetailPage() {
     if (isLogin) {
       bookApi
         .likeHit({
-          id: bid,
+          relationId: bid,
           type: 'E_BOOK',
         })
         .then((res) => {
