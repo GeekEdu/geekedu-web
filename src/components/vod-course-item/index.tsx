@@ -2,7 +2,7 @@
  * @Author: Poison02 2069820192@qq.com
  * @Date: 2024-01-19 22:55:05
  * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-18 20:15:44
+ * @LastEditTime: 2024-03-24 14:49:36
  * @FilePath: /geekedu-web/src/components/vod-course-item/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -47,7 +47,7 @@ export const VodCourseItem: React.FC<PropInterface> = ({
       <div className={styles['vod-course-body']}>
         <div className={styles['vod-course-title']}>{title}</div>
         <div className={styles['vod-course-info']}>
-          <div className={styles['vod-course-sub']}>{category.name}</div>
+          <div className={styles['vod-course-sub']}>{category?.name}</div>
           <div className={styles['vod-course-charge']}>
             {!isFree && charge > 0 && (
               <span className={styles['charge-text']}>
