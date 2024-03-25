@@ -165,7 +165,7 @@ function VodDetailPage() {
   }
 
   const getMsDetail = () => {
-    if (course.is_free === 1)
+    if (course.isFree)
       return
 
     miaosha
@@ -524,7 +524,7 @@ function VodDetailPage() {
         )}
         {currentTab === 3 && (
           <div className={styles['course-chapter-box']}>
-            {chapters.length > 0 && (
+            {chapters?.length > 0 && (
               <VideoChapterListComp
                 chapters={chapters}
                 course={course}
@@ -534,7 +534,7 @@ function VodDetailPage() {
                 switchVideo={(item: any) => goPlay(item)}
               />
             )}
-            {chapters.length === 0 && videos[0] && (
+            {chapters?.length === 0 && videos[0] && (
               <VideoListComp
                 course={course}
                 videos={videos[0]}
