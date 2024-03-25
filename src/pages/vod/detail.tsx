@@ -283,7 +283,7 @@ function VodDetailPage() {
       return
     }
     window.open(
-      `${config.url}/api/v2/course/attach/${id}/download?token=${token}`,
+      `http://127.0.0.1:8080/res/api/attach/${id}/download/${token}`,
     )
   }
 
