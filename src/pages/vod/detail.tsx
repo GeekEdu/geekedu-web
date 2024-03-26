@@ -169,9 +169,9 @@ function VodDetailPage() {
       return
 
     miaosha
-      .detail(0, {
-        course_id: cid,
-        course_type: 'course',
+      .detail({
+        goodsId: cid,
+        goodsType: 'course',
       })
       .then((res: any) => {
         setMsData(res.data)
@@ -219,17 +219,17 @@ function VodDetailPage() {
   const goMsOrder = (id: number) => {
     navigate(
       `/order?course_id=${
-      msData.data.goods_id
+      msData.goodsId
          }&course_type=${
-         msData.data.goods_type
+         msData.goodsType
          }&goods_type=ms&goods_charge=${
-         msData.data.charge
+         msData.price
          }&goods_label=秒杀&goods_name=${
-         msData.data.goods_title
+         msData.goodsTitle
          }&goods_id=${
          id
          }&goods_thumb=${
-         msData.data.goods_thumb}`,
+         msData.goodsCover}`,
     )
   }
 
@@ -425,7 +425,7 @@ function VodDetailPage() {
               <div className={styles['btn-box']}>
                 {!isBuy && course.price !== 0 && (
                   <>
-                    {msData && msData.data && (
+                    {msData && (
                       <>
                         {msData.order && msData.order.status === 0 && (
                           <div
