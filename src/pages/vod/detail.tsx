@@ -425,29 +425,29 @@ function VodDetailPage() {
               <div className={styles['btn-box']}>
                 {!isBuy && course.price !== 0 && (
                   <>
-                    {msData && (
+                    {msData && msData.data && (
                       <>
-                        {msData.order && msData.order.status === 0 && (
+                        {msData?.orderId && msData?.orderStatus === 1 && (
                           <div
                             className={styles['buy-button']}
-                            onClick={() => goMsOrder(msData.order.id)}
+                            onClick={() => goMsOrder(msData?.orderId)}
                           >
                             已获得秒杀资格，请尽快支付
                           </div>
                         )}
-                        {(!msData.order || msData.order.status !== 0)
-                        && !msData.data.is_over && (
+                        {(!msData?.orderId || msData?.orderStatus)
+                        && !msData?.data?.isOver && (
                           <div
                             className={styles['buy-button']}
                             onClick={() => openMsDialog()}
                           >
                             立即秒杀￥
-                            {msData.data.charge}
+                            {msData?.data?.price}
                           </div>
                         )}
                       </>
                     )}
-                    {(!msData || !msData.data) && (
+                    {(!msData || !msData?.data) && (
                       <>
                         {hideButton && (
                           <div className={styles['has-button']}>正在拼团中</div>
