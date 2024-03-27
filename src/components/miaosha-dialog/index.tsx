@@ -50,7 +50,7 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
          }&goods_id=${
          id
          }&goods_thumb=${
-         msData.data.goodCover}`,
+         msData.data.goodsCover}`,
     )
   }
 
@@ -66,10 +66,10 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
       })
       .then((res: any) => {
         message.success('抢购成功，请尽快支付')
-        const orderId = res.data
+        const secId = res.data
         setLoading(false)
         setTimeout(() => {
-          goMsOrder(orderId)
+          goMsOrder(secId)
         }, 600)
       })
       .catch((e: any) => {

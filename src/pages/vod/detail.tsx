@@ -174,8 +174,8 @@ function VodDetailPage() {
         goodsType: 'course',
       })
       .then((res: any) => {
-        setMsData(res.data)
-        if (!res.data.data && !isBuy && configFunc.tuangou)
+        setMsData(res?.data)
+        if (!res?.data?.data && !isBuy && configFunc.tuangou)
           getTgDetail()
       })
   }
@@ -217,6 +217,7 @@ function VodDetailPage() {
   }
 
   const goMsOrder = (id: number) => {
+    console.log(msData)
     navigate(
       `/order?course_id=${
       msData.goodsId
@@ -425,7 +426,7 @@ function VodDetailPage() {
               <div className={styles['btn-box']}>
                 {!isBuy && course.price !== 0 && (
                   <>
-                    {msData && msData.data && (
+                    {msData && msData?.data && (
                       <>
                         {msData?.orderId && msData?.orderStatus === 1 && (
                           <div
