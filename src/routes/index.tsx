@@ -57,6 +57,7 @@ const AnnouncementPage = lazy(() => import('../pages/announcement/index'))
 // 学员相关
 const MemberPage = lazy(() => import('../pages/member/index'))
 const MemberMessagesPage = lazy(() => import('../pages/member/messages'))
+const MemberCouponPage = lazy(() => import('../pages/member/coupon'))
 const MemberOrdersPage = lazy(() => import('../pages/member/orders'))
 const MemberPaperPage = lazy(() => import('../pages/member/paper'))
 const MemberMockPaperPage = lazy(() => import('../pages/member/mock-paper'))
@@ -305,6 +306,10 @@ const routes: RouteObject[] = [
           {
             path: '/member/messages',
             element: <PrivateRoute Component={<MemberMessagesPage />} />,
+          },
+          {
+            path: '/member/coupon',
+            element: <PrivateRoute Component={<MemberCouponPage />} />,
           },
           {
             path: '/member/orders',

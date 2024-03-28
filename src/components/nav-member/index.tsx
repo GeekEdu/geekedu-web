@@ -49,6 +49,12 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
               path: '/member/certs',
               status: configFunc.cert,
             },
+            {
+              name: '我的优惠',
+              id: 10,
+              path: '/member/coupon',
+              status: true,
+            },
           ],
         },
         // {

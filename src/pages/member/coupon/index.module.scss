@@ -1,0 +1,19 @@
+.box {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.coupon-box {
+  margin-left: 30px;
+  width: 999px; /* 考虑修改为百分比或自适应宽度，以便在不同屏幕尺寸下更好地适应 */
+  display: flex;
+  flex-wrap: wrap; /* 允许 coupon-items 换行 */
+  gap: 30px; /* 添加间距，使 coupon-items 之间有一定间隙 */
+  background: #ffffff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 30px; /* 通过合并 padding 属性来简化 */
+}
