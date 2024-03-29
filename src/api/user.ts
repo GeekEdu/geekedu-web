@@ -170,8 +170,9 @@ export function creditMallExchange(id: number, params: any) {
   return client.post(`/addons/Credit1Mall/api/v1/goods/${id}/exchange`, params)
 }
 
+// 我的证书
 export function certList(params: any) {
-  return client.get('/addons/Cert/api/v1/member/cert', params)
+  return client.get('/user/api/certificate/member/list', params)
 }
 
 // 用户订阅图文

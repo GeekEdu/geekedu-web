@@ -63,13 +63,13 @@ function LearnPathDetailPage() {
       return
 
     miaosha
-      .detail(0, {
-        course_id: cid,
-        course_type: 'learnPath',
+      .detail({
+        goodsId: cid,
+        goodsType: 'learnPath',
       })
       .then((res: any) => {
-        setMsData(res.data)
-        if (!res.data.data && !isBuy && configFunc.tuangou)
+        setMsData(res?.data)
+        if (!res?.data?.data && !isBuy && configFunc.tuangou)
           getTgDetail()
       })
   }
@@ -106,17 +106,17 @@ function LearnPathDetailPage() {
   const goMsOrder = (id: number) => {
     navigate(
       `/order?course_id=${
-      msData.data.goods_id
+      msData?.data.goods_id
          }&course_type=${
-         msData.data.goods_type
+         msData?.data.goods_type
          }&goods_type=ms&goods_charge=${
-         msData.data.charge
+         msData?.data.charge
          }&goods_label=秒杀&goods_name=${
-         msData.data.goods_title
+         msData?.data.goods_title
          }&goods_id=${
          id
          }&goods_thumb=${
-         msData.data.goods_thumb}`,
+         msData?.data.goods_thumb}`,
     )
   }
 
@@ -283,29 +283,29 @@ function LearnPathDetailPage() {
                 )}
                 {!isBuy && learn.price !== 0 && (
                   <>
-                    {msData && msData.data && (
+                    {msData && msData?.data && (
                       <>
-                        {msData.order && msData.order.status === 0 && (
+                        {msData?.order && msData?.order?.status === 0 && (
                           <div
                             className={styles['buy-button']}
-                            onClick={() => goMsOrder(msData.order.id)}
+                            onClick={() => goMsOrder(msData?.order.id)}
                           >
                             已获得秒杀资格，请尽快支付
                           </div>
                         )}
-                        {(!msData.order || msData.order.status !== 0)
-                        && !msData.data.is_over && (
+                        {(!msData?.order || msData?.order?.status !== 0)
+                        && !msData?.data.is_over && (
                           <div
                             className={styles['buy-button']}
                             onClick={() => openMsDialog()}
                           >
                             立即秒杀￥
-                            {msData.data.charge}
+                            {msData?.data?.charge}
                           </div>
                         )}
                       </>
                     )}
-                    {(!msData || !msData.data) && (
+                    {(!msData || !msData?.data) && (
                       <>
                         {hideButton && (
                           <div className={styles['has-button']}>正在拼团中</div>

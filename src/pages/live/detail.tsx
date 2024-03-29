@@ -105,9 +105,9 @@ function LiveDetailPage() {
       return
 
     miaosha
-      .detail(0, {
-        course_id: cid,
-        course_type: 'live',
+      .detail({
+        goodsId: cid,
+        goodsType: 'live',
       })
       .then((res: any) => {
         setMsData(res.data)
