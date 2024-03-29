@@ -18,9 +18,10 @@ interface CouponItemProps {
   couponCode: string
   validity: string
   imgUrl: string
+  isOdd: boolean
 }
 
-export const CouponItemPage: FC<CouponItemProps> = ({ storeName, discount, couponCode, validity, imgUrl }) => {
+export const CouponItemPage: FC<CouponItemProps> = ({ storeName, discount, couponCode, validity, imgUrl, isOdd }) => {
   const [messageApi, contextHolder] = message.useMessage()
   // 复制优惠码到剪贴板
   const copyIt = () => {
@@ -34,10 +35,13 @@ export const CouponItemPage: FC<CouponItemProps> = ({ storeName, discount, coupo
     })
   }
 
+  // 使用 classNames 函数来合并类名
+  const couponCardClasses = `${styles['coupon-card']} ${isOdd ? styles['coupon-card-odd'] : ''}`
+
   return (
     <>
       {contextHolder}
-      <div className={styles['coupon-card']}>
+      <div className={couponCardClasses}>
         <div className={styles['coupon-main']}>
           <div className={styles['coupon-img']}>
             <img src={imgUrl} alt={`${storeName} coupon`} />
