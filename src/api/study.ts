@@ -1,13 +1,16 @@
 import client from './internal/httpClient'
 
+// 在学课程
 export function courses(params: any) {
-  return client.get('/api/v3/member/courses/learned', params)
+  return client.get('/course/api/v2/learnedCourse', params)
 }
 
+// 学习进度详情
 export function coursesDetail(courseId: number, params: any) {
-  return client.get(`/api/v3/member/learned/course/${courseId}`, params)
+  return client.get(`/course/api/v2/${courseId}/learnedDetail`, params)
 }
 
+// 在学直播课
 export function live(params: any) {
   return client.get('/addons/zhibo/api/v1/member/courses/learned', params)
 }

@@ -74,12 +74,12 @@ function StudyCenterPage() {
     if (current === 'vod') {
       study
         .courses({
-          page,
-          size,
+          pageNum: page,
+          pageSize: size,
         })
         .then((res: any) => {
-          setList(res.data.data)
-          setTotal(res.data.total)
+          setList(res.data)
+          setTotal(res.data?.length)
           setLoading(false)
         })
         .catch((e) => {

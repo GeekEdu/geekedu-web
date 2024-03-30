@@ -20,12 +20,12 @@ export const CourseItemComp: React.FC<PropInterface> = ({
   const [cid, setCid] = useState(0)
 
   const goPlay = (item: any) => {
-    if (item.progress < 100 && item.last_view_video.length !== 0) {
-      const vid = item.last_view_video.video_id
+    if (item.progress < 100 && item?.last_view_video.length !== 0) {
+      const vid = item?.last_view_video?.video_id
       navigate(`/courses/video/${vid}`)
     }
     else {
-      goDetail(item.course_id)
+      goDetail(item.course.id)
     }
   }
 
@@ -44,21 +44,21 @@ export const CourseItemComp: React.FC<PropInterface> = ({
       </DetailDialog>
       <div className={styles.box}>
         {currentStatus === 1
-        && list.map((item: any) => (
-          <div className={styles['item-box']} key={`${item.id}course-learn`}>
+        && list.map((item: any, index: any) => (
+          <div className={styles['item-box']} key={`${index}course-learn`}>
             {item.course && item.course.id && (
               <div className={styles.item}>
                 <div className={styles['left-item']}>
                   <ThumbBar
-                    value={item.course.thumb}
+                    value={item.course.coverLink}
                     border={4}
                     width={160}
                     height={120}
                   >
                   </ThumbBar>
-                  {item.is_subscribe === 1 && (
+                  {/* {item.is_subscribe === 1 && (
                     <div className={styles.icon}>已订阅</div>
-                  )}
+                  )} */}
                 </div>
                 <div className={styles['right-item']}>
                   <div className={styles['item-title']}>
@@ -68,12 +68,12 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                        {item.learned_count}
+                        {item.learnedCount}
                         课时
                       </span>
                       {' '}
                       / 共
-                      {item.course.videos_count}
+                      {item.course.sectionCount}
                       课时
                     </div>
                   </div>
@@ -81,13 +81,13 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                 <div
                   className={styles['detail-button']}
                   onClick={() => {
-                    setCid(item.course_id)
+                    setCid(item.course.id)
                     setVisiable(true)
                   }}
                 >
                   学习进度
                 </div>
-                {item.is_watched === 1 && (
+                {item?.isOver && (
                   <div
                     className={styles['completed-button']}
                     onClick={() => {
@@ -97,7 +97,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     学习完成
                   </div>
                 )}
-                {item.is_watched !== 1 && (
+                {!item?.isOver && (
                   <div
                     className={styles['continue-button']}
                     onClick={() => {
@@ -134,12 +134,12 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                        {item.learned_count}
+                        {item.learnedCount}
                         课时
                       </span>
                       {' '}
                       / 共
-                      {item.course.videos_count}
+                      {item.course.sectionCount}
                       课时
                     </div>
                   </div>
@@ -147,7 +147,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                 <div
                   className={styles['detail-button']}
                   onClick={() => {
-                    setCid(item.course_id)
+                    setCid(item.course.id)
                     setVisiable(true)
                   }}
                 >
@@ -156,7 +156,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                 <div
                   className={styles['continue-button']}
                   onClick={() => {
-                    goDetail(item.course_id)
+                    goDetail(item.course.id)
                   }}
                 >
                   课程目录
@@ -190,12 +190,12 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                     <div className={styles['item-text']}>
                       已学完：
                       <span>
-                        {item.learned_count}
+                        {item.learnedCount}
                         课时
                       </span>
                       {' '}
                       / 共
-                      {item.course.videos_count}
+                      {item.course.sectionCount}
                       课时
                     </div>
                     {item.collectTime && (
