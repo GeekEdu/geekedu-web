@@ -304,9 +304,9 @@ function StudyCenterPage() {
                 <Radio value={1} style={{ marginRight: 40 }}>
                   在学
                 </Radio>
-                <Radio value={2} style={{ marginRight: 40 }}>
+                {/* <Radio value={2} style={{ marginRight: 40 }}>
                   订阅
-                </Radio>
+                </Radio> */}
                 <Radio value={3}>收藏</Radio>
               </Radio.Group>
             </div>
