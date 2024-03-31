@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { QRCode, message } from 'antd'
 import { order } from '../../api/index'
+import { CountDown } from '../../components'
 import wepayIcon from '../../assets/img/commen/icon-zfb@2x.png'
 import cradIcon from '../../assets/img/commen/icon-card.png'
 import { getAppUrl } from '../../utils/index'
@@ -158,6 +159,13 @@ function OrderPayPage() {
            &redirect=${redirect}`
   }
 
+  const calTime: any = (endAt: any) => {
+    // 通过以过期时间减去当前时间，得到一个差值，单位为秒
+    const now = new Date()
+    const end = new Date(endAt)
+    return Math.floor((end.getTime() - now.getTime()) / 1000)
+  }
+
   return (
     <div className={styles.content}>
       {payment === 'alipay' && (
@@ -220,7 +228,9 @@ function OrderPayPage() {
           </div>
           <div className={styles.countDown}>
             请在
-            {orderDesc.cancelTime}
+            <p className={styles['countDown-tip']}>
+              <CountDown timestamp={calTime(orderDesc.cancelTime)} type="" />
+            </p>
             内完成支付
           </div>
           <div className={styles['btn-confirm']} onClick={() => handleAliPay()}>
@@ -293,7 +303,9 @@ function OrderPayPage() {
           </div>
           <div className={styles.countDown}>
             请在
-            {orderDesc.cancelTime}
+            <p className={styles['countDown-tip']}>
+              <CountDown timestamp={calTime(orderDesc.cancelTime)} type="" />
+            </p>
             内完成支付
           </div>
           <div className={styles['btn-confirm']} onClick={() => confirm()}>

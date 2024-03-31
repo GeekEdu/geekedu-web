@@ -115,36 +115,36 @@ function MemberOrdersPage() {
   }
 
   const goDetail = (item: any) => {
-    if (item.goods[0].goods_type === 'ROLE')
+    if (item.goods.goodsType === 'ROLE')
       navigate('/vip')
-    else if (item.goods[0].goods_type === 'BOOK')
-      navigate(`/book/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === 'COURSE')
-      navigate(`/courses/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '直播课程')
-      navigate(`/live/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '文章')
-      navigate(`/topic/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === 'VIDEO')
-      navigate(`/courses/video/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '学习路径')
-      navigate(`/learnPath/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '试卷')
-      navigate(`/exam/papers/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '练习')
-      navigate(`/exam/practice/detail/${item.goods[0].goods_id}`)
-    else if (item.goods[0].goods_type === '模拟试卷')
-      navigate(`/exam/mockpaper/detail/${item.goods[0].goods_id}`)
+    else if (item.goods.goodsType === 'BOOK')
+      navigate(`/book/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === 'COURSE')
+      navigate(`/courses/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '直播课程')
+      navigate(`/live/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '文章')
+      navigate(`/topic/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === 'VIDEO')
+      navigate(`/courses/video/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '学习路径')
+      navigate(`/learnPath/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '试卷')
+      navigate(`/exam/papers/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '练习')
+      navigate(`/exam/practice/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === '模拟试卷')
+      navigate(`/exam/mockpaper/detail/${item.goods.goodsId}`)
   }
 
   const goTgDetail = (item: any) => {
-    if (item.goods.goods_type === 'book')
+    if (item.goods.goodsType === 'book')
       navigate(`/book/detail/${item.goods.other_id}`)
-    else if (item.goods.goods_type === 'course')
+    else if (item.goods.goodsType === 'course')
       navigate(`/courses/detail/${item.goods.other_id}`)
-    else if (item.goods.goods_type === 'live')
+    else if (item.goods.goodsType === 'live')
       navigate(`/live/detail/${item.goods.other_id}`)
-    else if (item.goods.goods_type === 'learnPath')
+    else if (item.goods.goodsType === 'learnPath')
       navigate(`/learnPath/detail/${item.goods.other_id}`)
   }
 
@@ -152,9 +152,9 @@ function MemberOrdersPage() {
     event.stopPropagation()
     navigate(
       `/order?course_id=${
-      item.goods.goods_id
+      item.goods.goodsId
          }&course_type=${
-         item.goods.goods_type
+         item.goods.goodsType
          }&goods_type=ms&goods_charge=${
          item.charge
          }&goods_label=团购&goods_name=${
@@ -167,14 +167,14 @@ function MemberOrdersPage() {
   }
 
   const goMsDetail = (item: any) => {
-    if (item.goods.goods_type === 'book')
-      navigate(`/book/detail/${item.goods.goods_id}`)
-    else if (item.goods.goods_type === 'course')
-      navigate(`/courses/detail/${item.goods.goods_id}`)
-    else if (item.goods.goods_type === 'live')
-      navigate(`/live/detail/${item.goods.goods_id}`)
-    else if (item.goods.goods_type === 'learnPath')
-      navigate(`/learnPath/detail/${item.goods.goods_id}`)
+    if (item.goods.goodsType === 'book')
+      navigate(`/book/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === 'course')
+      navigate(`/courses/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === 'live')
+      navigate(`/live/detail/${item.goods.goodsId}`)
+    else if (item.goods.goodsType === 'learnPath')
+      navigate(`/learnPath/detail/${item.goods.goodsId}`)
   }
 
   const goMsOrder = (event: any, item: any) => {
@@ -183,7 +183,7 @@ function MemberOrdersPage() {
       `/order?course_id=${
       item.goods.other_id
          }&course_type=${
-         item.goods.goods_type
+         item.goods.goodsType
          }&goods_type=tg&goods_charge=${
          item.charge
          }&goods_label=秒杀&goods_name=${
@@ -364,12 +364,12 @@ function MemberOrdersPage() {
                       className={styles['project-item']}
                       onClick={() => goTgDetail(item)}
                     >
-                      {item.goods && item.goods.goods_thumb && (
+                      {item.goods && item.goods.goodsCover && (
                         <div className={styles['item-thumb']}>
-                          {item.goods.goods_type === 'book'
+                          {item.goods.goodsType === 'book'
                             ? (
                               <ThumbBar
-                                value={item.goods.goods_thumb}
+                                value={item.goods.goodsCover}
                                 width={75}
                                 height={100}
                                 border={8}
@@ -377,7 +377,7 @@ function MemberOrdersPage() {
                               )
                             : (
                               <ThumbBar
-                                value={item.goods.goods_thumb}
+                                value={item.goods.goodsCover}
                                 width={133}
                                 height={100}
                                 border={8}
@@ -391,20 +391,20 @@ function MemberOrdersPage() {
                       <div className={styles['item-info']}>
                         <div className={styles['item-top']}>
                           <div className={styles['item-name']}>
-                            {item.goods.goods_title || '商品已删除'}
+                            {item.goods.goodsTitle || '商品已删除'}
                           </div>
                           <div className={styles['order-num']}>
                             类型：
-                            {item.goods.goods_type_text}
+                            {item.goods.goodsTypeText}
                           </div>
                           <div className={styles['item-time']}>
-                            {getCommentTime(item.updated_at)}
+                            {getCommentTime(item.createdTime)}
                           </div>
                         </div>
                         <div className={styles['item-bottom']}>
                           <div className={styles['item-price']}>
                             实付款：￥
-                            {item.charge}
+                            {item.amount}
                           </div>
                           {item.status === 0 && (
                             <div
@@ -434,12 +434,12 @@ function MemberOrdersPage() {
                       className={styles['project-item']}
                       onClick={() => goMsDetail(item)}
                     >
-                      {item.goods && item.goods.goods_thumb && (
+                      {item.goods && item.goods.goodsCover && (
                         <div className={styles['item-thumb']}>
-                          {item.goods.goods_type === 'book'
+                          {item.goods.goodsType === 'book'
                             ? (
                               <ThumbBar
-                                value={item.goods.goods_thumb}
+                                value={item.goods.goodsCover}
                                 width={75}
                                 height={100}
                                 border={8}
@@ -447,7 +447,7 @@ function MemberOrdersPage() {
                               )
                             : (
                               <ThumbBar
-                                value={item.goods.goods_thumb}
+                                value={item.goods.goodsCover}
                                 width={133}
                                 height={100}
                                 border={8}
@@ -461,20 +461,20 @@ function MemberOrdersPage() {
                       <div className={styles['item-info']}>
                         <div className={styles['item-top']}>
                           <div className={styles['item-name']}>
-                            {item.goods.goods_title || '商品已删除'}
+                            {item.goods.goodsTitle || '商品已删除'}
                           </div>
                           <div className={styles['order-num']}>
                             类型：
-                            {item.goods.goods_type_text}
+                            {item.goods.goodsTypeText}
                           </div>
                           <div className={styles['item-time']}>
-                            {getCommentTime(item.created_at)}
+                            {getCommentTime(item.createdTime)}
                           </div>
                         </div>
                         <div className={styles['item-bottom']}>
                           <div className={styles['item-price']}>
                             实付款：￥
-                            {item.charge}
+                            {item.amount}
                           </div>
                           {item.status === 0 && (
                             <div
