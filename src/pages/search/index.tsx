@@ -16,7 +16,7 @@ const SearchPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [type, setType] = useState(0);
+  const [type, setType] = useState("all");
   const [total, setTotal] = useState(0);
   const [keywords, setKeywords] = useState<string>(
     String(result.get("keywords"))
@@ -47,10 +47,6 @@ const SearchPage = () => {
         key: "vod",
         name: "录播课",
       },
-      {
-        key: "video",
-        name: "录播视频",
-      },
     ];
     if (configFunc["live"]) {
       box.push({
@@ -70,24 +66,6 @@ const SearchPage = () => {
         name: "图文",
       });
     }
-    if (configFunc["paper"]) {
-      box.push({
-        key: "paper",
-        name: "试卷",
-      });
-    }
-    if (configFunc["mockPaper"]) {
-      box.push({
-        key: "mock_paper",
-        name: "模拟试卷",
-      });
-    }
-    if (configFunc["practice"]) {
-      box.push({
-        key: "practice",
-        name: "练习",
-      });
-    }
     setTypes(box);
   }, [configFunc]);
 
@@ -104,8 +82,8 @@ const SearchPage = () => {
     setLoading(true);
     searchApi
       .list({
-        page: page,
-        size: size,
+        pageNum: page,
+        pageSize: size,
         type: type,
         keywords: keywords,
       })
@@ -130,9 +108,7 @@ const SearchPage = () => {
   };
 
   const change = (val: string) => {
-    if (val === "video") {
-      return "录播视频";
-    } else if (val === "vod") {
+    if (val === "vod") {
       return "录播课";
     } else if (val === "live") {
       return "直播课";
@@ -140,14 +116,6 @@ const SearchPage = () => {
       return "图文";
     } else if (val === "book") {
       return "电子书";
-    } else if (val === "paper") {
-      return "试卷";
-    } else if (val === "mock_paper") {
-      return "模拟试卷";
-    } else if (val === "practice") {
-      return "练习";
-    } else {
-      return "其它";
     }
   };
 
