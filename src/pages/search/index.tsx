@@ -40,7 +40,7 @@ const SearchPage = () => {
   useEffect(() => {
     let box = [
       {
-        key: 0,
+        key: "all",
         name: "全部",
       },
       {
@@ -264,23 +264,23 @@ const SearchPage = () => {
                   key={item.id}
                   className={styles["search-item"]}
                   style={{ padding: 0 }}
-                  onClick={() => goDetail(item.resource_type, item.resource_id)}
+                  onClick={() => goDetail(item.resourceType, item.resourceId)}
                 >
                   <li
                     className={styles["item-top"]}
                     dangerouslySetInnerHTML={{
                       __html: warpTag(
-                        "【" + change(item.resource_type) + "】" + item.title,
+                        "【" + change(item.resourceType) + "】" + item.title,
                         keywords,
                         "span"
                       ),
                     }}
                   ></li>
-                  {item.p && (
+                  {item.description && (
                     <li
                       className={styles["item-content"]}
                       dangerouslySetInnerHTML={{
-                        __html: warpTag(item.p, keywords, "span"),
+                        __html: warpTag(item.description, keywords, "span"),
                       }}
                     ></li>
                   )}
