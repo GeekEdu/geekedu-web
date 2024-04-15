@@ -188,3 +188,8 @@ export function bookCourses(params: any) {
 export function collects(params: any) {
   return client.get('/user/api/member/topic/collect/list', params)
 }
+
+// 用户优惠券列表
+export function userCoupons() {
+  return client.get('/trade/api/coupon/member/list', {})
+}

@@ -3,6 +3,7 @@ import { Col, Pagination, Row, Spin } from 'antd'
 import { useDispatch } from 'react-redux'
 import { CouponItemPage, Empty, NavMember } from '../../../components'
 import styles from './index.module.scss'
+import { user } from '../../../api'
 
 export default function CouponPage() {
   document.title = '我的优惠'
@@ -23,9 +24,20 @@ export default function CouponPage() {
       return
 
     setLoading(true)
-    // TODO 请求我的优惠券列表
-    setList(data)
-    setLoading(false)
+    // 请求我的优惠券列表
+    user.userCoupons().then((res: any) => {
+      console.log(res.data);
+      const imgUrl = '../../src/assets/img/member/coupon.png'
+      if (res.data != null && res.data.length != 0) {
+        const newData = res.data.map((item: any) => ({
+          ...item,
+          imgUrl,
+        }))
+        setList(newData)
+      }
+      setTotal(res.data.length)
+      setLoading(false)
+    })
   }
 
   const data: any = [
@@ -83,10 +95,10 @@ export default function CouponPage() {
             && list?.map((item: any, index: any) => (
               <CouponItemPage
                 key={index}
-                storeName={item.name}
-                discount={item.count}
-                couponCode={item.code}
-                validity={item.validaty}
+                storeName={item.couponDesc}
+                discount={item.couponPrice}
+                couponCode={item.couponCode}
+                validity={item.expiredTime}
                 imgUrl={item.imgUrl}
                 isOdd={index % 2 !== 0}
               />
