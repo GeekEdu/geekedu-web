@@ -10,12 +10,14 @@ export function smsLogin(params: any) {
   return client.post('/user/api/v2/login/sms', params)
 }
 
+// 手机号注册
 export function smsRegister(params: any) {
-  return client.post(`/api/v2/register/sms`, params)
+  return client.post(`/user/api/v2/register/sms`, params)
 }
 
+// 登出
 export function logout() {
-  return client.post('/api/v2/logout', {})
+  return client.get('/user/api/logout', {})
 }
 
 export function codeLogin(params: any) {

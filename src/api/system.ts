@@ -5,8 +5,9 @@ export function config() {
   return client.get('/system/api/v2/config', {})
 }
 
+// 获取手机号验证码
 export function sendSms(params: any) {
-  return client.post('/api/v2/captcha/sms', params)
+  return client.post('/user/api/sms/phone', params)
 }
 
 // 获取图形验证码

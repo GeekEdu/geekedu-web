@@ -78,10 +78,10 @@ export const RegisterDialog: React.FC<PropInterface> = ({
     setSmsLoading2(true);
     system
       .sendSms({
-        mobile: form.getFieldValue("mobile"),
-        image_key: captcha.key,
-        image_captcha: form.getFieldValue("captcha"),
-        scene: "login",
+        phone: form.getFieldValue("mobile"),
+        imageKey: captcha.key,
+        imageCaptcha: form.getFieldValue("captcha"),
+        scene: "register",
       })
       .then((res: any) => {
         setSmsLoading2(false);
@@ -118,10 +118,11 @@ export const RegisterDialog: React.FC<PropInterface> = ({
     setLoading(true);
     login
       .smsRegister({
-        mobile: values.mobile,
-        mobile_code: values.sms,
+        phone: values.mobile,
+        phoneCode: values.sms,
         password: values.password,
-        msv: getMsv(),
+        scene: 'register',
+        // msv: getMsv(),
       })
       .then((res: any) => {
         message.success("注册成功");
