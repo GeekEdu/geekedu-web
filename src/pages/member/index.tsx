@@ -63,7 +63,7 @@ function MemberPage() {
   const [app, setApp] = useState('')
 
   const [currentTab, setCurrentTab] = useState(1)
-  const [nickName, setNickName] = useState<string>(user && user.nick_name)
+  const [nickName, setNickName] = useState<string>(user && user.userName)
   const tabs = [
     {
       name: '基本信息',
@@ -122,7 +122,7 @@ function MemberPage() {
     setEditNickStatus(false)
     member.detail().then((res: any) => {
       const loginData = res.data
-      setNickName(loginData.nick_name)
+      setNickName(loginData.userName)
       dispatch(loginAction(loginData))
     })
   }
@@ -144,7 +144,7 @@ function MemberPage() {
 
     setLoading(true)
     member
-      .nicknameChange({ nick_name: nickName })
+      .nicknameChange({ nickName })
       .then(() => {
         setLoading(false)
         message.success('修改成功')
@@ -214,7 +214,7 @@ function MemberPage() {
   }
 
   const goChangePassword = () => {
-    if (user.is_bind_mobile !== 1) {
+    if (user?.phone == null) {
       message.error('请绑定手机号')
       return
     }
@@ -297,7 +297,7 @@ function MemberPage() {
       <ChangePasswordDialog
         scene="password_reset"
         open={changePasswordVisible}
-        mobile={user.mobile}
+        mobile={user.phone}
         onCancel={() => setChangePasswordVisible(false)}
         success={() => {
           setChangePasswordVisible(false)
@@ -308,7 +308,7 @@ function MemberPage() {
       <MobileVerifyDialog
         scene="mobile_bind"
         open={mobileValidateVisible}
-        mobile={user.mobile}
+        mobile={user.phone}
         onCancel={() => setMobileValidateVisible(false)}
         success={(sign: string) => successMobileValidate(sign)}
       >
@@ -448,7 +448,7 @@ function MemberPage() {
                     )}
                   </div>
                   <div className={styles['item-right']}>
-                    {user.is_set_nickname === 0 && editNickStatus && (
+                    {editNickStatus && (
                       <div
                         className={styles['act-btn']}
                         onClick={() => saveEditNick()}
@@ -456,7 +456,7 @@ function MemberPage() {
                         保存
                       </div>
                     )}
-                    {user.is_set_nickname === 0 && !editNickStatus && (
+                    {!editNickStatus && (
                       <div
                         className={styles.btn}
                         onClick={() => setEditNickStatus(true)}
@@ -464,42 +464,40 @@ function MemberPage() {
                         修改
                       </div>
                     )}
-                    {user.is_set_nickname === 1 && (
+                    {/* {user.is_set_nickname === 1 && (
                       <div className={styles.btn}>已修改</div>
                     )}
                     {user.is_set_nickname === 0 && (
                       <div className={styles.tip}>（只可修改一次）</div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className={styles['item-line']}>
                   <div className={styles['item-left']}>
                     <div className={styles['item-name']}>手机号码</div>
-                    {user.is_bind_mobile === 1 && (
+                    
                       <div className={styles['item-value']}>
-                        {`${user.mobile.substr(0, 3)
+                        {`${user.phone.substr(0, 3)
                           }****${
-                          user.mobile.substr(7)}`}
+                          user.phone.substr(7)}`}
                       </div>
-                    )}
                   </div>
                   <div className={styles['item-right']}>
-                    {user.is_bind_mobile === 1 && (
+                    
                       <div
                         className={styles.btn}
                         onClick={() => goChangeMobile()}
                       >
                         换绑手机号
                       </div>
-                    )}
-                    {user.is_bind_mobile !== 1 && (
+                    {/* {user.is_bind_mobile !== 1 && (
                       <div
                         className={styles.btn}
                         onClick={() => goBindMobile()}
                       >
                         绑定手机号
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className={styles['item-line']}>

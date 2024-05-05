@@ -46,8 +46,9 @@ export function tecentFaceVerifyQuery(params: any) {
   return client.get('/api/v3/member/tencent/faceVerify', params)
 }
 
+// 修改昵称
 export function nicknameChange(params: any) {
-  return client.post('/api/v2/member/detail/nickname', params)
+  return client.post('/user/api/member/v2/edit/nickname', params)
 }
 
 export function mobileVerify(params: any) {

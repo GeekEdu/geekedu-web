@@ -66,9 +66,9 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
     setSmsLoading2(true);
     system
       .sendSms({
-        mobile: mobile,
-        image_key: captcha.key,
-        image_captcha: form.getFieldValue("captcha"),
+        phone: mobile,
+        imageKey: captcha.key,
+        imageCaptcha: form.getFieldValue("captcha"),
         scene: scene,
       })
       .then((res: any) => {
