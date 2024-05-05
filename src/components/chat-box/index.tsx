@@ -88,6 +88,7 @@ export const ChatBox: React.FC<PropInterface> = ({
     url = url.replace(':courseId', cid)
     url = url.replace(':videoId', vid)
     url = url.replace(':token', getToken())
+    console.log(url)
     if ('WebSocket' in window) {
       ws = new WebSocket(url)
       ws.onopen = () => {

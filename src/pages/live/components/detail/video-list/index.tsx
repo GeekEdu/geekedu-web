@@ -45,22 +45,22 @@ export const VideoListComp: React.FC<PropInterface> = ({
               {(isBuy || isVip) && (
                 <img className={styles['play-icon']} src={unLockIcon} />
               )}
-              {(!isBuy || !isVip) && (
+              {(isBuy && isVip) && (
                 <img className={styles['play-icon']} src={lockIcon} />
               )}
               <div className={styles['video-title']}>
                 <div className={styles.text}>{item.title}</div>
               </div>
               <div className={styles['video-info']}>
-                {item.status === 1 && (
+                {item.status === 0 && (
                   <span style={{ color: '#3ca7fa' }}>
                     {dateFormat(item.liveTime)}
                   </span>
                 )}
-                {item.status === 2 && (
+                {item.status === 1 && (
                   <span style={{ color: '#04c877' }}>直播中</span>
                 )}
-                {item.status === 3 && (
+                {item.status === 2 && (
                   <>
                     <span>已结束 </span>
                     <DurationText seconds={item.duration} />
