@@ -93,7 +93,7 @@ const LearnPathDetailPage = lazy(() => import('../pages/learnPath/detail'))
 const WendaPage = lazy(() => import('../pages/wenda/index'))
 const WendaDetailPage = lazy(() => import('../pages/wenda/detail'))
 // 推广
-const SharePage = lazy(() => import('../pages/share'))
+// const SharePage = lazy(() => import('../pages/share'))
 // 学习中心
 const StudyCenterPage = lazy(() => import('../pages/study/index'))
 // 实人认证
@@ -374,10 +374,10 @@ const routes: RouteObject[] = [
           { path: '/error', element: <ErrorPage /> },
           { path: '/wenda', element: <WendaPage /> },
           { path: '/wenda/detail/:courseId', element: <WendaDetailPage /> },
-          {
-            path: '/share',
-            element: <PrivateRoute Component={<SharePage />} />,
-          },
+          // {
+          //   path: '/share',
+          //   element: <PrivateRoute Component={<SharePage />} />,
+          // },
           {
             path: '/study-center',
             element: <PrivateRoute Component={<StudyCenterPage />} />,
