@@ -1,11 +1,11 @@
-import client from "./internal/goHttpClient";
+import client from "./internal/wsHttpClient";
 
-export function chatMsgSend(courseId: number, videoId: number, params: any) {
-  return client.post(
-    `/addons/zhibo/api/v1/course/${courseId}/video/${videoId}/chat/send`,
-    params
-  );
-}
+// export function chatMsgSend(courseId: number, videoId: number, params: any) {
+//   return client.post(
+//     `/addons/zhibo/api/v1/course/${courseId}/video/${videoId}/chat/send`,
+//     params
+//   );
+// }
 
 export function chatMsgPaginate(
   courseId: number,
@@ -48,4 +48,12 @@ export function attachList(courseId: number, videoId: number, params: any) {
     `/addons/zhibo/api/v1/course/${courseId}/video/${videoId}/attach/index`,
     params
   );
+}
+
+// 发送聊天消息
+export function chatMsgSend(courseId: number, videoId: number, params: any) {
+  return client.post(
+    `/api/chat/course/${courseId}/video/${videoId}/chat/send`,
+    params,
+  )
 }

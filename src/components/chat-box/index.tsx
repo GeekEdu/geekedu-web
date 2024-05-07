@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, message as Message } from 'antd'
-import { goMeedu, live } from '../../api/index'
+import { wsGeekedu, live } from '../../api/index'
 import { getToken } from '../../utils/index'
 import styles from './index.module.scss'
 
@@ -19,7 +19,7 @@ interface PropInterface {
 
 declare const window: any
 let ws: any = null
-export const ChatBox: React.FC<PropInterface> = ({
+const ChatBox: React.ForwardRefRenderFunction<any, PropInterface> = ({
   chat,
   enabledChat,
   enabledMessage,
@@ -29,7 +29,7 @@ export const ChatBox: React.FC<PropInterface> = ({
   change,
   sign,
   endSign,
-}) => {
+}, ref) => {
   const [chatChannel, setChatChannel] = useState<string>('')
   const [connect_url, setConnectUrl] = useState<string>('')
   const [chatUser, setChatUser] = useState<any>({})
@@ -83,6 +83,11 @@ export const ChatBox: React.FC<PropInterface> = ({
     getChatRecords()
   }
 
+   // 使用useImperativeHandle暴露给父组件的方法
+   useImperativeHandle(ref, () => ({
+    sendMessage,
+  }))
+
   const init = (connectUrl: string, cid: string, vid: string) => {
     let url = connectUrl
     url = url.replace(':courseId', cid)
@@ -106,6 +111,7 @@ export const ChatBox: React.FC<PropInterface> = ({
           const arr = chatRecords
           arr.push({
             msg_body: msgV,
+            user: message.u,
           })
           setChatRecords([...arr])
         }
@@ -199,6 +205,12 @@ export const ChatBox: React.FC<PropInterface> = ({
     setChatRecords([...arr])
   }
 
+  const sendMessage = (message: string) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    }
+  }
+
   const getChatRecords = () => {
     if (pageLoading || over)
       return
@@ -276,14 +288,15 @@ export const ChatBox: React.FC<PropInterface> = ({
             {!item.local && (
               <>
                 <div
-                  className={
-                    item.msg_body.role === 'teacher'
-                    || item.msg_body.role === 'assistant'
-                      ? 'teacher nickname'
-                      : 'nickname'
-                  }
+                  // className={
+                  //   item.msg_body.role === 'teacher'
+                  //   || item.msg_body.role === 'assistant'
+                  //     ? 'teacher nickname'
+                  //     : 'nickname'
+                  // }
+                  className='nickname'
                 >
-                  {item.msg_body.nick_name}
+                  {item.user.nick_name}
                 </div>
                 <div className="message-content">
                   <div className="chat-content">{item.msg_body.content}</div>
@@ -296,3 +309,5 @@ export const ChatBox: React.FC<PropInterface> = ({
     </div>
   )
 }
+
+export default forwardRef(ChatBox)

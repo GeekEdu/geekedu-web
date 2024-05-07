@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
 import { Empty } from "../../../../components";
 import { getToken } from "../../../../utils/index";
-import { goMeedu } from "../../../../api/index";
+import { wsGeekedu } from "../../../../api/index";
 
 interface PropInterface {
   cid: number;
@@ -31,7 +31,7 @@ export const AttachDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    goMeedu
+    wsGeekedu
       .attachList(cid, vid, {
         page: 1,
         size: 100000,

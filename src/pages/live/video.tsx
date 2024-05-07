@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import TcplayerBarragePlugin from 'tcplayer-barrage-plugin'
 import { ChatBox } from '../../components'
-import { goMeedu, live } from '../../api/index'
+import { wsGeekedu, live } from '../../api/index'
 import backIcon from '../../assets/img/commen/icon-back-h.png'
 import { courses } from '../../api/user'
 import { SignDialog } from './components/sign-dialog'
@@ -117,6 +117,10 @@ function LiveVideoPage() {
   const [currentTab, setCurrentTab] = useState(1)
   const [content, setContent] = useState('')
   const [enabledChat, setEnabledChat] = useState(false)
+
+  // 关闭websocket连接
+  const [close, setClose] = useState<boolean>(false)
+  const chatBoxRef = useRef<any>(null)
 
   const myRef = useRef(0)
   const tabs = [
@@ -349,6 +353,8 @@ function LiveVideoPage() {
 
   const goDetail = () => {
     playerDestroy()
+    // 关闭websocket连接
+    setClose(true)
     setTimeout(() => {
       navigate(`/live/detail/${course.id}?tab=3`, { replace: true })
     }, 500)
@@ -445,22 +451,40 @@ function LiveVideoPage() {
   }
 
   const saveChat = (content: string) => {
-    live
-      .chatMsgSend(video.courseId, id, {
-        content,
-        duration: curDuration,
-      })
-      .then((res: any) => {
-        // 发送弹幕
-        const barrage = {
-          mode: 1,
-          text: content,
-          size: 30,
-          color: '#ff0000',
-        }
-        danmu.send(barrage)
-        setContent('')
-      })
+    // wsGeekedu
+    //   .chatMsgSend(video.courseId, id, {
+    //     content,
+    //     duration: curDuration,
+    //   })
+    //   .then((res: any) => {
+    //     // 发送弹幕
+    //     const barrage = {
+    //       mode: 1,
+    //       text: content,
+    //       size: 30,
+    //       color: '#ff0000',
+    //     }
+    //     danmu.send(barrage)
+    //     setContent('')
+    //   })
+    if (chatBoxRef.current) {
+      const msg = {
+        "courseId": video.courseId,
+        "videoId": id,
+        "content": content,
+        "duration": curDuration,
+      }
+      chatBoxRef.current.sendMessage(JSON.stringify(msg));
+      // 发送弹幕
+      const barrage = {
+        mode: 1,
+        text: content,
+        size: 30,
+        color: '#ff0000',
+      }
+      danmu.send(barrage)
+      setContent('')
+    }
   }
 
   const resetAttachDialog = () => {
@@ -664,6 +688,7 @@ function LiveVideoPage() {
                 </div>
                 {currentTab === 1 && video.courseId && (
                   <ChatBox
+                    ref={chatBoxRef}
                     chat={chat}
                     enabledChat={enabledChat}
                     cid={video.courseId}

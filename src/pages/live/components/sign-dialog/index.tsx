@@ -11,7 +11,7 @@ import {
   message,
 } from 'antd'
 
-import { goMeedu, system } from '../../../../api/index'
+import { wsGeekedu, system } from '../../../../api/index'
 import styles from './index.module.scss'
 
 interface PropInterface {
@@ -82,7 +82,7 @@ export const SignDialog: React.FC<PropInterface> = ({
       return
 
     setLoading(true)
-    goMeedu
+    wsGeekedu
       .sign(cid, vid, records.id)
       .then(() => {
         setCount(0)

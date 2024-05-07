@@ -3,7 +3,7 @@ import { Button, Input, message } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ChatBox } from '../../components'
-import { goMeedu, live } from '../../api/index'
+import { wsGeekedu, live } from '../../api/index'
 import backIcon from '../../assets/img/commen/icon-back-h.png'
 import { courses } from '../../api/user'
 import { SignDialog } from '../live/components/sign-dialog'
@@ -406,7 +406,7 @@ function LiveTeacherPage() {
   const playRecord = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setTimeValue(duration)
-      goMeedu
+      wsGeekedu
         .vodWatchRecord(video.course_id, id, {
           duration,
         })
@@ -417,7 +417,7 @@ function LiveTeacherPage() {
   const livePlayRecord = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setCurDuration(duration)
-      goMeedu
+      wsGeekedu
         .liveWatchRecord(video.course_id, id, {
           duration,
         })
@@ -433,7 +433,7 @@ function LiveTeacherPage() {
   }
 
   const saveChat = (content: string) => {
-    goMeedu
+    wsGeekedu
       .chatMsgSend(video.course_id, id, {
         content,
         duration: curDuration,

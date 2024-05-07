@@ -50,7 +50,7 @@ export function liveWatchRecord(
 // 发送聊天消息
 export function chatMsgSend(courseId: number, videoId: number, params: any) {
   return client.post(
-    `/ws/api/chat/course/${courseId}/video/${videoId}/chat/send`,
+    `/api/chat/course/${courseId}/video/${videoId}/chat/send`,
     params,
   )
 }

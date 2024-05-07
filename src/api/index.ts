@@ -8,7 +8,7 @@ export * as miaosha from './miaosha'
 export * as tuangou from './tuangou'
 export * as snapshot from './snapshot'
 export * as live from './live'
-export * as goMeedu from './go-meedu'
+export * as wsGeekedu from './ws-meedu'
 // export * as exam from "./exam";
 // export * as paper from "./paper";
 // export * as mock from "./mock";
