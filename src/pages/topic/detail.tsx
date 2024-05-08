@@ -122,7 +122,7 @@ function TopicDetailPage() {
       return
     }
     topicApi.vote({
-      id,
+      relationId: id,
       type: 'IMAGE_TEXT',
     }).then((res: any) => {
       const value = res.data

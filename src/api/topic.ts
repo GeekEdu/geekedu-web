@@ -48,5 +48,5 @@ export function collect(params: any) {
 
 // 评论
 export function submitComment(id: number, params: any) {
-  return client.post(`/book/api/imageTbookext/vimageText/22${id}/comment`, params)
+  return client.post(`/book/api/imageText/v2/${id}/comment`, params)
 }
