@@ -29,3 +29,5 @@ yarn.lock
 deploy-test.sh
 deploy-demo.sh
 docker-light-build.sh
+
+.VSCodeCounter
