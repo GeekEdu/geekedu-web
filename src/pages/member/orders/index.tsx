@@ -237,7 +237,7 @@ function MemberOrdersPage() {
                       className={styles['project-item']}
                       onClick={() => goDetail(item)}
                     >
-                      {item.goods && item.goods?.goodsCover
+                      {!item.goods && !item.goods?.goodsCover
                         ? (
                           <div className={styles['item-thumb']}>
                             {item.goods.goodsType === '模拟试卷'

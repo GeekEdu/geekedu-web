@@ -68,6 +68,24 @@ function VodPlayPage() {
   ]
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      // 尝试阻止 Win + PrintScreen 或 Ctrl + Shift + S
+      if ((e.key === 'PrintScreen' && e.ctrlKey && e.shiftKey) || 
+          (e.key === 's' && e.ctrlKey && e.shiftKey && e.altKey)) { // 注意: Alt键通常是Win+Shift+S组合的一部分
+        e.preventDefault(); // 阻止默认行为
+        console.log('阻止了截屏快捷键');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    // 清理函数，移除事件监听器
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [])
+
+  useEffect(() => {
     setVid(Number(params.courseId))
     window.player && window.player.destroy()
     myRef.current = 0
