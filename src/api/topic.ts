@@ -6,8 +6,8 @@ export function list(params: any) {
 }
 
 // 获取图文推荐
-export function hotList() {
-  return client.get('/system/api/v2/imageText/recommend', {})
+export function hotList(params: any) {
+  return client.get('/book/api/imageText/v2/recommend', params)
 }
 
 // 获取图文明细

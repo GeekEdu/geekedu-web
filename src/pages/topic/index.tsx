@@ -9,6 +9,7 @@ import {
   TopicCourseItem,
 } from '../../components'
 import styles from './index.module.scss'
+import { useSelector } from 'react-redux'
 
 function TopicPage() {
   document.title = '图文'
@@ -24,14 +25,17 @@ function TopicPage() {
   const [total, setTotal] = useState(0)
   const result = new URLSearchParams(useLocation().search)
   const [cid, setCid] = useState(Number(result.get('category_id')) || 0)
+  const user = useSelector((state: any) => state.loginUser.value.user)
 
   useEffect(() => {
     getList()
   }, [refresh, page, size])
 
   useEffect(() => {
-    getHotData()
-  }, [])
+    if (user !== null) {
+      getHotData()
+    }
+  }, [user])
 
   const resetList = () => {
     setPage(1)
@@ -64,7 +68,7 @@ function TopicPage() {
       return
 
     setLoading2(true)
-    topic.hotList().then((res: any) => {
+    topic.hotList({userId: user.id}).then((res: any) => {
       setHotList(res.data)
       setLoading2(false)
     })
@@ -175,7 +179,7 @@ function TopicPage() {
             </Col>
           )}
         </div>
-        <div className={styles['right-contanier']}>
+          <div className={styles['right-contanier']}>
           <div className={styles['right-list']}>
             <div className={styles.tit}>推荐阅读</div>
             {loading2 && (
@@ -260,20 +264,20 @@ function TopicPage() {
                         </div>
                         <div className={styles['topic-info']}>
                           <div className={styles.category}>
-                            {item.category.name}
+                            {item?.category?.name}
                           </div>
                           <span className={styles['read-count']}>
                             {item.readCount}
                             次阅读
                           </span>
-                          <span className={styles['thumb-count']}>
+                          {/* <span className={styles['thumb-count']}>
                             {item.thumbCount}
                             次点赞
                           </span>
                           <span className={styles['collect-count']}>
                             {item.collectCount}
                             次收藏
-                          </span>
+                          </span> */}
                         </div>
                       </div>
                     </div>
