@@ -140,9 +140,9 @@ function MemberCredit1RecordsPage() {
       return '发实物'
     }
     else if (is_v) {
-      if (type === 'vod' || type === 'live' || type === 'book')
+      if (type === 'VOD' || type === 'LIVE' || type === 'BOOK')
         return '换课程'
-      else if (type === 'vip')
+      else if (type === 'VIP')
         return '换会员'
     }
   }
