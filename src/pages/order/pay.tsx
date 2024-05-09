@@ -38,8 +38,8 @@ function OrderPayPage() {
   }, [])
 
   const initData = () => {
-    timer = setInterval(checkOrder, 2000)
     if (payment === 'wechatpay') {
+      timer = setInterval(checkOrder, 2000)
       const host = getAppUrl()
       const redirect = encodeURIComponent(`${host}/success`)
       order
@@ -59,6 +59,7 @@ function OrderPayPage() {
     }
   }
 
+  // 查询支付状态
   const checkOrder = () => {
     order.checkOrderStatus({ orderId: orderDesc.orderId }).then((res: any) => {
       const status = res.data
@@ -148,6 +149,7 @@ function OrderPayPage() {
     goBack()
   }
 
+  // 处理支付
   const handleAliPay = () => {
     const host = getAppUrl()
     const redirect = encodeURIComponent(`${host}/success`)

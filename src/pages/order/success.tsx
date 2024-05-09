@@ -1,13 +1,6 @@
-/*
- * @Author: Poison02 2069820192@qq.com
- * @Date: 2024-01-19 22:55:05
- * @LastEditors: Poison02 2069820192@qq.com
- * @LastEditTime: 2024-03-18 15:43:10
- * @FilePath: /geekedu-web/src/pages/order/success.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { order } from '../../api/index'
 import successIcon from '../../assets/img/commen/icon-adopt.png'
 import styles from './success.module.scss'
 
@@ -20,6 +13,13 @@ function OrderSuccessPage() {
   const [tradeNo, setTradeNo] = useState(result.get('trade_no') || 0)
   const [tradeStatus, setTradeStatus] = useState(result.get('trade_status') || '交易成功')
   const [outTradeNo, setOutTradeNo] = useState(result.get('out_trade_no') || 0)
+
+  // 请求后端查询支付宝支付状态，更新订单信息和支付信息
+  useEffect(() => {
+    order.checkOrderStatus({ orderId: outTradeNo}).then((res: any) => {
+      setTradeStatus(res.data ? '交易成功' : '交易失败')
+    })
+  }, [])
 
   return (
     <div className="container">
